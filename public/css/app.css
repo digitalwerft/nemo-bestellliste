@@ -10259,6 +10259,7 @@ a.text-dark:hover {
 
 body {
   padding-top: 40px;
+  padding-bottom: 100vh;
 }
 
 .field-titles {
@@ -10288,18 +10289,22 @@ section.details input.form-control:focus {
           box-shadow: inset 0 -2px black;
 }
 
-section.orders .owner .card {
+section.orders .buyer .card {
   height: 100%;
 }
 
-section.orders .owner-name .form-control {
+section.orders .buyer-name .form-control {
   border: none;
   font-weight: bold;
   text-decoration: underline;
 }
 
-section.orders .owner-name .input-group-btn .btn {
+section.orders .buyer-name .input-group-btn .btn {
   border: none;
+}
+
+section.orders .card-footer {
+  padding: 0;
 }
 
 section.orders .article-item {
@@ -10360,8 +10365,8 @@ section.orders .input-group .form-control {
 .v-input-number-arrows {
   position: absolute;
   width: 25%;
-  top: 1px;
-  bottom: 1px;
+  top: 0px;
+  bottom: 0px;
   right: 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -10386,6 +10391,20 @@ section.orders .input-group .form-control {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  -webkit-transition: background .15s;
+  transition: background .15s;
+}
+
+.v-input-number-arrows > a:hover {
+  background: rgba(0, 103, 178, 0.13);
+}
+
+.v-input-number-arrows > a:active {
+  background: #0067b2;
+}
+
+.v-input-number-arrows > a:active i {
+  color: white;
 }
 
 .v-input-number-arrows > a.v-input-number-up {

@@ -15,86 +15,41 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
- var VueWaypoint = require('vue-waypoint');
- Vue.use(VueWaypoint);
+var VueWaypoint = require('vue-waypoint');
+var axios = require('axios');
+window.Event = new Vue();
+Vue.use(VueWaypoint);
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.prototype.$http = axios;
+
 Vue.component('navbar', require('./components/navbar.vue'));
 Vue.component('article-item', require('./components/article-item.vue'));
-Vue.component('owner', require('./components/owner.vue'));
+Vue.component('buyer', require('./components/buyer.vue'));
 Vue.component('input-number', require('./components/input-number.vue'));
 
 const app = new Vue({
     el: '#app',
-    data: ()=> {
-        return {
-            orderNr: '1736567738872-WD',
+    mounted() {
+        this.$http.get('/api/order/123/buyers').then(response => this.data = response.data);
+    },
+    data:  {
+        data: {
             user: {
-                name: {
-                    firstName: 'Alfred',
-                    lastName: 'Befred'
-                },
-                email: 'alfred@befred.com',
-                adress: {
-                    street: 'Meine Straße 29',
-                    zip: '19283',
-                    city: 'Freiburg'
-                },
-                message: 'ahjsgdjkhasgdhahsjgdakgjhjhasgd'
+                address: {}
             },
-            clients: [
-                {
-                    name: 'Vorname Name',
-                    articles: [
-                        {
-                            id: '350',
-                            name: 'Leon 35-38',
-                            price: 15,
-                            amount: 2
-                        },
-                        {
-                            id: '212',
-                            name: 'Fridolin 43-46',
-                            price: 15,
-                            amount: 1
-                        }
-                    ]
-                },
-                {
-                    name: 'Max Mustermann',
-                    articles: [
-                        {
-                            id: '350',
-                            name: 'Leon 35-38',
-                            price: 15,
-                            amount: 4
-                        },
-                        {
-                            id: '212',
-                            name: 'Fridolin 43-46',
-                            price: 15,
-                            amount: 1
-                        }
-                    ]
-                },
-                {
-                    name: 'Marianne Musterfrau',
-                    articles: [
-                        {
-                            id: '395',
-                            name: 'Svenja 39-42',
-                            price: 15,
-                            amount: 2
-                        },
-                        {
-                            id: '582',
-                            name: 'Lotta',
-                            price: 20,
-                            amount: 1
-                        }
-                    ]
-                }
-            ]
+        }
+    },
+    methods: {
+        deleteBuyer(event) {
+            this.data.buyers.splice(event, 1);
+        },
+        createBuyer(e) {
+            e.preventDefault();
+            this.data.buyers.push({
+                articles: [],
+                name: ''
+            });
         }
     }
+
 });

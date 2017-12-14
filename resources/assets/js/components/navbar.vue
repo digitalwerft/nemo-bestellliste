@@ -56,7 +56,7 @@ export default {
     mounted() {
         //
     },
-    data: () => {
+    data() {
         return {
             isFixed: false
         }
@@ -67,7 +67,7 @@ export default {
             this.isFixed = false;
         },
         outHandler() {
-            console.log('going out');
+            //console.log('going out');
             $('.order-navigation').height($('.order-navigation').height());
             this.isFixed = true;
 

@@ -2,21 +2,21 @@
     <div class="input-group row no-gutters article-item mb-2">
         <div class="input-group col-3 no-gutters">
             <span class="input-group-btn col">
-                <input-number :step="1" :min="1" :max="100" :maxlength="3"  :startQuantity="amount" @onInputNumberChange="onChange"></input-number>
+                <input-number :step="step" :min="min" :max="max" :maxlength="maxLength"  :startQuantity="article.amount" @onInputNumberChange="onChange"></input-number>
             </span>
             <span class="input-group col-hash">
                 <i class="mdi mdi-pound"></i>
             </span>
         </div>
-        <input v-model="id" type="text" class="form-control col-6" placeholder="Artikelnummer">
+        <input v-model="article.id" type="text" class="form-control col-6" placeholder="Artikelnummer">
         <span class="input-group-addon col-5">
-            {{ name }}
+            {{ article.name }}
         </span>
         <span class="input-group-addon col-2">
             {{ sum }}€
         </span>
         <span class="input-group-btn col-2">
-            <a href="#" class="btn btn-outline-secondary btn-block">
+            <a href="" class="btn btn-outline-secondary btn-block" @click="onDelete">
                 <i class="mdi mdi-delete"></i>
             </a>
         </span>
@@ -25,25 +25,31 @@
 
 <script>
 export default {
+    props: ['articleData', 'articleIndex'],
     mounted() {
         //
     },
     data() {
         return {
-            amount: 2,
-            id: 101,
-            price: 15,
-            name: 'Hilda'
+            step: 1,
+            min: 1,
+            max: 100,
+            maxLength: 3,
+            article: this.articleData,
         };
     },
      computed: {
          sum() {
-             return this.amount*this.price;
+             return this.article.amount*this.article.price;
          }
      },
      methods: {
          onChange (value) {
-             this.amount = value;
+             this.article.amount = value;
+         },
+         onDelete (e) {
+             e.preventDefault();
+             this.$emit('onArticleDelete', this.articleIndex);
          }
      }
 }

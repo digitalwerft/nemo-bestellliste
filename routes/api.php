@@ -16,3 +16,71 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('order/123/buyers', function() {
+    return [
+        'orderNr' => '1736567738872-WD',
+        'user' => [
+            'firstName' => 'Alfred',
+            'lastName' => 'Befred',
+            'email' => 'alfred@befred.com',
+            'address' => [
+                'street' => 'Meine Straße 29',
+                'zip' => '19283',
+                'city' => 'Freiburg',
+            ],
+            'message' => 'ahjsgdjkhasgdhahsjgdakgjhjhasgd',
+        ],
+       'buyers' => [
+            [
+                'name' => 'Vorname Name',
+                'id' => 12,
+                'articles' => [
+                    [
+                        'id' => '350',
+                        'name' => 'Leon 35-38',
+                        'price' => 15,
+                        'amount' => 2,
+                    ], [
+                        'id' => '212',
+                        'name' => 'Fridolin 43-46',
+                        'price' => 15,
+                        'amount' => 1,
+                    ],
+                ],
+            ], [
+                'name' => 'Max Mustermann',
+                'id' => 2,
+                'articles' => [
+                    [
+                        'id' => '350',
+                        'name' => 'Leon 35-38',
+                        'price' => 15,
+                    'amount' => 4,
+                    ], [
+                        'id' => '212',
+                        'name' => 'Fridolin 43-46',
+                        'price' => 15,
+                        'amount' => 1,
+                    ],
+                ],
+            ], [
+                'name' => 'Marianne Musterfrau',
+                'id' => 13,
+                'articles' => [
+                    [
+                        'id' => '395',
+                        'name' => 'Svenja 39-42',
+                        'price' => 15,
+                        'amount' => 2,
+                    ], [
+                        'id' => '582',
+                        'name' => 'Lotta',
+                        'price' => 20,
+                        'amount' => 1,
+                    ],
+                ],
+            ],
+        ],
+    ];
+});

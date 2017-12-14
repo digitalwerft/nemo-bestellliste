@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <h4 class="card-title pb-3 mb-5">
                         <div class="input-group">
-                            Sammelbestellung:&nbsp; <i class="mdi mdi-pound"></i> <strong>@{{ orderNr }}</strong>
+                            Sammelbestellung:&nbsp; <i class="mdi mdi-pound"></i> <strong>@{{ data.orderNr }}</strong>
                         </div>
                     </h4>
                     <div class="row">
@@ -30,25 +30,25 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col">
-                                        <input v-model="user.name.firstName" class="form-control" type="text" placeholder="Vorname">
+                                        <input v-model="data.user.firstName" class="form-control" type="text" placeholder="Vorname">
                                     </div>
                                     <div class="col">
-                                        <input v-model="user.name.lastName"class="form-control" type="text" placeholder="Nachname">
+                                        <input v-model="data.user.lastName"class="form-control" type="text" placeholder="Nachname">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input v-model="user.email" class="form-control" type="email" placeholder="E-Mail">
+                                <input v-model="data.user.email" class="form-control" type="email" placeholder="E-Mail">
                             </div>
                             <div class="form-group">
-                                <input v-model="user.adress.street" class="form-control" type="text" placeholder="Straße, Hausnummer">
+                                <input v-model="data.user.address.street" class="form-control" type="text" placeholder="Straße, Hausnummer">
                             </div>
 
                         </div>
                         <div class="col-lg-11">
                             <div class="form-group">
                                 <label>Sonstiges</label>
-                                <textarea v-model="user.message" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Sonstiges"></textarea>
+                                <textarea v-model="data.user.message" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Sonstiges"></textarea>
                             </div>
                         </div>
                     </div>
@@ -57,10 +57,10 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col">
-                                        <input v-model="user.adress.zip" class="form-control" type="text" placeholder="PLZ">
+                                        <input v-model="data.user.address.zip" class="form-control" type="text" placeholder="PLZ">
                                     </div>
                                     <div class="col">
-                                        <input v-model="user.adress.city" class="form-control" type="text" placeholder="Ort">
+                                        <input v-model="data.user.address.city" class="form-control" type="text" placeholder="Ort">
                                     </div>
                                 </div>
                             </div>
@@ -80,11 +80,11 @@
         </section>
         <section class="orders">
             <div class="container">
-                <div v-for="client in clients">
-                    <owner :data="client"></owner>
+                <div v-for="(buyer, index) in data.buyers">
+                    <buyer :buyer-data="buyer" :buyer-index="index" @on-buyer-delete="deleteBuyer($event)"></buyer>
                 </div>
-                <a href="#" class="btn btn-secondary btn-lg btn-block mt-3">
-                    <i class="mdi mdi-library-plus"></i> Bestellung hinzufügen (enter)
+                <a href="" class="btn btn-light btn-lg btn-block mt-3" @click="createBuyer">
+                    <i class="mdi mdi-library-plus"></i> Bestellung hinzufügen
                 </a>
             </div>
         </section>
