@@ -76,16 +76,16 @@
 
 
         <section class="order-navigation">
-            <navbar></navbar>
+            <navbar v-model="search"></navbar>
         </section>
         <section class="orders">
             <div class="container">
-                <div v-for="(buyer, index) in data.buyers">
+                <div v-for="(buyer, index) in filteredBuyer">
                     <div v-if="buyer.state == 'active'">
-                        <buyer :buyer-data="buyer" :buyer-index="index" @on-buyer-delete="deleteBuyer($event)"></buyer>
+                        <buyer :buyer-data="buyer" :buyer-index="index" :filterkey="search" @on-buyer-delete="deleteBuyer($event)"></buyer>
                     </div>
                 </div>
-                <a href="" class="btn btn-light btn-lg btn-block mt-3" @click="createBuyer">
+                <a href="" class="btn btn-light btn-lg btn-block mt-3" @click="createBuyer" :class="{hidden: (search != '')}">
                     <i class="mdi mdi-library-plus"></i> Besteller hinzufügen
                 </a>
             </div>

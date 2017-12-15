@@ -17,6 +17,7 @@ window.Vue = require('vue');
 
 var VueWaypoint = require('vue-waypoint');
 var axios = require('axios');
+//var VueFuse = require('vue-fuse');
 window.Event = new Vue();
 Vue.use(VueWaypoint);
 
@@ -26,6 +27,15 @@ Vue.component('navbar', require('./components/navbar.vue'));
 Vue.component('article-item', require('./components/article-item.vue'));
 Vue.component('buyer', require('./components/buyer.vue'));
 Vue.component('input-number', require('./components/input-number.vue'));
+
+// highlight filter
+Vue.filter('highlight', function(words, query){
+    var iQuery = new RegExp(query, "ig");
+    console.log(words);
+    return words.toString().replace(iQuery, function(matchedTxt,a,b){
+        return ('<span class=\'highlight\'>' + matchedTxt + '</span>');
+    });
+});
 
 const app = new Vue({
     el: '#app',
@@ -42,10 +52,24 @@ const app = new Vue({
     },
     data:  {
         isLoading: true,
+        search: '',
         data: {
             user: {
                 address: {}
             },
+            buyers: []
+        }
+    },
+    computed: {
+        filteredBuyer() {
+            return this.data.buyers.filter((buyer) => {
+                return _.lowerCase(buyer.name).match(_.lowerCase(this.search));
+            });
+        }
+    },
+    watch: {
+        search(term) {
+            //$list = $('.orders')
         }
     },
     methods: {

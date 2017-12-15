@@ -25,5 +25,7 @@
         "vue-input-number": "^0.1.1",
         "vue-waypoint": "^2.5.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "vue-fuse": "^1.2.1"
+    }
 }

@@ -3,6 +3,7 @@
 $body-bg: #eae9e2;
 $blue: #0067b2;
 $green: #25a073;
+$light-green: desaturate(lighten($green, 22%), 22%);
 
 // Border Radius
 $border-radius:               0;

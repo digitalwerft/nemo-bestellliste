@@ -10262,6 +10262,15 @@ body {
   padding-bottom: 100vh;
 }
 
+section.order-navigation nav.navbar .clear-search {
+  margin-left: -34px;
+  color: #adb5bd;
+}
+
+section.order-navigation nav.navbar .clear-search:hover {
+  color: #495057;
+}
+
 .field-titles {
   padding-top: 14px;
   padding-bottom: 7px;
@@ -10291,12 +10300,51 @@ section.details input.form-control:focus {
 
 section.orders .buyer .card {
   height: 100%;
+  -webkit-transition: all .25s;
+  transition: all .25s;
 }
 
-section.orders .buyer-name .form-control {
+section.orders .buyer .card.buyer-name-card .btn {
   border: none;
-  font-weight: bold;
-  text-decoration: underline;
+}
+
+section.orders .buyer .card.buyer-name-card .btn:focus,
+section.orders .buyer .card.buyer-name-card .btn:active {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+section.orders .buyer .card.buyer-name-card .btn.text-success.active {
+  background: #72c3a5;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+section.orders .buyer .card.buyer-name-card .btn.text-success.active .mdi {
+  color: white;
+}
+
+section.orders .buyer .card.buyer-name-card .btn.text-success.active:focus,
+section.orders .buyer .card.buyer-name-card .btn.text-success.active:active {
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+section.orders .buyer .card.editing {
+  -webkit-box-shadow: inset 5px 0 0 #72c3a5;
+          box-shadow: inset 5px 0 0 #72c3a5;
+}
+
+section.orders .buyer-name .input-group .form-control {
+  border: 1px solid #ced4da;
+}
+
+section.orders .buyer-name .buyer-name-title {
+  padding: 10px 0 0 13px;
+}
+
+section.orders .buyer-name .buyer-name-title h6 {
+  font-weight: normal;
 }
 
 section.orders .buyer-name .input-group-btn .btn {
@@ -10535,5 +10583,13 @@ section.orders .input-group .form-control {
 
 .loading-overlay.loading {
   opacity: 1;
+}
+
+.highlight {
+  background: #ffc107;
+}
+
+.hidden {
+  display: none !important;
 }
 

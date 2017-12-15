@@ -9,8 +9,8 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Suchen" aria-label="Search">
-
+                    <input class="form-control mr-sm-2" type="search" ref="searchInput" placeholder="Suchen" aria-label="Search" :value="value" @input="updateSearch()">
+                    <a href="" class="mdi mdi-close-circle-outline clear-search" @click="clearSearch" :class="{hidden: (value=='')}"></a>
                 </form>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item text-success pr-4">
@@ -53,6 +53,7 @@
 
 <script>
 export default {
+    props: ['value'],
     mounted() {
         //
     },
@@ -71,6 +72,13 @@ export default {
             $('.order-navigation').height($('.order-navigation').height());
             this.isFixed = true;
 
+        },
+        updateSearch() {
+            this.$emit('input', this.$refs.searchInput.value)
+        },
+        clearSearch(e) {
+            e.preventDefault();
+            this.$emit('input', '');
         }
     }
 }
