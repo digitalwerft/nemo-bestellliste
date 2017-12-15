@@ -35,6 +35,7 @@ Route::get('order/123/buyers', function() {
             [
                 'name' => 'Vorname Name',
                 'id' => 12,
+                'state' => 'active',
                 'articles' => [
                     [
                         'id' => '350',
@@ -51,6 +52,7 @@ Route::get('order/123/buyers', function() {
             ], [
                 'name' => 'Max Mustermann',
                 'id' => 2,
+                'state' => 'active',
                 'articles' => [
                     [
                         'id' => '350',
@@ -67,6 +69,7 @@ Route::get('order/123/buyers', function() {
             ], [
                 'name' => 'Marianne Musterfrau',
                 'id' => 13,
+                'state' => 'active',
                 'articles' => [
                     [
                         'id' => '395',

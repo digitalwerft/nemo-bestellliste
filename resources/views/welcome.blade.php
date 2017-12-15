@@ -81,13 +81,21 @@
         <section class="orders">
             <div class="container">
                 <div v-for="(buyer, index) in data.buyers">
-                    <buyer :buyer-data="buyer" :buyer-index="index" @on-buyer-delete="deleteBuyer($event)"></buyer>
+                    <div v-if="buyer.state == 'active'">
+                        <buyer :buyer-data="buyer" :buyer-index="index" @on-buyer-delete="deleteBuyer($event)"></buyer>
+                    </div>
                 </div>
                 <a href="" class="btn btn-light btn-lg btn-block mt-3" @click="createBuyer">
-                    <i class="mdi mdi-library-plus"></i> Bestellung hinzufügen
+                    <i class="mdi mdi-library-plus"></i> Besteller hinzufügen
                 </a>
             </div>
         </section>
+        <div class="loading-overlay" :class="{loading: isLoading}">
+                <div class="spinner">
+                  <div class="double-bounce1"></div>
+                  <div class="double-bounce2"></div>
+                </div>
+        </div>
     </div>
     <script src="{{ asset('js/app.js') }}" charset="utf-8"></script>
 </body>

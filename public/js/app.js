@@ -1120,11 +1120,18 @@ var app = new Vue({
         var _this = this;
 
         this.$http.get('/api/order/123/buyers').then(function (response) {
-            return _this.data = response.data;
+            _this.data = response.data;
+            setTimeout(function () {
+                _this.isLoading = false;
+                setTimeout(function () {
+                    $('.loading-overlay').remove();
+                }, 1000);
+            }, 500);
         });
     },
 
     data: {
+        isLoading: true,
         data: {
             user: {
                 address: {}
@@ -1139,7 +1146,8 @@ var app = new Vue({
             e.preventDefault();
             this.data.buyers.push({
                 articles: [],
-                name: ''
+                name: '',
+                state: 'active'
             });
         }
     }
@@ -44865,7 +44873,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['buyerData', 'buyerIndex'],
     mounted: function mounted() {
-        //console.log(this.buyerData);
+        this.$on('allArticlesRemoved', this.addArticle);
     },
     data: function data() {
         return {
@@ -44875,13 +44883,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         deleteArticle: function deleteArticle(event) {
-            this.buyerData.articles.splice(event.index, 1);
+            this.buyer.articles.splice(event.index, 1);
+            if (this.buyer.articles.length < 1) {
+                console.log(this.buyer.articles);
+                //this.$emit('allArticlesRemoved');
+            }
         },
         onDelete: function onDelete(e) {
             e.preventDefault();
             this.$emit('on-buyer-delete', this.buyerIndex);
         },
-        addArticle: function addArticle(e) {
+        addArticle: function addArticle() {
             if (!this.buyer.articles) {
                 this.buyer.articles = [];
             }
@@ -44891,8 +44903,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 id: '',
                 price: 0
             });
-
-            console.log(this.buyer.articles);
         }
     }
 });
@@ -44974,7 +44984,7 @@ var render = function() {
             })
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "card-footer text-muted" }, [
+          _c("div", { staticClass: "card-footer" }, [
             _c(
               "button",
               {

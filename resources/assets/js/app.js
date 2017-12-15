@@ -30,9 +30,18 @@ Vue.component('input-number', require('./components/input-number.vue'));
 const app = new Vue({
     el: '#app',
     mounted() {
-        this.$http.get('/api/order/123/buyers').then(response => this.data = response.data);
+        this.$http.get('/api/order/123/buyers').then((response) => {
+            this.data = response.data
+            setTimeout(()=> {
+                this.isLoading = false;
+                setTimeout(()=> {
+                    $('.loading-overlay').remove();
+                }, 1000);
+            }, 500);
+        });
     },
     data:  {
+        isLoading: true,
         data: {
             user: {
                 address: {}
@@ -47,7 +56,8 @@ const app = new Vue({
             e.preventDefault();
             this.data.buyers.push({
                 articles: [],
-                name: ''
+                name: '',
+                state: 'active'
             });
         }
     }

@@ -22,7 +22,7 @@
                         <article-item :article-data="article" :articleIndex="index" @onArticleDelete="deleteArticle($event)"></article-item>
                     </div>
                 </div>
-                <div class="card-footer text-muted">
+                <div class="card-footer">
                     <button class="btn btn-light btn-block btn-sm" :disabled="!buyer.name" @click="addArticle"><i class="mdi mdi-plus"></i> Artikel hinzufügen</button>
                 </div>
 
@@ -34,7 +34,7 @@
 export default {
     props: ['buyerData', 'buyerIndex'],
     mounted() {
-        //console.log(this.buyerData);
+        this.$on('allArticlesRemoved', this.addArticle);
     },
     data() {
         return {
@@ -43,13 +43,17 @@ export default {
     },
     methods: {
         deleteArticle(event) {
-            this.buyerData.articles.splice(event.index, 1);
+            this.buyer.articles.splice(event.index, 1);
+            if(this.buyer.articles.length < 1) {
+                console.log(this.buyer.articles);
+                //this.$emit('allArticlesRemoved');
+            }
         },
         onDelete(e) {
             e.preventDefault();
             this.$emit('on-buyer-delete', this.buyerIndex);
         },
-        addArticle(e) {
+        addArticle() {
             if(!this.buyer.articles) {
                 this.buyer.articles = [];
             }
@@ -59,8 +63,6 @@ export default {
                 id: '',
                 price: 0
             });
-
-            console.log(this.buyer.articles)
         }
     }
 }
