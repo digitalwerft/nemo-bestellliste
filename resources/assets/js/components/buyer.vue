@@ -15,11 +15,13 @@
                         <div class="col">
                             <a href="" class="btn btn-light text-success btn-sm btn-block" @click="handleLeftButtonClick" :class="{active: editing}">
                                 <i class="mdi" :class="{'mdi-pencil': !editing, 'mdi-check': editing}"></i>
+                                <span v-if="editing">speichern</span>
                             </a>
                         </div>
                         <div class="col">
                             <a href="" class="btn btn-light text-danger btn-sm btn-block" @click="handeRightButtonClick">
                                 <i class="mdi" :class="{'mdi-delete': !editing, 'mdi-close': editing}"></i>
+                                <span v-if="editing">abbrechen</span>
                             </a>
                         </div>
                     </div>
@@ -74,6 +76,7 @@ export default {
             if(this.editing) {
                 if(!$(e.target).is('input, .btn, h6, .mdi')) {
                     this.editing = false;
+                    this.buyer.name = this.oldName;
                 }
             }
         },
@@ -91,9 +94,12 @@ export default {
         handeRightButtonClick(e) {
             e.preventDefault();
 
-            if(!this.editing || (this.oldName == '' && this.buyer.articles.length < 1)) {
-                this.delete();
-            } else {
+            if(!this.editing) {
+                this.archive();
+            } else if(this.oldName == '' && this.buyer.articles.length < 1) {
+                this.archive();
+            }
+            else {
                 this.editing = false;
                 this.buyer.name = this.oldName;
             }
@@ -107,8 +113,28 @@ export default {
                 this.editing = false;
             }
         },
+        archive() {
+            //this.$emit('on-buyer-archived', this.buyerIndex);
+            this.buyer.state = 'archived';
+            var _this = this;
+            this.$note.info({
+                message: 'Bestellung gelöscht.',
+                buttons: [
+                    ['<button>rückgängig</button>', (instance, toast) => {
+                        _this.undo();
+                        instance.hide(toast);
+                    }]
+                ],
+                onClosing: (instance, toast, closedBy) => {
+                    _this.delete();
+                }
+            })
+        },
         delete() {
             this.$emit('on-buyer-delete', this.buyerIndex);
+        },
+        undo() {
+            this.buyer.state = 'active';
         },
         addArticle() {
             if(!this.buyer.articles) {

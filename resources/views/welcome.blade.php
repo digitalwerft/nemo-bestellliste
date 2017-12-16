@@ -30,25 +30,30 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col">
-                                        <input v-model="data.user.firstName" class="form-control" type="text" placeholder="Vorname">
+                                        <h6>@{{ data.user.firstName }}</h6>
+                                        <input v-model="data.user.firstName" class="form-control" type="text" placeholder="Vorname" :class="{hidden: !editingDetails}">
                                     </div>
                                     <div class="col">
-                                        <input v-model="data.user.lastName"class="form-control" type="text" placeholder="Nachname">
+                                        <h6>@{{ data.user.lastName }}</h6>
+                                        <input v-model="data.user.lastName"class="form-control" type="text" placeholder="Nachname" :class="{hidden: !editingDetails}">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <input v-model="data.user.email" class="form-control" type="email" placeholder="E-Mail">
+                                <h6>@{{ data.user.email }}</h6>
+                                <input v-model="data.user.email" class="form-control" type="email" placeholder="E-Mail" :class="{hidden: !editingDetails}">
                             </div>
                             <div class="form-group">
-                                <input v-model="data.user.address.street" class="form-control" type="text" placeholder="Straße, Hausnummer">
+                                <h6>@{{ data.user.address.street }}</h6>
+                                <input v-model="data.user.address.street" class="form-control" type="text" placeholder="Straße, Hausnummer" :class="{hidden: !editingDetails}">
                             </div>
 
                         </div>
                         <div class="col-lg-11">
                             <div class="form-group">
-                                <label>Sonstiges</label>
-                                <textarea v-model="data.user.message" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Sonstiges"></textarea>
+                                <label>Sonstiges:</label>
+                                <h6>@{{ data.user.message }}</h6>
+                                <textarea v-model="data.user.message" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Sonstiges" :class="{hidden: !editingDetails}"></textarea>
                             </div>
                         </div>
                     </div>
@@ -56,17 +61,19 @@
                         <div class="col-lg-7">
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col">
-                                        <input v-model="data.user.address.zip" class="form-control" type="text" placeholder="PLZ">
+                                    <div class="col-5">
+                                        <h6>@{{ data.user.address.zip }}</h6>
+                                        <input v-model="data.user.address.zip" class="form-control" type="text" placeholder="PLZ" :class="{hidden: !editingDetails}">
                                     </div>
                                     <div class="col">
-                                        <input v-model="data.user.address.city" class="form-control" type="text" placeholder="Ort">
+                                        <h6>@{{ data.user.address.city }}</h6>
+                                        <input v-model="data.user.address.city" class="form-control" type="text" placeholder="Ort" :class="{hidden: !editingDetails}">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-11">
-                            <a href="" class="btn btn-primary float-right">Speichern</a>
+                            <a href="" class="btn btn-primary float-right">Bearbeiten</a>
                         </div>
                     </div>
                 </div>
@@ -90,12 +97,20 @@
                 </a>
             </div>
         </section>
+        <section class="order-now">
+            <div class="container">
+                <a href="" class="btn btn-danger btn-lg btn-block mt-3" @click="createBuyer" :class="{hidden: (search != '')}">
+                    Jetzt Bestellung aufgeben!
+                </a>
+            </div>
+        </section>
         <div class="loading-overlay" :class="{loading: isLoading}">
                 <div class="spinner">
                   <div class="double-bounce1"></div>
                   <div class="double-bounce2"></div>
                 </div>
         </div>
+        <footer-nav></footer-nav>
     </div>
     <script src="{{ asset('js/app.js') }}" charset="utf-8"></script>
 </body>

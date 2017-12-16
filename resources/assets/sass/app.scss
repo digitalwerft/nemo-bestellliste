@@ -2,6 +2,7 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600"); // Variables
 @import "variables"; // Bootstrap
 @import "~bootstrap/scss/bootstrap"; // Bulma
+@import "~iziToast/dist/css/iziToast";
 // @import "~bulma/sass/utilities/initial-variables";
 // @import "~bulma/sass/utilities/functions";
 // @import "~bulma/";
@@ -73,6 +74,9 @@ section.orders {
                 .btn.text-success.active {
                     background: $light-green;
                     box-shadow: none !important;
+                    span {
+                        color: white;
+                    }
                     .mdi {
                         color: white;
                     }
@@ -351,4 +355,12 @@ section.orders {
 
 .hidden {
     display: none !important;
+}
+
+.iziToast.vue-toast {
+    box-shadow: 0 8px 8px -5px rgba(0, 0, 0, 0.25);
+    border-radius: 0;
+    &.iziToast-color-blue {
+        background: desaturate(lighten($blue, 40%), 10%);
+    }
 }

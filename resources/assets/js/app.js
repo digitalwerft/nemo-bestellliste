@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -23,36 +22,44 @@ Vue.use(VueWaypoint);
 
 Vue.prototype.$http = axios;
 
+var iziToast = require('iziToast');
+//var note = require('./plugins/notification.js');
+//Vue.use(note);
+
+iziToast.settings({
+  close: false,
+  pauseOnHover: true,
+  timeout: 8000,
+  progressBar: true,
+  layout: 2,
+  class: 'vue-toast'
+})
+
+Vue.prototype.$note = iziToast;
+
 Vue.component('navbar', require('./components/navbar.vue'));
 Vue.component('article-item', require('./components/article-item.vue'));
 Vue.component('buyer', require('./components/buyer.vue'));
 Vue.component('input-number', require('./components/input-number.vue'));
-
-// highlight filter
-Vue.filter('highlight', function(words, query){
-    var iQuery = new RegExp(query, "ig");
-    console.log(words);
-    return words.toString().replace(iQuery, function(matchedTxt,a,b){
-        return ('<span class=\'highlight\'>' + matchedTxt + '</span>');
-    });
-});
+Vue.component('footer-nav', require('./components/footer-nav.vue'));
 
 const app = new Vue({
     el: '#app',
     mounted() {
         this.$http.get('/api/order/123/buyers').then((response) => {
             this.data = response.data
-            setTimeout(()=> {
+            setTimeout(() => {
                 this.isLoading = false;
-                setTimeout(()=> {
+                setTimeout(() => {
                     $('.loading-overlay').remove();
                 }, 1000);
             }, 500);
         });
     },
-    data:  {
+    data: {
         isLoading: true,
         search: '',
+        editingDetails: false,
         data: {
             user: {
                 address: {}
@@ -75,6 +82,16 @@ const app = new Vue({
     methods: {
         deleteBuyer(event) {
             this.data.buyers.splice(event, 1);
+        },
+        note(options) {
+            var opt = {
+                title: 'title',
+                message: 'message',
+                icon: 'fa fa-check',
+                color: 'green',
+                icon: 'mdi mdi-check'
+            };
+            iziToast.show(_.merge(opt, options));
         },
         createBuyer(e) {
             e.preventDefault();

@@ -26,6 +26,7 @@
         "vue-waypoint": "^2.5.0"
     },
     "dependencies": {
+        "izitoast": "^1.2.0",
         "vue-fuse": "^1.2.1"
     }
 }
