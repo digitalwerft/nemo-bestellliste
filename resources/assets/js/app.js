@@ -60,6 +60,7 @@ const app = new Vue({
         isLoading: true,
         search: '',
         editingDetails: false,
+        totalWinnings: 0,
         data: {
             user: {
                 address: {}
@@ -72,11 +73,29 @@ const app = new Vue({
             return this.data.buyers.filter((buyer) => {
                 return _.lowerCase(buyer.name).match(_.lowerCase(this.search));
             });
+        },
+        totalBuyers() {
+            return this.data.buyers.length;
+        },
+        totalOrders() {
+            var total = 0;
+            return 35;
+            _.each(this.data.buyers, function(buyer) {
+                _.each(buyer.articles, function(article) {
+
+                });
+            })
+        },
+        winnings() {
+            return 350;
         }
     },
     watch: {
         search(term) {
             //$list = $('.orders')
+        },
+        data(obj) {
+            console.log(obj);
         }
     },
     methods: {

@@ -83,6 +83,91 @@ Route::get('order/123/buyers', function() {
                         'amount' => 1,
                     ],
                 ],
+            ], [
+                'name' => 'Marianne Musterfrau',
+                'id' => 14,
+                'state' => 'active',
+                'articles' => [
+                    [
+                        'id' => '395',
+                        'name' => 'Svenja 39-42',
+                        'price' => 15,
+                        'amount' => 2,
+                    ], [
+                        'id' => '582',
+                        'name' => 'Lotta',
+                        'price' => 20,
+                        'amount' => 1,
+                    ],
+                ],
+            ], [
+                'name' => 'Marianne Musterfrau',
+                'id' => 15,
+                'state' => 'active',
+                'articles' => [
+                    [
+                        'id' => '395',
+                        'name' => 'Svenja 39-42',
+                        'price' => 15,
+                        'amount' => 2,
+                    ], [
+                        'id' => '582',
+                        'name' => 'Lotta',
+                        'price' => 20,
+                        'amount' => 1,
+                    ],
+                ],
+            ], [
+                'name' => 'Marianne Musterfrau',
+                'id' => 16,
+                'state' => 'active',
+                'articles' => [
+                    [
+                        'id' => '395',
+                        'name' => 'Svenja 39-42',
+                        'price' => 15,
+                        'amount' => 2,
+                    ], [
+                        'id' => '582',
+                        'name' => 'Lotta',
+                        'price' => 20,
+                        'amount' => 1,
+                    ],
+                ],
+            ], [
+                'name' => 'Marianne Musterfrau',
+                'id' => 17,
+                'state' => 'active',
+                'articles' => [
+                    [
+                        'id' => '395',
+                        'name' => 'Svenja 39-42',
+                        'price' => 15,
+                        'amount' => 2,
+                    ], [
+                        'id' => '582',
+                        'name' => 'Lotta',
+                        'price' => 20,
+                        'amount' => 1,
+                    ],
+                ],
+            ], [
+                'name' => 'Marianne Musterfrau',
+                'id' => 18,
+                'state' => 'active',
+                'articles' => [
+                    [
+                        'id' => '395',
+                        'name' => 'Svenja 39-42',
+                        'price' => 15,
+                        'amount' => 2,
+                    ], [
+                        'id' => '582',
+                        'name' => 'Lotta',
+                        'price' => 20,
+                        'amount' => 1,
+                    ],
+                ],
             ],
         ],
     ];

@@ -59,6 +59,22 @@ export default {
             oldName: ''
         }
     },
+    computed: {
+        articleCount() {
+            var counter = 0;
+            _.each(this.buyer.articles, function(article) {
+                counter += article.amount;
+            });
+            return counter;
+        },
+        totalPrice() {
+            var prize = 0;
+            _.each(this.buyer.articles, function(article) {
+                prize += article.amount*article.price;
+            });
+            return prize;
+        }
+    },
     methods: {
         deleteArticle(event) {
             this.buyer.articles.splice(event.index, 1);

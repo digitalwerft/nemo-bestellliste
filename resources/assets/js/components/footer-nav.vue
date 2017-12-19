@@ -7,13 +7,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    Besteller: 10&nbsp;|&nbsp;
+                    Besteller: {{ totalBuyers }}&nbsp;|&nbsp;
                 </li>
                 <li class="nav-item">
-                    Bestellungen: 49&nbsp;|&nbsp;
+                    Bestellungen: {{ totalOrders }}&nbsp;|&nbsp;
                 </li>
                 <li class="nav item">
-                    Gewinn: 455€
+                    Gewinn: {{ winnings }}
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -35,12 +35,13 @@
 
 <script>
 export default {
-    props: [],
+    props: ['totalBuyers', 'totalOrders', 'winnings'],
     mounted() {
         //
     },
-    data() {},
-    computed: {},
+    data() {
+        return {}
+    },
     methods: {}
 }
 </script>
