@@ -11,7 +11,7 @@
 
     <!-- Fonts -->
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="/css/app.css">
 </head>
 
 <body>
@@ -137,7 +137,7 @@
             </nav>
         </div>
     </div>
-    <script src="{{ asset('js/app.js') }}" charset="utf-8"></script>
+    <script src="/js/app.js" charset="utf-8"></script>
 </body>
 
 </html>

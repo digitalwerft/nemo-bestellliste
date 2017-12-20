@@ -9,6 +9,9 @@
                             <h6 v-html="highlight(buyerData.name)"  @click="makeEditable"></h6>
                         </div>
                     </div>
+                    <div class="buyer-details">
+                        Artikel: {{ articleCount }} | Summe: {{ totalPrice }}€
+                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="row no-gutters">
@@ -63,7 +66,7 @@ export default {
         articleCount() {
             var counter = 0;
             _.each(this.buyer.articles, function(article) {
-                counter += article.amount;
+                counter = counter + article.amount;
             });
             return counter;
         },
@@ -77,7 +80,8 @@ export default {
     },
     methods: {
         deleteArticle(event) {
-            this.buyer.articles.splice(event.index, 1);
+            this.buyer.articles.splice(event, 1);
+
             //if(this.buyer.articles.length < 1) {
                 //console.log(this.buyer.articles);
                 //this.$emit('allArticlesRemoved');

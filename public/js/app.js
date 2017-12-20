@@ -45915,6 +45915,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         onDelete: function onDelete(e) {
             e.preventDefault();
             this.$emit('onArticleDelete', this.articleIndex);
+            console.log(this.articleIndex);
         }
     }
 });
@@ -46116,6 +46117,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['buyerData', 'buyerIndex', 'filterkey'],
@@ -46136,7 +46140,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         articleCount: function articleCount() {
             var counter = 0;
             _.each(this.buyer.articles, function (article) {
-                counter += article.amount;
+                counter = counter + article.amount;
             });
             return counter;
         },
@@ -46150,7 +46154,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         deleteArticle: function deleteArticle(event) {
-            this.buyer.articles.splice(event.index, 1);
+            this.buyer.articles.splice(event, 1);
+
             //if(this.buyer.articles.length < 1) {
             //console.log(this.buyer.articles);
             //this.$emit('allArticlesRemoved');
@@ -46296,6 +46301,16 @@ var render = function() {
                       on: { click: _vm.makeEditable }
                     })
                   ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "buyer-details" }, [
+                _vm._v(
+                  "\n                    Artikel: " +
+                    _vm._s(_vm.articleCount) +
+                    " | Summe: " +
+                    _vm._s(_vm.totalPrice) +
+                    "€\n                "
                 )
               ])
             ]),

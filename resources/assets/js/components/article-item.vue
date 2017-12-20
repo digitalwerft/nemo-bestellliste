@@ -50,6 +50,7 @@ export default {
          onDelete (e) {
              e.preventDefault();
              this.$emit('onArticleDelete', this.articleIndex);
+             console.log(this.articleIndex);
          }
      }
 }
