@@ -37,6 +37,10 @@ iziToast.settings({
 
 Vue.prototype.$note = iziToast;
 
+// register modal component
+Vue.component('modal', require('./components/modal.vue'));
+Vue.component('confirm', require('./components/confirm.vue'));
+
 Vue.component('navbar', require('./components/navbar.vue'));
 Vue.component('article-item', require('./components/article-item.vue'));
 Vue.component('buyer', require('./components/buyer.vue'));
@@ -61,6 +65,7 @@ const app = new Vue({
         search: '',
         editingDetails: false,
         totalWinnings: 0,
+        showModal: false,
         data: {
             user: {
                 address: {}

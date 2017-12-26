@@ -136,7 +136,15 @@
                 </div>
             </nav>
         </div>
+        <div class="container">
+            <button id="show-modal" @click="showModal = true">Show Modal</button>
+
+            <hr>
+
+            <button :func="note" is="confirm" class="btn btn--red">Delete</button>
+        </div>
     </div>
+
     <script src="/js/app.js" charset="utf-8"></script>
 </body>
 

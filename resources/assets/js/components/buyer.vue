@@ -45,7 +45,18 @@
 
             </div>
         </div>
+        <modal v-if="showModal" @close="showModal = false">
+            <h5 slot="header">Bestellung wirklich löschen?</h5>
+            <span slot="body">
+                Diese Aktion kann nicht rückgängig gemacht werden.
+            </span>
+            <div slot="footer" class="modal-footer">
+                <button class="btn btn-secondary col" @click="showModal = false">abbrechen</button>
+                <button class="btn btn-danger col" @click="archive">Löschen</button>
+            </div>
+        </modal>
     </div>
+
 </template>
 <script>
 export default {
@@ -59,7 +70,8 @@ export default {
         return {
             buyer: this.buyerData,
             editing: false,
-            oldName: ''
+            oldName: '',
+            showModal: false
         }
     },
     computed: {
@@ -115,9 +127,10 @@ export default {
             e.preventDefault();
 
             if(!this.editing) {
-                this.archive();
+                //this.archive();
+                this.showModal = true;
             } else if(this.oldName == '' && this.buyer.articles.length < 1) {
-                this.archive();
+                this.showModal = true;
             }
             else {
                 this.editing = false;
