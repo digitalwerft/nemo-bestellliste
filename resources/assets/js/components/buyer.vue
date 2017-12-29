@@ -36,7 +36,7 @@
             <div class="card">
                 <div class="card-body">
                     <div v-for="(article, index) in buyer.articles">
-                        <article-item :article-data="article" :articleIndex="index" @onArticleDelete="deleteArticle($event)"></article-item>
+                        <article-item :article-id="article.id" :articleIndex="index" @onArticleDelete="deleteArticle($event)"></article-item>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -68,13 +68,16 @@ export default {
     },
     data() {
         return {
-            buyer: this.buyerData,
+            //buyer: this.buyerData,
             editing: false,
             oldName: '',
             showModal: false
         }
     },
     computed: {
+        buyer() {
+            return this.$store.state.buyers[this.buyerIndex];
+        },
         articleCount() {
             var counter = 0;
             _.each(this.buyer.articles, function(article) {

@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <h4 class="card-title pb-3 mb-5">
                         <div class="input-group">
-                            Sammelbestellung:&nbsp; <i class="mdi mdi-pound"></i> <strong>@{{ data.orderNr }}</strong>
+                            Sammelbestellung:&nbsp; <i class="mdi mdi-pound"></i> <strong>@{{ user.orderNr }}</strong>
                         </div>
                     </h4>
                     <div class="row">
@@ -30,30 +30,30 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col">
-                                        <h6>@{{ data.user.firstName }}</h6>
-                                        <input v-model="data.user.firstName" class="form-control" type="text" placeholder="Vorname" :class="{hidden: !editingDetails}">
+                                        <h6>@{{ user.firstName }}</h6>
+                                        <input v-model="user.firstName" class="form-control" type="text" placeholder="Vorname" :class="{hidden: !editingDetails}">
                                     </div>
                                     <div class="col">
-                                        <h6>@{{ data.user.lastName }}</h6>
-                                        <input v-model="data.user.lastName"class="form-control" type="text" placeholder="Nachname" :class="{hidden: !editingDetails}">
+                                        <h6>@{{ user.lastName }}</h6>
+                                        <input v-model="user.lastName"class="form-control" type="text" placeholder="Nachname" :class="{hidden: !editingDetails}">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <h6>@{{ data.user.email }}</h6>
-                                <input v-model="data.user.email" class="form-control" type="email" placeholder="E-Mail" :class="{hidden: !editingDetails}">
+                                <h6>@{{ user.email }}</h6>
+                                <input v-model="user.email" class="form-control" type="email" placeholder="E-Mail" :class="{hidden: !editingDetails}">
                             </div>
                             <div class="form-group">
-                                <h6>@{{ data.user.address.street }}</h6>
-                                <input v-model="data.user.address.street" class="form-control" type="text" placeholder="Straße, Hausnummer" :class="{hidden: !editingDetails}">
+                                <h6>@{{ user.street }}</h6>
+                                <input v-model="user.street" class="form-control" type="text" placeholder="Straße, Hausnummer" :class="{hidden: !editingDetails}">
                             </div>
 
                         </div>
                         <div class="col-lg-11">
                             <div class="form-group">
                                 <label>Sonstiges:</label>
-                                <h6>@{{ data.user.message }}</h6>
-                                <textarea v-model="data.user.message" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Sonstiges" :class="{hidden: !editingDetails}"></textarea>
+                                <h6>@{{ user.message }}</h6>
+                                <textarea v-model="user.message" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Sonstiges" :class="{hidden: !editingDetails}"></textarea>
                             </div>
                         </div>
                     </div>
@@ -62,12 +62,12 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-5">
-                                        <h6>@{{ data.user.address.zip }}</h6>
-                                        <input v-model="data.user.address.zip" class="form-control" type="text" placeholder="PLZ" :class="{hidden: !editingDetails}">
+                                        <h6>@{{ user.zip }}</h6>
+                                        <input v-model="user.zip" class="form-control" type="text" placeholder="PLZ" :class="{hidden: !editingDetails}">
                                     </div>
                                     <div class="col">
-                                        <h6>@{{ data.user.address.city }}</h6>
-                                        <input v-model="data.user.address.city" class="form-control" type="text" placeholder="Ort" :class="{hidden: !editingDetails}">
+                                        <h6>@{{ user.city }}</h6>
+                                        <input v-model="user.city" class="form-control" type="text" placeholder="Ort" :class="{hidden: !editingDetails}">
                                     </div>
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            Besteller: @{{ data.buyers.length }}&nbsp;|&nbsp;
+                            Besteller: @{{ buyers.length }}&nbsp;|&nbsp;
                         </li>
                         <li class="nav-item">
                             Bestellungen: @{{ totalOrders }}&nbsp;|&nbsp;

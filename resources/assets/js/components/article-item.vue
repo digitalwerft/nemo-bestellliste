@@ -2,13 +2,13 @@
     <div class="input-group row no-gutters article-item mb-2">
         <div class="input-group col-3 no-gutters">
             <span class="input-group-btn col">
-                <input-number :step="step" :min="min" :max="max" :maxlength="maxLength"  :startQuantity="article.amount" @onInputNumberChange="onChange"></input-number>
+                <input-number :step="step" :min="min" :max="max" :maxlength="maxLength"  :startQuantity="article.amount" @onInputNumberChange="onInputNumberChange"></input-number>
             </span>
             <span class="input-group col-hash">
                 <i class="mdi mdi-pound"></i>
             </span>
         </div>
-        <input v-model="article.id" type="text" class="form-control col-6" placeholder="Artikelnummer">
+        <v-select :value.sync="article.id" :options="autocomplete" :on-change="onArticleChange" label="id"></v-select>
         <span class="input-group-addon col-5">
             {{ article.name }}
         </span>
@@ -16,7 +16,7 @@
             {{ sum }}€
         </span>
         <span class="input-group-btn col-2">
-            <a href="" class="btn btn-outline-secondary btn-block" @click="onDelete">
+            <a href="" class="btn btn-outline-secondary btn-block" @click="onArticleDelete">
                 <i class="mdi mdi-delete"></i>
             </a>
         </span>
@@ -25,7 +25,7 @@
 
 <script>
 export default {
-    props: ['articleData', 'articleIndex'],
+    props: ['articleId', 'articleIndex'],
     mounted() {
         //
     },
@@ -35,22 +35,31 @@ export default {
             min: 1,
             max: 100,
             maxLength: 3,
-            article: this.articleData,
+            //article: this.articleData
         };
     },
      computed: {
+         article() {
+            return this.$store.state.articles[this.articleIndex];
+         },
          sum() {
              return this.article.amount*this.article.price;
+         },
+         autocomplete() {
+             return this.$store.state.articles;
          }
      },
      methods: {
-         onChange (value) {
+         onInputNumberChange (value) {
              this.article.amount = value;
          },
-         onDelete (e) {
+         onArticleDelete (e) {
              e.preventDefault();
              this.$emit('onArticleDelete', this.articleIndex);
              console.log(this.articleIndex);
+         },
+         onArticleChange(newArticle) {
+             this.articleData.name = newArticle.name;
          }
      }
 }

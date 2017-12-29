@@ -16,15 +16,15 @@ window.Vue = require('vue');
 
 var VueWaypoint = require('vue-waypoint');
 var axios = require('axios');
+var Vuex = require('vuex');
 //var VueFuse = require('vue-fuse');
 window.Event = new Vue();
+Vue.use(Vuex);
 Vue.use(VueWaypoint);
 
 Vue.prototype.$http = axios;
 
 var iziToast = require('iziToast');
-//var note = require('./plugins/notification.js');
-//Vue.use(note);
 
 iziToast.settings({
   close: false,
@@ -33,7 +33,7 @@ iziToast.settings({
   progressBar: true,
   layout: 2,
   class: 'vue-toast'
-})
+});
 
 Vue.prototype.$note = iziToast;
 
@@ -47,49 +47,101 @@ Vue.component('buyer', require('./components/buyer.vue'));
 Vue.component('input-number', require('./components/input-number.vue'));
 Vue.component('footer-nav', require('./components/footer-nav.vue'));
 
+var vSelect = require('vue-select');
+Vue.component('v-select', vSelect.VueSelect);
+
+const store = new Vuex.Store({
+  state: {
+    buyers: [],
+    articles: [],
+    user: {}
+  },
+  mutations: {
+    FETCH_BUYERS(state, buyers) {
+      state.buyers = buyers
+    },
+    FETCH_ARTICLES(state, articles) {
+      state.articles = articles
+    },
+    FETCH_USER(state, user) {
+      state.user = user
+    }
+  },
+  actions: {
+    fetchBuyers({ commit }, { self }) {
+      axios.get('/api/order/123/buyers').then((response) => {
+          commit("FETCH_BUYERS", response.data);
+      }).catch((error) => {
+        console.log(error);
+      });
+    },
+    fetchArticles({ commit }, { self }) {
+      axios.get('/api/articles/list').then((response) => {
+          commit("FETCH_ARTICLES", response.data);
+      }).catch((error) => {
+        console.log(error);
+      });
+    },
+    fetchUser({ commit }, { self }) {
+      axios.get('/api/user/123').then((response) => {
+          commit("FETCH_USER", response.data);
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+  }
+});
+
 const app = new Vue({
     el: '#app',
     mounted() {
-        this.$http.get('/api/order/123/buyers').then((response) => {
-            this.data = response.data
-            setTimeout(() => {
-                this.isLoading = false;
-                setTimeout(() => {
-                    $('.loading-overlay').remove();
-                }, 1000);
-            }, 500);
-        });
+      this.$store.dispatch('fetchBuyers', { self: this }).then(() => {
+        this.loadingNumber++;
+      });
+      this.$store.dispatch('fetchArticles', { self: this }).then(() => {
+        this.loadingNumber++;
+      });
+      this.$store.dispatch('fetchUser', { self: this }).then(() => {
+        this.loadingNumber++;
+      });
     },
-    data: {
-        isLoading: true,
-        search: '',
-        editingDetails: false,
-        totalWinnings: 0,
-        showModal: false,
-        data: {
-            user: {
-                address: {}
-            },
-            buyers: []
-        }
+    store,
+    data() {
+        return {
+          isLoading: true,
+          loadingNumber: 0,
+          search: '',
+          editingDetails: false,
+          totalWinnings: 0,
+          showModal: false
+        };
     },
     computed: {
+        user() {
+          return this.$store.state.user;
+        },
+        buyers() {
+          return this.$store.state.buyers;
+        },
+        articles() {
+          return this.$store.state.articles;
+        },
         filteredBuyer() {
-            return this.data.buyers.filter((buyer) => {
+            return this.buyers.filter((buyer) => {
                 return _.lowerCase(buyer.name).match(_.lowerCase(this.search));
             });
         },
         totalBuyers() {
-            return this.data.buyers.length;
+            return this.buyers.length;
         },
         totalOrders() {
             var total = 0;
             return 35;
-            _.each(this.data.buyers, function(buyer) {
-                _.each(buyer.articles, function(article) {
-
-                });
-            })
+            // _.each(this.data.buyers, function(buyer) {
+            //     _.each(buyer.articles, function(article) {
+            //
+            //     });
+            // });
         },
         winnings() {
             return 350;
@@ -101,9 +153,22 @@ const app = new Vue({
         },
         data(obj) {
             console.log(obj);
+        },
+        loadingNumber(num) {
+          if(num === 3) {
+            this.finishLoading();
+          }
         }
     },
     methods: {
+        finishLoading() {
+          setTimeout(() => {
+              this.isLoading = false;
+              setTimeout(() => {
+                  $('.loading-overlay').remove();
+              }, 1000);
+          }, 500);
+        },
         deleteBuyer(event) {
             this.data.buyers.splice(event, 1);
         },
@@ -111,7 +176,6 @@ const app = new Vue({
             var opt = {
                 title: 'title',
                 message: 'message',
-                icon: 'fa fa-check',
                 color: 'green',
                 icon: 'mdi mdi-check'
             };
