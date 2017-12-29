@@ -27,6 +27,14 @@
     },
     "dependencies": {
         "izitoast": "^1.2.0",
-        "vue-fuse": "^1.2.1"
+        "vue-fuse": "^1.2.1",
+        "vue-select": "^2.3.1",
+        "vuex": "^3.0.1"
+    },
+    "jshintConfig": {
+        "esversion": 6,
+        "globals": [
+            "_"
+        ]
     }
 }
