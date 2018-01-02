@@ -1,0 +1,7 @@
+.iziToast.vue-toast {
+    box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09);
+    border-radius: 0;
+    &.iziToast-color-blue {
+        background: desaturate(lighten($blue, 40%), 10%);
+    }
+}

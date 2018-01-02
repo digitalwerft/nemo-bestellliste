@@ -2,150 +2,84 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{!! csrf_token() !!}" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{!! csrf_token() !!}" />
 
-    <title>Laravel</title>
+  <title>Laravel</title>
 
-    <!-- Fonts -->
-    <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="/css/app.css">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/css/app.css">
 </head>
 
 <body>
-    <div id="app">
-    <section class="details">
+  <div id="app">
+    <div v-if="!isLoading">
+      <section class="details">
+        <user></user>
+      </section>
+
+
+      <section class="order-navigation">
+        <navbar v-model="search"></navbar>
+      </section>
+      <section class="orders">
         <div class="container">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title pb-3 mb-5">
-                        <div class="input-group">
-                            Sammelbestellung:&nbsp; <i class="mdi mdi-pound"></i> <strong>@{{ user.orderNr }}</strong>
-                        </div>
-                    </h4>
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col">
-                                        <h6>@{{ user.firstName }}</h6>
-                                        <input v-model="user.firstName" class="form-control" type="text" placeholder="Vorname" :class="{hidden: !editingDetails}">
-                                    </div>
-                                    <div class="col">
-                                        <h6>@{{ user.lastName }}</h6>
-                                        <input v-model="user.lastName"class="form-control" type="text" placeholder="Nachname" :class="{hidden: !editingDetails}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <h6>@{{ user.email }}</h6>
-                                <input v-model="user.email" class="form-control" type="email" placeholder="E-Mail" :class="{hidden: !editingDetails}">
-                            </div>
-                            <div class="form-group">
-                                <h6>@{{ user.street }}</h6>
-                                <input v-model="user.street" class="form-control" type="text" placeholder="Straße, Hausnummer" :class="{hidden: !editingDetails}">
-                            </div>
-
-                        </div>
-                        <div class="col-lg-11">
-                            <div class="form-group">
-                                <label>Sonstiges:</label>
-                                <h6>@{{ user.message }}</h6>
-                                <textarea v-model="user.message" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Sonstiges" :class="{hidden: !editingDetails}"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-5">
-                                        <h6>@{{ user.zip }}</h6>
-                                        <input v-model="user.zip" class="form-control" type="text" placeholder="PLZ" :class="{hidden: !editingDetails}">
-                                    </div>
-                                    <div class="col">
-                                        <h6>@{{ user.city }}</h6>
-                                        <input v-model="user.city" class="form-control" type="text" placeholder="Ort" :class="{hidden: !editingDetails}">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-11">
-                            <a href="" class="btn btn-primary float-right">Bearbeiten</a>
-                        </div>
-                    </div>
-                </div>
+          <div v-for="(buyer, index) in filteredBuyer">
+            <div v-if="buyer.state == 'active'">
+              <buyer :buyer-id="buyer.id" :filterkey="search" v-on:delete-buyer="onBuyerDeleted" v-on:save-buyer="onBuyerSaved" v-on:editing-buyer="hasUnsavedBuyer=true"></buyer>
             </div>
+          </div>
+          <a href="" class="btn btn-light btn-lg btn-block mt-3" @click="createBuyer" :class="{hidden: (search != ''), disabled: hasUnsavedBuyer}">
+                        <i class="mdi mdi-library-plus"></i> Teilnehmer hinzufügen
+                    </a>
         </div>
-    </section>
+      </section>
+      <div class="container sticky-container ">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-bottom footer-bar">
 
+          <a class="navbar-brand" href="#">NEUE MASCHE</a>
 
-        <section class="order-navigation">
-            <navbar v-model="search"></navbar>
-        </section>
-        <section class="orders">
-            <div class="container">
-                <div v-for="(buyer, index) in filteredBuyer">
-                    <div v-if="buyer.state == 'active'">
-                        <buyer :buyer-data="buyer" :buyer-index="index" :filterkey="search" @on-buyer-delete="deleteBuyer($event)"></buyer>
-                    </div>
-                </div>
-                <a href="" class="btn btn-light btn-lg btn-block mt-3" @click="createBuyer" :class="{hidden: (search != '')}">
-                    <i class="mdi mdi-library-plus"></i> Besteller hinzufügen
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                Besteller: @{{ buyers.length }}&nbsp;|&nbsp;
+              </li>
+              <li class="nav-item">
+                Bestellungen: @{{ totalOrders }}&nbsp;|&nbsp;
+              </li>
+              <li class="nav item">
+                Gewinn: @{{ winnings }}€
+              </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item mr-3">
+                <a href="#" class="btn btn-outline-secondary my-2 my-sm-0" @click="createBuyer" :class="{hidden: (search != '')}">
+                  <i class="mdi mdi-plus"></i> Teilnehmer hinzufügen
                 </a>
-            </div>
-        </section>
-
-        <div class="loading-overlay" :class="{loading: isLoading}">
-                <div class="spinner">
-                  <div class="double-bounce1"></div>
-                  <div class="double-bounce2"></div>
-                </div>
-        </div>
-        <div class="container sticky-container">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-bottom">
-
-                <a class="navbar-brand" href="#">Neue Masche</a>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            Besteller: @{{ buyers.length }}&nbsp;|&nbsp;
-                        </li>
-                        <li class="nav-item">
-                            Bestellungen: @{{ totalOrders }}&nbsp;|&nbsp;
-                        </li>
-                        <li class="nav item">
-                            Gewinn: @{{ winnings }}€
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item mr-3">
-                            <a href="#" class="btn btn-outline-secondary my-2 my-sm-0" @click="createBuyer" :class="{hidden: (search != '')}">
-                                <i class="mdi mdi-plus"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="btn btn-outline-danger my-2 my-sm-0">Bestellung aufgeben
-                                <i class="mdi mdi-chevron-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-        <div class="container">
-            <button id="show-modal" @click="showModal = true">Show Modal</button>
-
-            <hr>
-
-            <button :func="note" is="confirm" class="btn btn--red">Delete</button>
-        </div>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="btn btn-outline-danger my-2 my-sm-0">Bestellung aufgeben
+                  <i class="mdi mdi-chevron-right"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
     </div>
+  </div>
 
-    <script src="/js/app.js" charset="utf-8"></script>
+  <div class="loading-overlay loading">
+    <div class="spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>
+  </div>
+
+  <script src="/js/app.js" charset="utf-8"></script>
 </body>
 
 </html>

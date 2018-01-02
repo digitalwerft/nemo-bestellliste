@@ -1,0 +1,21 @@
+.small-gutters {
+    margin-right: -2px;
+    margin-left: -2px;
+
+    > [class*="col-"],
+    > .col {
+        padding-right: 2px;
+        padding-left: 2px;
+    }
+}
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+
+    > [class*="col-"],
+    > .col {
+        padding-right: 0;
+        padding-left: 0;
+    }
+}

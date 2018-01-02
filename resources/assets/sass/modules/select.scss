@@ -1,0 +1,23 @@
+.v-select .open-indicator {
+    &:before {
+        border: none;
+        content: "\F140";
+        display: inline-block;
+        font: normal normal normal 24px/1 "Material Design Icons";
+        font-size: inherit;
+        text-rendering: auto;
+        line-height: inherit;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+.v-select {
+    &.open {
+        .dropdown-menu {
+            border-radius: 0;
+            box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);
+            //transform: translateY(2px);
+        }
+    }
+}

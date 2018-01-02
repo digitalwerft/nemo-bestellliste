@@ -54,10 +54,6 @@ export default {
     maxlength: {
       type: Number,
       default: 4
-    },
-    startQuantity: {
-        type: Number,
-        default: 1
     }
   },
   data () {
@@ -91,7 +87,7 @@ export default {
     },
     emitChange (init = false) {
       this.oldValue = this.quantity
-      if (init) this.quantity = this.startQuantity
+      if (init) this.quantity = this.min
       this.$emit('onInputNumberChange', this.quantity, init)
     },
     increment () {

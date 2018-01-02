@@ -16,11 +16,10 @@
                         </slot>
                     </div>
 
-                    <div class="modal-footer">
+
                         <slot name="footer">
-                            <button class="btn btn-primary" @click="$emit('close')">OK</button>
+                            <a href="#" class="btn btn-primary" @click.prevent="$emit('close')">OK</a>
                         </slot>
-                    </div>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <template>
-<div class="pt-3">
+<div class="pt-1">
     <v-waypoint @waypoint-in="inHandler" @waypoint-out="outHandler"></v-waypoint>
     <div class="container sticky-container" v-bind:class="{ 'fixed-top': isFixed }">
 
@@ -34,10 +34,10 @@
                         <div class="col-3">
                             <h6 class="">Anzahl</h6>
                         </div>
-                        <div class="col-6">
+                        <div class="col-7">
                             <h6 class="">Artikelnummer</h6>
                         </div>
-                        <div class="col-5">
+                        <div class="col-4">
                             <h6 class="">Produktname</h6>
                         </div>
                         <div class="col-4">
@@ -64,14 +64,11 @@ export default {
     },
     methods: {
         inHandler() {
-            //console.log('going in');
             this.isFixed = false;
         },
         outHandler() {
-            //console.log('going out');
             $('.order-navigation').height($('.order-navigation').height());
             this.isFixed = true;
-
         },
         updateSearch() {
             this.$emit('input', this.$refs.searchInput.value)

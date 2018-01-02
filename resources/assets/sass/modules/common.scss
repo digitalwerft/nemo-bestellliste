@@ -1,0 +1,17 @@
+.spinner {
+  width: 40px;
+  height: 40px;
+  transform: translateY(-20px) translateX(-20px);
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  //margin: -20px auto 0 auto;
+}
+body {
+    padding-top: 40px;
+    padding-bottom: 100vh;
+}
+
+.card {
+  box-shadow: 0 2px 4px rgba(black, .05);
+}

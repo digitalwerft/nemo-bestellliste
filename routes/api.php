@@ -20,163 +20,179 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('order/123/buyers', function () {
     return [
             [
+                "id" => 1,
                 'name' => 'Vorname Name',
-                'id' => 12,
                 'state' => 'active',
                 'articles' => [
                     [
-                        'id' => '350',
-                        'amount' => 2,
-                    ], [
-                        'id' => '212',
-                        'amount' => 1,
+                        "id" => 350,
+                        "amount" => 2,
+                    ],
+                    [
+                        "id" => 212,
+                        "amount" => 1,
                     ],
                 ],
             ], [
+                "id" => 2,
                 'name' => 'Max Mustermann',
-                'id' => 2,
                 'state' => 'active',
                 'articles' => [
                     [
-                        'id' => '350',
-                        'amount' => 4,
-                    ], [
-                        'id' => '212',
-                        'amount' => 1,
+                        "id" => 350,
+                        "amount" => 4
+                    ],
+                    [
+                        "id" => 212,
+                        "amount" => 1,
                     ],
                 ],
             ], [
+                "id" => 3,
                 'name' => 'Marianne Musterfrau',
-                'id' => 13,
                 'state' => 'active',
                 'articles' => [
                     [
-                        'id' => '395',
-                        'amount' => 2,
-                    ], [
-                        'id' => '582',
-                        'amount' => 1,
+                        "id" => 351,
+                        "amount" => 2
+                    ],
+                    [
+                        "id" => 350,
+                        "amount" => 1,
                     ],
                 ],
             ], [
+                "id" => 4,
                 'name' => 'Marianne Musterfrau',
-                'id' => 14,
                 'state' => 'active',
                 'articles' => [
                     [
-                        'id' => '395',
-                        'amount' => 2,
-                    ], [
-                        'id' => '582',
-                        'amount' => 1,
+                        "id" => 352,
+                        "amount" => 2,
+                    ],
+                    [
+                        "id" => 211,
+                        "amount" => 1,
                     ],
                 ],
             ], [
+                "id" => 5,
                 'name' => 'Marianne Musterfrau',
-                'id' => 15,
                 'state' => 'active',
                 'articles' => [
                     [
-                        'id' => '395',
-                        'amount' => 2,
-                    ], [
-                        'id' => '582',
-                        'amount' => 1,
+                        "id" => 211,
+                        "amount" => 2,
+                    ],
+                    [
+                        "id" => 350,
+                        "amount" => 1,
                     ],
                 ],
             ], [
+                "id" => 6,
                 'name' => 'Marianne Musterfrau',
-                'id' => 16,
                 'state' => 'active',
                 'articles' => [
                     [
-                        'id' => '395',
-                        'amount' => 2,
-                    ], [
-                        'id' => '582',
-                        'amount' => 1,
+                        "id" => 212,
+                        "amount" => 2,
+                    ],
+                    [
+                        "id" => 352,
+                        "amount" => 1,
                     ],
                 ],
             ], [
+                "id" => 7,
                 'name' => 'Marianne Musterfrau',
-                'id' => 17,
                 'state' => 'active',
                 'articles' => [
                     [
-                        'id' => '395',
-                        'amount' => 2,
-                    ], [
-                        'id' => '582',
-                        'amount' => 1,
+                        "id" => 211,
+                        "amount" => 2,
+                    ],
+                    [
+                        "id" => 350,
+                        "amount" => 1,
                     ],
                 ],
             ], [
+                "id" => 8,
                 'name' => 'Marianne Musterfrau',
-                'id' => 18,
                 'state' => 'active',
                 'articles' => [
                     [
-                        'id' => '395',
-                        'amount' => 2,
-                    ], [
-                        'id' => '582',
-                        'amount' => 1,
+                        "id" => 212,
+                        "amount" => 2,
                     ],
+                    [
+                        "id" => 352,
+                        "amount" => 1,
                 ],
             ],
-        ];
+        ],
+    ];
 });
 
-Route::get('user/123', function() {
+Route::get('user/123', function () {
     return [
-        'orderNr' => '125673bnkc546',
+        'orderNr' => '3425',
+        'groupName' => 'Schulklasse XY',
         'firstName' => 'Alfred',
         'lastName' => 'Befred',
         'email' => 'alfred@befred.com',
         'street' => 'Meine Straße 29',
         'zip' => '19283',
         'city' => 'Freiburg',
-        'message' => 'ahjsgdjkhasgdhahsjgdakgjhjhasgd',
+        'message' => 'Ich will meine Socken in Rosarot!',
+        'shipping' => [
+          'name' => 'Alfred Befred',
+          'organisation' => 'Befred & Co. KG',
+          'street' => 'Straßenname 12',
+          'zip' => '79199',
+          'city' => 'Kirchzarten'
+        ]
     ];
 });
 
 Route::get('articles/list', function () {
     return [
-    [
-      "id" => "350",
-      "name" => "Leon",
-      "size" => "35-38",
-      "price" => 15,
-      "description" => "Der Abwechslungsreiche | Extra stabile Garnqualität | Komfort-Abschlussrand | Material:  80% Baumwolle, 17% Polyamid, 3% Elasthan",
-      "includes" => "Pro Box: 4x gestreift, 1x uni",
-    ], [
-      "id" => "351",
-      "name" => "Leon",
-      "size" => "39-42",
-      "price" => 15,
-      "description" => "Der Abwechslungsreiche | Extra stabile Garnqualität | Komfort-Abschlussrand | Material:  80% Baumwolle, 17% Polyamid, 3% Elasthan",
-      "includes" => "Pro Box: 4x gestreift, 1x uni",
-    ], [
-      "id" => "352",
-      "name" => "Leon",
-      "size" => "43-46",
-      "price" => 15,
-      "description" => "Der Abwechslungsreiche | Extra stabile Garnqualität | Komfort-Abschlussrand | Material:  80% Baumwolle, 17% Polyamid, 3% Elasthan",
-      "includes" => "Pro Box: 4x gestreift, 1x uni",
-    ], [
-      "id" => "211",
-      "name" => "Fridolin",
-      "size" => "39-42",
-      "price" => 15,
-      "description" => "Der Sommerliche | Rutscht nicht von der Ferse | Herrenschnitt | Extra feine Maschenqualität | Komfort-Abschlussrand | Material: 80% Baumwolle, 17% Polyamid, 3% Elasthan",
-      "includes" => "Pro Box: 3x schwarz, 3x weiß",
-    ], [
-      "id" => "212",
-      "name" => "Fridolin",
-      "size" => "43-46",
-      "price" => 15,
-      "description" => "Der Sommerliche | Rutscht nicht von der Ferse | Herrenschnitt | Extra feine Maschenqualität | Komfort-Abschlussrand | Material: 80% Baumwolle, 17% Polyamid, 3% Elasthan",
-      "includes" => "Pro Box: 3x schwarz, 3x weiß",
-    ]
-  ];
+        [
+            "id" => "350",
+            "name" => "Leon",
+            "size" => "35-38",
+            "price" => 15,
+            "description" => "Der Abwechslungsreiche | Extra stabile Garnqualität | Komfort-Abschlussrand | Material:  80% Baumwolle, 17% Polyamid, 3% Elasthan",
+            "includes" => "Pro Box: 4x gestreift, 1x uni",
+      ], [
+            "id" => "351",
+            "name" => "Leon",
+            "size" => "39-42",
+            "price" => 16,
+            "description" => "Der Abwechslungsreiche | Extra stabile Garnqualität | Komfort-Abschlussrand | Material:  80% Baumwolle, 17% Polyamid, 3% Elasthan",
+            "includes" => "Pro Box: 4x gestreift, 1x uni",
+      ], [
+            "id" => "352",
+            "name" => "Leon",
+            "size" => "43-46",
+            "price" => 17,
+            "description" => "Der Abwechslungsreiche | Extra stabile Garnqualität | Komfort-Abschlussrand | Material:  80% Baumwolle, 17% Polyamid, 3% Elasthan",
+            "includes" => "Pro Box: 4x gestreift, 1x uni",
+      ], [
+            "id" => "211",
+            "name" => "Fridolin",
+            "size" => "39-42",
+            "price" => 18,
+            "description" => "Der Sommerliche | Rutscht nicht von der Ferse | Herrenschnitt | Extra feine Maschenqualität | Komfort-Abschlussrand | Material: 80% Baumwolle, 17% Polyamid, 3% Elasthan",
+            "includes" => "Pro Box: 3x schwarz, 3x weiß",
+      ], [
+            "id" => "212",
+            "name" => "Fridolin",
+            "size" => "43-46",
+            "price" => 19,
+            "description" => "Der Sommerliche | Rutscht nicht von der Ferse | Herrenschnitt | Extra feine Maschenqualität | Komfort-Abschlussrand | Material: 80% Baumwolle, 17% Polyamid, 3% Elasthan",
+            "includes" => "Pro Box: 3x schwarz, 3x weiß",
+        ]
+      ];
 });
