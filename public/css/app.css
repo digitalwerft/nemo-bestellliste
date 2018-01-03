@@ -11856,6 +11856,10 @@ section.order-navigation nav.navbar .clear-search:hover {
   color: #495057;
 }
 
+section.order-navigation nav.navbar .save-indicator {
+  cursor: pointer;
+}
+
 .field-titles {
   padding-top: 14px;
   padding-bottom: 7px;
@@ -12283,6 +12287,19 @@ section.details textarea[disabled="disabled"] {
   animation-delay: -1.0s;
 }
 
+.fade-in-enter-active,
+.fade-in-leave-active {
+  -webkit-transition: opacity 0.25s, -webkit-transform 1s;
+  transition: opacity 0.25s, -webkit-transform 1s;
+  transition: transform 1s, opacity 0.25s;
+  transition: transform 1s, opacity 0.25s, -webkit-transform 1s;
+}
+
+.fade-in-enter,
+.fade-in-leave-to {
+  opacity: 0;
+}
+
 .iziToast.vue-toast {
   -webkit-box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09);
           box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09);
@@ -12497,7 +12514,7 @@ section.details textarea[disabled="disabled"] {
 
 body {
   padding-top: 40px;
-  padding-bottom: 100vh;
+  padding-bottom: 90vh;
 }
 
 .card {
@@ -12509,6 +12526,19 @@ body {
   .container {
     max-width: 100%;
   }
+}
+
+.vue-popover {
+  background: #0067b2 !important;
+  color: white !important;
+  padding: 12px !important;
+  font-size: 12px !important;
+  -webkit-box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09) !important;
+          box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09) !important;
+}
+
+.vue-popover::before {
+  border-bottom-color: #0067b2 !important;
 }
 
 .v-select.open .open-indicator:before {
