@@ -1,23 +1,49 @@
-.v-select .open-indicator {
-    &:before {
-        border: none;
-        content: "\F140";
-        display: inline-block;
-        font: normal normal normal 24px/1 "Material Design Icons";
-        font-size: inherit;
-        text-rendering: auto;
-        line-height: inherit;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-}
-
 .v-select {
-    &.open {
-        .dropdown-menu {
-            border-radius: 0;
-            box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);
-            //transform: translateY(2px);
-        }
+  &.open {
+    .open-indicator:before {
+      transform: rotate(180deg);
     }
+
+    .dropdown-menu {
+      border-radius: 0;
+      box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);
+    }
+  }
+  .dropdown-toggle {
+    .selected-tag {
+      position:  absolute;
+    }
+  }
+
+  .open-indicator {
+    width: auto;
+    height: auto;
+    top: 4px;
+
+    &:before {
+      font-size: 20px;
+      transform: rotate(0deg);
+      width: auto;
+      height: auto;
+      border: none;
+      content: "\F140";
+      display: inline-block;
+      font: normal normal normal 24px/1 "Material Design Icons";
+      font-size: inherit;
+      text-rendering: auto;
+      line-height: inherit;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  }
+
+  &.searchable {
+    .dropdown-toggle {
+      border-right: none;
+      border-left: none;
+      border-radius: 0;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+    }
+  }
 }

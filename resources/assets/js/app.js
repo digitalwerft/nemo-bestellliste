@@ -15,10 +15,12 @@ import Vue from 'vue';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import VueWaypoint from 'vue-waypoint';
+import VueWaypoint from 'vue-waypoint'
 import axios from 'axios';
+import shortkey from 'vue-shortkey'
 
-Vue.use(VueWaypoint);
+Vue.use(VueWaypoint)
+Vue.use(shortkey)
 
 Vue.prototype.$http = axios;
 
@@ -27,10 +29,11 @@ import iziToast from 'iziToast';
 iziToast.settings({
   close: false,
   pauseOnHover: true,
-  timeout: 8000,
+  timeout: 5000,
   progressBar: true,
   layout: 2,
-  class: 'vue-toast'
+  class: 'vue-toast',
+  icon: 'mdi mdi-information-outline'
 });
 
 Vue.prototype.$note = iziToast;
@@ -117,6 +120,13 @@ const app = new Vue({
     }
   },
   methods: {
+    handleEditing(isEditing) {
+      if(isEditing) {
+        this.hasUnsavedBuyer = true
+      } else {
+        this.hasUnsavedBuyer = false
+      }
+    },
     onBuyerEdit(a) {
       console.log(a)
     },
@@ -152,7 +162,9 @@ const app = new Vue({
       iziToast.show(_.merge(opt, options));
     },
     createBuyer(e) {
-      e.preventDefault();
+      if(e) {
+        e.preventDefault();
+      }
       if(!this.hasUnsavedBuyer) {
         this.hasUnsavedBuyer = true
         this.$store.commit('newBuyer')

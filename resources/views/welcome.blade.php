@@ -11,7 +11,7 @@
 
   <!-- Fonts -->
   <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="/css/app.css">
+  <link rel="stylesheet" href="css/app.css">
 </head>
 
 <body>
@@ -23,25 +23,38 @@
 
 
       <section class="order-navigation">
-        <navbar v-model="search"></navbar>
+        <navbar v-model="search" @onBuyerCreate="createBuyer"></navbar>
       </section>
       <section class="orders">
         <div class="container">
+          <a href="#" class="btn btn-outline-success btn-block btn-lg d-md-none mt-2 mb-2">Zur Übersicht</a>
           <div v-for="(buyer, index) in filteredBuyer">
             <div v-if="buyer.state == 'active'">
-              <buyer :buyer-id="buyer.id" :filterkey="search" v-on:delete-buyer="onBuyerDeleted" v-on:save-buyer="onBuyerSaved" v-on:editing-buyer="hasUnsavedBuyer=true"></buyer>
+              <buyer :buyer-id="buyer.id" :filterkey="search" v-on:delete-buyer="onBuyerDeleted" v-on:save-buyer="onBuyerSaved" v-on:editing-buyer="handleEditing"></buyer>
             </div>
           </div>
-          <a href="" class="btn btn-light btn-lg btn-block mt-3" @click="createBuyer" :class="{hidden: (search != ''), disabled: hasUnsavedBuyer}">
+          <div class="alert alert-no-buyers mt-3 text-muted text-center" v-if="buyers.length < 1">
+            Noch wurden keine Teilnehmer zu dieser Bestellung hinzugefügt.
+            <a href="#" class="btn btn-lg btn-block btn-success mt-3" @click.prevent="createBuyer" >Jetzt ersten Teilnehmer hinzufügen!</a>
+          </div>
+          <a href="" class="btn btn-light btn-lg btn-block mt-3" @click.prevent="createBuyer" :class="{hidden: (search != ''), disabled: hasUnsavedBuyer}" v-if="buyers.length > 0">
                         <i class="mdi mdi-library-plus"></i> Teilnehmer hinzufügen
                     </a>
         </div>
       </section>
       <div class="container sticky-container ">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-bottom footer-bar">
-
-          <a class="navbar-brand" href="#">NEUE MASCHE</a>
-
+        <nav class="navbar navbar-expand-md navbar-light bg-white fixed-bottom footer-bar">
+            <a class="d-none d-lg-inline navbar-brand" href="#">
+              <img src="images/logo.png" height="30" alt="" class="logo">
+            </a>
+          <div class="row no-gutters w-100 d-flex d-md-none">
+              <div class="d-none d-sm-flex col">
+                <a href="#" class="btn btn-primary btn-block btn-lg">zur Übersicht</a>
+              </div>
+              <div class="col">
+                <a href="#" class="btn btn-success btn-block btn-lg">Bestellung aufgeben</a>
+              </div>
+          </div>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
               <li class="nav-item">
@@ -55,13 +68,8 @@
               </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item mr-3">
-                <a href="#" class="btn btn-outline-secondary my-2 my-sm-0" @click="createBuyer" :class="{hidden: (search != '')}">
-                  <i class="mdi mdi-plus"></i> Teilnehmer hinzufügen
-                </a>
-              </li>
               <li class="nav-item">
-                <a href="#" class="btn btn-outline-danger my-2 my-sm-0">Bestellung aufgeben
+                <a href="#" class="btn btn-outline-danger my-2 my-sm-0 order-now">Bestellung aufgeben
                   <i class="mdi mdi-chevron-right"></i>
                 </a>
               </li>
@@ -69,6 +77,13 @@
           </div>
         </nav>
       </div>
+
+      <nav class="mobile-footer-nav fixed-bottom d-block d-md-none">
+        <div class="container">
+
+        </div>
+      </nav>
+
     </div>
   </div>
 
@@ -79,7 +94,7 @@
     </div>
   </div>
 
-  <script src="/js/app.js" charset="utf-8"></script>
+  <script src="js/app.js?v=1" charset="utf-8"></script>
 </body>
 
 </html>

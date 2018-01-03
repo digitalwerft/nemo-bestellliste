@@ -6,7 +6,7 @@
           Sammelbestellung:&nbsp; <i class="mdi mdi-pound"></i> <strong>{{ user.orderNr }}</strong>&nbsp;–&nbsp;<span class="group-name">{{ user.groupName }}</span>
           </h4>
       <div class="row">
-        <div class="col-lg-7">
+        <div class="col-lg-7 mb-4">
           <label class="text-muted">Kontaktdaten</label>
           <h6>{{ user.firstName }} {{ user.lastName }}</h6>
           <h6>{{ user.email }}</h6>
@@ -19,27 +19,27 @@
             </label>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-name">Vorname, Nachname</label>
-            <input id="shipping-name" type="text" class="form-control form-control-sm" v-bind:value="user.shipping.name" placeholder="Vorname, Nachname">
+            <input id="shipping-name" type="text" class="form-control form-control" v-bind:value="user.shipping.name" placeholder="Vorname, Nachname">
           </div>
           <h6 v-if="!editingDetails">{{ user.shipping.name }}</h6>
           <div class="form-group" v-if="editingDetails">
-            <label for="shipping-organisation">Name der Firma/Organisation/Schule/Pfarrei <small>(optional)</small></label>
-            <input id="shipping-organisation" type="text" class="form-control form-control-sm" v-bind:value="user.shipping.organisation" placeholder="Name der Firma/Organisation/Schule/Pfarrei">
+            <label for="shipping-organisation">Name der Firma/Organisation/ Schule/Pfarrei <small>(optional)</small></label>
+            <input id="shipping-organisation" type="text" class="form-control form-control" v-bind:value="user.shipping.organisation" placeholder="Name der Firma/Organisation/Schule/Pfarrei">
           </div>
           <h6 v-if="!editingDetails">{{ user.shipping.organisation }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-street">Straße, Hausnummer</label>
-            <input id="shipping-street" type="text" class="form-control form-control-sm" v-bind:value="user.shipping.street" placeholder="Straße, Hausnummer">
+            <input id="shipping-street" type="text" class="form-control form-control" v-bind:value="user.shipping.street" placeholder="Straße, Hausnummer">
           </div>
           <h6 v-if="!editingDetails">{{ user.shipping.street }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-zip">PLZ, Ort</label>
             <div class="row">
-              <div class="col-4">
-                <input id="shipping-zip" type="text" class="form-control form-control-sm" v-bind:value="user.shipping.zip" placeholder="PLZ">
+              <div class="col-18 col-sm-5 mb-3">
+                <input id="shipping-zip" type="text" class="form-control form-control" v-bind:value="user.shipping.zip" placeholder="PLZ">
               </div>
               <div class="col">
-                <input id="shipping-city" type="text" class="form-control form-control-sm" v-bind:value="user.shipping.city" placeholder="Ort">
+                <input id="shipping-city" type="text" class="form-control form-control" v-bind:value="user.shipping.city" placeholder="Ort">
               </div>
             </div>
           </div>

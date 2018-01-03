@@ -1,11 +1,25 @@
 <template>
-<div class="v-input-number">
-  <div class="v-input-number-arrows">
+<div class="number-input-spinner">
+  <!-- <div class="v-input-number-arrows d-none">
     <a @click.prevent="increaseNumber" @mousedown="onMousedown($event, 'up')" @mouseup="onMouseup" class="v-input-number-up"><i class="v-input-number-icon"></i></a>
     <a @click.prevent="decreaseNumber" @mousedown="onMousedown($event, 'down')" @mouseup="onMouseup" class="v-input-number-down"><i class="v-input-number-icon"></i></a>
+  </div> -->
+
+  <div class="number-input-spinner-decrease">
+    <a class="btn btn-light number-input-spinner-decrease-button" href="#" @click.prevent="decreaseNumber" @mousedown="onMousedown($event, 'down')" @mouseup="onMouseup">
+      <i class="mdi mdi-minus"></i>
+    </a>
   </div>
 
-  <input ref="number" type="text" v-bind:value="numericValue" @keypress="validateInput" class="v-input-number-input" :min="min" :max="max" debounce="500" @keyup="onKeyup($event)" @keydown="onKeydown($event)" @blur="onBlur" />
+  <div class="number-input-spinner-input">
+    <input ref="number" type="text" v-bind:value="numericValue" @keypress="validateInput" :min="min" :max="max" debounce="500" @keyup="onKeyup($event)" @keydown="onKeydown($event)" @blur="onBlur" />
+  </div>
+
+  <div class="number-input-spinner-increase">
+    <a class="btn btn-light number-input-spinner-increase-button" href="#" @click.prevent="increaseNumber" @mousedown="onMousedown($event, 'up')" @mouseup="onMouseup">
+      <i class="mdi mdi-plus"></i>
+    </a>
+  </div>
 </div>
 </template>
 
@@ -104,7 +118,14 @@ export default {
       //console.log('blur')
     },
     changeInput(value) {
-      this.numericValue = value;
+      if (value > this.max) {
+        this.numericValue = this.max;
+        return;
+      } else if (value < this.min) {
+        this.numericValue = this.min;
+      } else {
+        this.numericValue = value;
+      }
     },
     increaseNumber() {
       this.numericValue += this.step;
@@ -143,6 +164,9 @@ export default {
     }
   },
   watch: {
+    value(val) {
+      this.changeInput(val);
+    },
     numericValue: function(val, oldVal) {
       this.emitChange();
       if (val <= this.min) {
@@ -158,45 +182,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-*,
-*::after,
-*::before {
-    box-sizing: border-box;
-}
-.vnis {
-    &__input {
-        -webkit-appearance: none;
-        border: 1px solid #ebebeb;
-        float: left;
-        font-size: 16px;
-        //height: 40px;
-        margin: 0;
-        outline: none;
-        text-align: center;
-        width: calc(100% - 80px);
-        &::-webkit-inner-spin-button,
-        &::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-        }
-    }
-    &__button {
-        -webkit-appearance: none;
-        transition: background 0.5s ease;
-        background: #387e90;
-        border: 0;
-        color: #fff;
-        cursor: pointer;
-        float: left;
-        font-size: 20px;
-        //height: 40px;
-        margin: 0;
-        outline: none;
-        //width: 40px;
-        &:hover {
-            background: lighten(#387e90, 10%);
-        }
-    }
-}
-</style>

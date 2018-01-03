@@ -20,7 +20,7 @@ const actions = {
     self
   }) {
     self.$http
-      .get("/api/articles/list")
+      .get("./api/articles/list")
       .then(response => {
         commit("FETCH_ARTICLES", response.data);
       })

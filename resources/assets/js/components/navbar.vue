@@ -1,82 +1,95 @@
 <template>
 <div class="pt-1">
-    <v-waypoint @waypoint-in="inHandler" @waypoint-out="outHandler"></v-waypoint>
-    <div class="container sticky-container" v-bind:class="{ 'fixed-top': isFixed }">
+  <v-waypoint @waypoint-in="inHandler" @waypoint-out="outHandler"></v-waypoint>
+  <div class="container sticky-container" v-bind:class="{ 'fixed-top': isFixed }">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-white" >
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
 
-            <a class="navbar-brand" href="#">Bestelliste</a>
+      <a class="navbar-brand" href="#">Bestelliste</a>
+      <div class="form-inline">
+        <input class="form-control" type="search" ref="searchInput" placeholder="Suchen" aria-label="Search" :value="value" @input="updateSearch()">
+        <a href="" class="mdi mdi-close-circle-outline clear-search" @click="clearSearch" :class="{hidden: (value=='')}"></a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" ref="searchInput" placeholder="Suchen" aria-label="Search" :value="value" @input="updateSearch()">
-                    <a href="" class="mdi mdi-close-circle-outline clear-search" @click="clearSearch" :class="{hidden: (value=='')}"></a>
-                </form>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item text-success pr-4">
-                        <i class="mdi mdi-check-circle-outline mdi-24px"></i>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="btn btn-outline-primary my-2 my-sm-0">Übersicht
-                                <i class="mdi mdi-chevron-right"></i>
-                            </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <div class="field-titles bg-white">
-            <div class="row">
-                <div class="col-7">
-                    <h6 class="ml-3">Name</h6>
-                </div>
-                <div class="col-11">
-                    <div class="row no-gutters ml-4 mr-4">
-                        <div class="col-3">
-                            <h6 class="">Anzahl</h6>
-                        </div>
-                        <div class="col-7">
-                            <h6 class="">Artikelnummer</h6>
-                        </div>
-                        <div class="col-4">
-                            <h6 class="">Produktname</h6>
-                        </div>
-                        <div class="col-4">
-                            <h6 class="">Summe</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item text-success pr-4">
+            <i class="mdi mdi-check-circle-outline mdi-24px"></i>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="btn btn-outline-primary mr-2" @click.prevent="createBuyer()">neuer Teilnehmer
+              <i class="mdi mdi-chevron-plus"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="btn btn-outline-primary mr-2">Drucken
+              <i class="mdi mdi-chevron-right"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="btn btn-outline-primary">Übersicht
+              <i class="mdi mdi-chevron-right"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="d-none d-lg-block field-titles bg-white ">
+      <div class="row">
+        <div class="col-7">
+          <h6 class="ml-3">Name</h6>
         </div>
+        <div class="col-11">
+          <div class="row no-gutters ml-4 mr-4">
+            <div class="col-3">
+              <h6 class="">Anzahl</h6>
+            </div>
+            <div class="col-5">
+              <h6 class="">Artikelnummer</h6>
+            </div>
+            <div class="col-6">
+              <h6 class="">Produktname</h6>
+            </div>
+            <div class="col-4">
+              <h6 class="">Summe</h6>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 </template>
 
 <script>
 export default {
-    props: ['value'],
-    mounted() {
-        //
-    },
-    data() {
-        return {
-            isFixed: false
-        }
-    },
-    methods: {
-        inHandler() {
-            this.isFixed = false;
-        },
-        outHandler() {
-            $('.order-navigation').height($('.order-navigation').height());
-            this.isFixed = true;
-        },
-        updateSearch() {
-            this.$emit('input', this.$refs.searchInput.value)
-        },
-        clearSearch(e) {
-            e.preventDefault();
-            this.$emit('input', '');
-        }
+  props: ['value'],
+  mounted() {
+    //
+  },
+  data() {
+    return {
+      isFixed: false
     }
+  },
+  methods: {
+    createBuyer() {
+      this.$emit('onbuyercreate');
+    },
+    inHandler() {
+      this.isFixed = false;
+    },
+    outHandler() {
+      $('.order-navigation').height($('.order-navigation').height());
+      this.isFixed = true;
+    },
+    updateSearch() {
+      this.$emit('input', this.$refs.searchInput.value)
+    },
+    clearSearch(e) {
+      e.preventDefault();
+      this.$emit('input', '');
+    }
+  }
 }
 </script>

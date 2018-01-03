@@ -12,5 +12,6 @@
 */
 
 Route::get('/', function () {
+    //exec('php /full/path/to/artisan view:clear');
     return view('welcome');
 });

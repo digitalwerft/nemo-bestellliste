@@ -45,6 +45,19 @@ const getters = {
       sum = sum + getters.getTotalOrdersPriceByBuyerId(buyer.id)
     })
     return sum
+  },
+  buyerHasArticle: (state, getters) => payload => {
+    var articles = getters.getArticlesByBuyerId(payload.buyerId)
+    var count = articles.length;
+    articles.filter(article => {
+      return parseInt(article.id) === parseInt(payload.articleId)
+    })
+    console.log(count === articles.length)
+    return count != articles.length
+  },
+  getArticlesByBuyerId: (state, getters) => id => {
+    var buyer = getters.getBuyerById(id);
+    return buyer.articles
   }
 }
 
@@ -55,7 +68,7 @@ const actions = {
     self
   }) {
     self.$http
-      .get("/api/order/123/buyers")
+      .get("./api/order/123/buyers")
       .then(response => {
         commit("FETCH_BUYERS", response.data);
       })
@@ -74,6 +87,9 @@ const mutations = {
       return parseInt(buyer.id) === parseInt(payload.buyerId)
     });
     var article = buyer.articles.find(article => article.id === payload.index)
+    if(article.length > 1) {
+      return false
+    }
     article.amount = payload.value;
   },
   changeArticleId(state, payload) {
@@ -81,7 +97,7 @@ const mutations = {
       return parseInt(buyer.id) === parseInt(payload.buyerId)
     });
     var article = buyer.articles.find(article => article.id === payload.oldId)
-    article.id = payload.newId
+    article.id = parseInt(payload.newId)
   },
   newArticle(state, payload) {
     var buyer = state.all.find(buyer => {

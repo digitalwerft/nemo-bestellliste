@@ -1,4 +1,11 @@
 .footer-bar {
   border-top: 1px solid rgba(black, .3);
   box-shadow: 0 -4px 0 0 $body-bg;
+
+  @include media-breakpoint-down(md) {
+    .btn.order-now {
+      display: block;
+      width: 100%;
+    }
+  }
 }
