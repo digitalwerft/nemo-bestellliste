@@ -18,9 +18,11 @@ import Vue from 'vue';
 import VueWaypoint from 'vue-waypoint'
 import axios from 'axios';
 import shortkey from 'vue-shortkey'
+import Popover  from 'vue-js-popover'
 
 Vue.use(VueWaypoint)
 Vue.use(shortkey)
+Vue.use(Popover)
 
 Vue.prototype.$http = axios;
 
@@ -128,22 +130,19 @@ const app = new Vue({
       }
     },
     onBuyerEdit(a) {
-      console.log(a)
+      //console.log(a)
     },
     onBuyerSaved() {
-      console.log('saved')
       if(this.hasUnsavedBuyer) {
         this.hasUnsavedBuyer = false
       }
     },
     onBuyerDeleted() {
-      console.log('deleted')
       if(this.hasUnsavedBuyer) {
         this.hasUnsavedBuyer = false
       }
     },
     finishLoading() {
-      console.log(this.user)
       setTimeout(() => {
         this.isLoading = false
         $('.loading-overlay').removeClass('loading');

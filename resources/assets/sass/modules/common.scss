@@ -9,7 +9,7 @@
 }
 body {
     padding-top: 40px;
-    padding-bottom: 100vh;
+    padding-bottom: 90vh;
 }
 
 .card {
@@ -19,5 +19,17 @@ body {
 .container {
   @include media-breakpoint-down(md) {
     max-width: 100%;
+  }
+}
+
+.vue-popover {
+  background: $blue !important;
+  color: white !important;
+  padding: 12px !important;
+  font-size: 12px !important;
+  box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09) !important;
+  //border-right-color: $blue !important;
+  &::before {
+    border-bottom-color: $blue !important;
   }
 }

@@ -40,3 +40,12 @@
   -webkit-animation-delay: -1.0s;
   animation-delay: -1.0s;
 }
+
+// Show-from-left transition
+.fade-in-enter-active, .fade-in-leave-active {
+  transition: transform 1s, opacity 0.25s;
+}
+.fade-in-enter, .fade-in-leave-to {
+  opacity: 0;
+  //transform: translate(-20px);
+}

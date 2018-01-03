@@ -13,8 +13,14 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item text-success pr-4">
+          <li class="nav-item text-success mr-4 save-indicator" v-popover:save>
             <i class="mdi mdi-check-circle-outline mdi-24px"></i>
+
+            <transition name="fade-in">
+              <popover name="save" :event="'click'">
+                Deine Liste wird automatisch gespeichert sobald du daran Änderungen vornimmst.
+              </popover>
+            </transition>
           </li>
           <li class="nav-item">
             <a href="#" class="btn btn-outline-primary mr-2" @click.prevent="createBuyer()">neuer Teilnehmer
@@ -23,12 +29,10 @@
           </li>
           <li class="nav-item">
             <a href="#" class="btn btn-outline-primary mr-2">Drucken
-              <i class="mdi mdi-chevron-right"></i>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="btn btn-outline-primary">Übersicht
-              <i class="mdi mdi-chevron-right"></i>
             </a>
           </li>
         </ul>

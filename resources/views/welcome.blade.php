@@ -11,7 +11,7 @@
 
   <!-- Fonts -->
   <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/app.css?v=1.01">
 </head>
 
 <body>
@@ -32,6 +32,9 @@
             <div v-if="buyer.state == 'active'">
               <buyer :buyer-id="buyer.id" :filterkey="search" v-on:delete-buyer="onBuyerDeleted" v-on:save-buyer="onBuyerSaved" v-on:editing-buyer="handleEditing"></buyer>
             </div>
+          </div>
+          <div class="alert alert-no-buyers mt-3 text-muted text-center" v-if="filteredBuyer && filteredBuyer.length < 1">
+            Deine Suche nach <mark>@{{ search }}</mark> erzielte leider keine Treffer.
           </div>
           <div class="alert alert-no-buyers mt-3 text-muted text-center" v-if="buyers.length < 1">
             Noch wurden keine Teilnehmer zu dieser Bestellung hinzugefügt.
@@ -78,12 +81,6 @@
         </nav>
       </div>
 
-      <nav class="mobile-footer-nav fixed-bottom d-block d-md-none">
-        <div class="container">
-
-        </div>
-      </nav>
-
     </div>
   </div>
 
@@ -94,7 +91,7 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=1" charset="utf-8"></script>
+  <script src="js/app.js?v=1.03" charset="utf-8"></script>
 </body>
 
 </html>

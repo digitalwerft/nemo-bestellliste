@@ -155,9 +155,6 @@ export default {
     }
   },
   methods: {
-    test(e) {
-      console.log(e)
-    },
     makeEditable(e) {
       // enter editing mode
       e.preventDefault();
@@ -224,17 +221,18 @@ export default {
     delete() {
       // Tell parent component that buyer was deleted
       this.$emit('delete-buyer', this.buyer.name)
-      // Send delete-request to Store Component
-      this.$store.commit('delete-buyer', {
-        buyer: this.buyer,
-        buyerId: this.buyerId
-      })
       // Only notify when article was saved before
       if(this.buyer.articles.length) {
         this.$note.info({
           message: 'Teilnehmer wurde gelöscht.'
         })
       }
+      // Send delete-request to Store Component
+      this.$store.commit('delete-buyer', {
+        buyer: this.buyer,
+        buyerId: this.buyerId
+      })
+
     },
     addArticle() {
       // dont add Article when in editing mode

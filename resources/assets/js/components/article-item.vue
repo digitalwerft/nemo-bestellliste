@@ -18,7 +18,7 @@
   </div>
   <div class="col-6 col-lg-4 select-col">
     <v-select v-model="details.id" :options="autocomplete" :on-change="onArticleChange" label="id">
-      <span slot="no-options">Sorry, den Artikel gibt es nicht.</span>
+      <span slot="no-options">Keine(n) Artikel gefunden.</span>
     </v-select>
   </div>
   <span class="input-group-addon col-lg-5 col-12 name-col">
@@ -158,21 +158,6 @@ export default {
         _.pull(articles, newArticle)
       })
       return articles
-      //console.log(articles)
-      // var articleId = 0;
-      // articles.filter(article => {
-      //   buyerArticles.filter(buyerArticle => {
-      //
-      //     if(parseInt(article.id) != parseInt(buyerArticle.id)
-      //         && parseInt(articleId) != parseInt(article.id)
-      //         && parseInt(article.id) != this.articleId) {
-      //       console.log(parseInt(article.id) == parseInt(buyerArticle.id))
-      //       newArticles.push(article)
-      //       articleId = article.id
-      //     }
-      //   })
-      // })
-      // return newArticles
     }
   },
   methods: {
