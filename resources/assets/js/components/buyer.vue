@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="buyer-details mt-3">
-          <small class="text-muted">Artikel: {{ articleCount }} | Summe: {{ totalPrice }}€</small>
+          <small class="text-muted">Artikel: {{ articleCount }} | Summe: {{ totalPrice }}€ | Erlös: {{ totalReturns }}€</small>
         </div>
       </div>
       <div class="card-footer" :class="{collapsed: collapsed}">
@@ -135,6 +135,9 @@ export default {
     // evaluate price of all articles togehter
     totalPrice() {
       return this.$store.getters.getTotalOrdersPriceByBuyerId(this.buyerId)
+    },
+    totalReturns() {
+      return this.$store.getters.getTotalOrdersReturnsByBuyerId(this.buyerId)
     }
   },
   watch: {

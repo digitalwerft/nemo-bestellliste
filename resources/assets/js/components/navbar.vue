@@ -55,7 +55,7 @@
               <h6 class="">Produktname</h6>
             </div>
             <div class="col-4">
-              <h6 class="">Summe</h6>
+              <h6 class="">Summe/Erlös</h6>
             </div>
           </div>
         </div>

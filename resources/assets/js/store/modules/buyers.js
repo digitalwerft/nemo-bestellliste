@@ -38,6 +38,19 @@ const getters = {
     });
     return sum;
   },
+  getTotalOrdersReturnsByBuyerId: (state, getters) => id => {
+    var sum = 0;
+    var buyer = getters.getBuyerById(id);
+    _.each(buyer.articles, (article) => {
+      var details = getters.getAllArticles.find(art => {
+        return parseInt(art.id) === parseInt(article.id)
+      })
+      if (details) {
+        sum = sum + article.amount * details.returns;
+      }
+    });
+    return sum;
+  },
   getAllOrdersPrice: (state, getters) => {
     var buyers = state.all
     var sum = 0
@@ -52,7 +65,6 @@ const getters = {
     articles.filter(article => {
       return parseInt(article.id) === parseInt(payload.articleId)
     })
-    console.log(count === articles.length)
     return count != articles.length
   },
   getArticlesByBuyerId: (state, getters) => id => {

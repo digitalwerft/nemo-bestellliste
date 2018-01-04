@@ -91,7 +91,7 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=1.03" charset="utf-8"></script>
+  <script src="js/app.js?v=1.05" charset="utf-8"></script>
 </body>
 
 </html>

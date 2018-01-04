@@ -21,18 +21,18 @@
       <span slot="no-options">Keine(n) Artikel gefunden.</span>
     </v-select>
   </div>
-  <span class="input-group-addon col-lg-5 col-12 name-col">
+  <span class="input-group-addon col-lg-5 col-9 name-col">
             {{ name ? name : '--' }}&nbsp;<small class="text-muted">{{ size ? '('+size+')' : '' }}</small>
         </span>
-  <span class="input-group-addon col-lg-2 col-6 font-weight-bold sum-col">
-            <small class="d-inline d-lg-none font-weight-normal text-muted">Summe:&nbsp;</small>{{ sum }}€
+  <span class="input-group-addon col-lg-2 col-9 font-weight-bold sum-col">
+            <small class="d-inline d-lg-none font-weight-normal text-muted">Summe/Erlös:&nbsp;</small>{{ sum }}€<small class="text-muted">/{{ returns }}€</small>
         </span>
   <span class="input-group-btn col-4 col-lg-2 delete-col">
             <a href="#" class="btn btn-outline-danger btn-block" v-on:click.prevent="showModal = true">
                 <i class="mdi mdi-delete"></i>
             </a>
         </span>
-  <div class="article-modal-overlay" v-if="showModal" :class="{active: showModal}">
+  <div class="article-modal-overlay" v-if="showModal" :class="{ active: showModal }">
     <div class="row no-gutters">
       <div class="col-10 confirm-message font-weight-bold"><span class="d-none d-md-inline">Artikel</span> wirklich löschen?</div>
       <div class="col-4 cancel-article-delete">
@@ -134,6 +134,9 @@ export default {
     // get price of this article with speciied amount
     sum() {
       return this.details ? this.amount * this.details.price : '';
+    },
+    returns() {
+      return this.details ? this.amount * this.details.returns : '';
     },
     // get array with all available articles
     autocomplete() {

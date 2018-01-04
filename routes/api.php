@@ -163,6 +163,7 @@ Route::get('articles/list', function () {
             "name" => "Leon",
             "size" => "35-38",
             "price" => 15,
+            "returns" => 4,
             "description" => "Der Abwechslungsreiche | Extra stabile Garnqualität | Komfort-Abschlussrand | Material:  80% Baumwolle, 17% Polyamid, 3% Elasthan",
             "includes" => "Pro Box: 4x gestreift, 1x uni",
       ], [
@@ -170,6 +171,7 @@ Route::get('articles/list', function () {
             "name" => "Leon",
             "size" => "39-42",
             "price" => 16,
+            "returns" => 4,
             "description" => "Der Abwechslungsreiche | Extra stabile Garnqualität | Komfort-Abschlussrand | Material:  80% Baumwolle, 17% Polyamid, 3% Elasthan",
             "includes" => "Pro Box: 4x gestreift, 1x uni",
       ], [
@@ -177,6 +179,7 @@ Route::get('articles/list', function () {
             "name" => "Leon",
             "size" => "43-46",
             "price" => 17,
+            "returns" => 5,
             "description" => "Der Abwechslungsreiche | Extra stabile Garnqualität | Komfort-Abschlussrand | Material:  80% Baumwolle, 17% Polyamid, 3% Elasthan",
             "includes" => "Pro Box: 4x gestreift, 1x uni",
       ], [
@@ -184,6 +187,7 @@ Route::get('articles/list', function () {
             "name" => "Fridolin",
             "size" => "39-42",
             "price" => 18,
+            "returns" => 6,
             "description" => "Der Sommerliche | Rutscht nicht von der Ferse | Herrenschnitt | Extra feine Maschenqualität | Komfort-Abschlussrand | Material: 80% Baumwolle, 17% Polyamid, 3% Elasthan",
             "includes" => "Pro Box: 3x schwarz, 3x weiß",
       ], [
@@ -191,6 +195,7 @@ Route::get('articles/list', function () {
             "name" => "Fridolin",
             "size" => "43-46",
             "price" => 19,
+            "returns" => 4,
             "description" => "Der Sommerliche | Rutscht nicht von der Ferse | Herrenschnitt | Extra feine Maschenqualität | Komfort-Abschlussrand | Material: 80% Baumwolle, 17% Polyamid, 3% Elasthan",
             "includes" => "Pro Box: 3x schwarz, 3x weiß",
         ]
