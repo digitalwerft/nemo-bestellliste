@@ -1,5 +1,5 @@
 <template>
-<div class="input-group row no-gutters article-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled}">
+<div class="input-group row no-gutters article-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected}"  ref="article">
   <div class="input-group col-8 col-lg-5 no-gutters spinner-col">
     <span class="input-group-btn col">
                 <!--<input-number :step="step" :min="min" :max="max" :maxlength="maxLength"  :startQuantity="amount" @onInputNumberChange="onAmountChange"></input-number>-->
@@ -36,12 +36,12 @@
     <div class="row no-gutters">
       <div class="col-10 confirm-message font-weight-bold"><span class="d-none d-md-inline">Artikel</span> wirklich löschen?</div>
       <div class="col-4 cancel-article-delete">
-        <a href="#" class="btn btn-outline-danger btn-block" @click="onArticleDelete">
+        <a href="#" class="btn btn-outline-danger btn-block" @click="onArticleDelete" v-shortkey="['enter']" @shortkey="onArticleDelete">
           <i class="mdi mdi-check"></i>
           <span class="d-none d-lg-inline">löschen</span></a>
       </div>
       <div class="col-4 delete-article">
-        <a href="#" class="btn btn-outline-primary btn-block" @click.prevent="showModal = false">
+        <a href="#" class="btn btn-outline-primary btn-block" @click.prevent="showModal = false" v-shortkey="['esc']" @shortkey="showModal = false">
           <i class="mdi mdi-close"></i>
           <span class="d-none d-lg-inline">abbrechen</span>
         </a>
@@ -90,8 +90,18 @@ export default {
       min: 1,
       max: 100,
       maxLength: 3,
-      showModal: false
+      showModal: false,
+      selected: false,
     };
+  },
+  watch: {
+    selected(val) {
+      if(val) {
+        this.$emit('selected', this.$refs.article)
+
+
+      }
+    }
   },
   computed: {
     name() {

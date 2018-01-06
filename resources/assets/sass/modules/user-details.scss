@@ -13,6 +13,17 @@ section.details {
       //opacity: .5;
     }
 
+    a.show-help {
+      /* position: absolute;
+      right: 0; */
+      float: right;
+      font-size: 24px;
+      color: $gray-400;
+      &:hover {
+        color: $gray-600;
+      }
+    }
+
     /* input.form-control {
         border: none;
         padding-left: 0;

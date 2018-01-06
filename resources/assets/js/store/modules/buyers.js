@@ -38,7 +38,7 @@ const getters = {
     });
     return sum;
   },
-  getTotalOrdersReturnsByBuyerId: (state, getters) => id => {
+  getTotalOrdersEarningsByBuyerId: (state, getters) => id => {
     var sum = 0;
     var buyer = getters.getBuyerById(id);
     _.each(buyer.articles, (article) => {
@@ -51,11 +51,19 @@ const getters = {
     });
     return sum;
   },
-  getAllOrdersPrice: (state, getters) => {
+  getTotalOrdersWinnings: (state, getters) => {
     var buyers = state.all
     var sum = 0
     buyers.forEach(buyer => {
       sum = sum + getters.getTotalOrdersPriceByBuyerId(buyer.id)
+    })
+    return sum
+  },
+  getTotalOrdersEarnings: (state, getters) => {
+    var buyers = state.all
+    var sum = 0
+    buyers.forEach(buyer => {
+      sum = sum + getters.getTotalOrdersEarningsByBuyerId(buyer.id)
     })
     return sum
   },
@@ -87,12 +95,19 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
-  }
+  },
+  "UPDATE_PART_PROPS": ({ commit }, payload) => {
+     commit("UPDATE_PART_PROPERTIES", payload);
+     saveDebounced(payload);
+   }
 }
 
 const mutations = {
   FETCH_BUYERS(state, buyers) {
     state.all = buyers;
+  },
+  UPDATE_PART_PROPERTIES(state, payload) {
+    console.log('ssssaaaavved')
   },
   changeArticleAmount(state, payload) {
     var buyer = state.all.find(buyer => {

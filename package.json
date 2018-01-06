@@ -32,7 +32,8 @@
     "vuex": "^3.0.1"
   },
   "dependencies": {
-    "vue-js-popover": "^1.1.6"
+    "vue-js-popover": "^1.1.6",
+    "vue-spinner-component": "^1.0.4"
   },
   "jshintConfig": {
     "esversion": 6,

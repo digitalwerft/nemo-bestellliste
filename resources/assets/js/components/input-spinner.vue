@@ -12,7 +12,7 @@
   </div>
 
   <div class="number-input-spinner-input">
-    <input ref="number" type="text" v-bind:value="numericValue" @keypress="validateInput" :min="min" :max="max" debounce="500" @keyup="onKeyup($event)" @keydown="onKeydown($event)" @blur="onBlur" />
+    <input ref="number" type="text" v-bind:value="numericValue" @keypress="validateInput" :min="min" :max="max" debounce="500" @keyup="onKeyup($event)" @keydown="onKeydown($event)" @blur="onBlur"/>
   </div>
 
   <div class="number-input-spinner-increase">

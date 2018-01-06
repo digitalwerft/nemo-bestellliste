@@ -2,6 +2,14 @@
 <div class="container">
   <div class="card">
     <div class="card-body">
+      <a href="#" class="show-help" v-popover:help-info.left @click="$emit('display-info')">
+        <i class="mdi mdi-help-box"></i>
+      </a>
+      <transition name="fade" mode="out-in">
+        <popover name="help-info" :event="'hover'">
+          Infos zum Bestellablauf anzeigen
+        </popover>
+      </transition>
       <h4 class="card-title pb-3 mb-3">
           Sammelbestellung:&nbsp; <i class="mdi mdi-pound"></i> <strong>{{ user.orderNr }}</strong>&nbsp;–&nbsp;<span class="group-name">{{ user.groupName }}</span>
           </h4>

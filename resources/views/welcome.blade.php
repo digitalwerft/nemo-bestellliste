@@ -11,14 +11,15 @@
 
   <!-- Fonts -->
   <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="css/app.css?v=1.01">
+  <link rel="stylesheet" href="css/app.css?v=1.02">
 </head>
 
 <body>
   <div id="app">
     <div v-if="!isLoading">
+      <info-box :visible="displayInfo"></info-box>
       <section class="details">
-        <user></user>
+        <user v-on:display-info="displayInfo = !displayInfo"></user>
       </section>
 
 
@@ -41,15 +42,12 @@
             <a href="#" class="btn btn-lg btn-block btn-success mt-3" @click.prevent="createBuyer" >Jetzt ersten Teilnehmer hinzufügen!</a>
           </div>
           <a href="" class="btn btn-light btn-lg btn-block mt-3" @click.prevent="createBuyer" :class="{hidden: (search != ''), disabled: hasUnsavedBuyer}" v-if="buyers.length > 0">
-                        <i class="mdi mdi-library-plus"></i> Teilnehmer hinzufügen
+                        <i class="mdi mdi-account-plus"></i> Teilnehmer hinzufügen
                     </a>
         </div>
       </section>
       <div class="container sticky-container ">
         <nav class="navbar navbar-expand-md navbar-light bg-white fixed-bottom footer-bar">
-            <a class="d-none d-lg-inline navbar-brand" href="#">
-              <img src="images/logo.png" height="30" alt="" class="logo">
-            </a>
           <div class="row no-gutters w-100 d-flex d-md-none">
               <div class="d-none d-sm-flex col">
                 <a href="#" class="btn btn-primary btn-block btn-lg">zur Übersicht</a>
@@ -61,13 +59,16 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
               <li class="nav-item">
-                Besteller: @{{ buyers.length }}&nbsp;|&nbsp;
+                <i class="mdi mdi-account">&nbsp;</i>Besteller: @{{ buyers.length }}&nbsp;|&nbsp;
               </li>
               <li class="nav-item">
-                Bestellungen: @{{ totalOrders }}&nbsp;|&nbsp;
+                <i class="mdi mdi-library-books">&nbsp;</i>Bestellungen: @{{ totalOrders }}&nbsp;|&nbsp;
               </li>
-              <li class="nav item">
-                Gewinn: @{{ winnings }}€
+              <li class="nav-item">
+                <i class="mdi mdi-currency-eur">&nbsp;</i>Umsatz: @{{ winnings }}€&nbsp;|&nbsp;
+              </li>
+              <li class="nav-item">
+                <i class="mdi mdi-currency-eur">&nbsp;</i>Erlös: @{{ earnings }}€
               </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -91,7 +92,7 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=1.05" charset="utf-8"></script>
+  <script src="js/app.js?v=1.07" charset="utf-8"></script>
 </body>
 
 </html>

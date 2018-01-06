@@ -11856,8 +11856,27 @@ section.order-navigation nav.navbar .clear-search:hover {
   color: #495057;
 }
 
+section.order-navigation nav.navbar .search-icon {
+  margin-left: -34px;
+  color: #adb5bd;
+}
+
 section.order-navigation nav.navbar .save-indicator {
   cursor: pointer;
+  position: relative;
+  margin-right: 8px;
+  width: 40px;
+}
+
+section.order-navigation nav.navbar .save-indicator i {
+  position: absolute;
+  right: 6px;
+}
+
+section.order-navigation nav.navbar .save-indicator .sl-spinner {
+  margin-top: 8px;
+  position: absolute;
+  right: 8px;
 }
 
 .field-titles {
@@ -12086,6 +12105,20 @@ section.orders .article-item {
   border-bottom: 1px solid #ced4da;
   position: relative;
   background-color: #fff;
+  -webkit-transition: border-color .25s;
+  transition: border-color .25s;
+}
+
+section.orders .article-item.selected {
+  border-color: #0067b2;
+}
+
+section.orders .article-item.selected .number-input-spinner-decrease-button {
+  border-left-color: #0067b2 !important;
+}
+
+section.orders .article-item.selected .btn-outline-danger.btn-block.btn {
+  border-right-color: #0067b2 !important;
 }
 
 @media (max-width: 991px) {
@@ -12226,6 +12259,18 @@ section.details textarea[disabled="disabled"] {
   background-color: rgba(248, 249, 250, 0.6);
 }
 
+section.details a.show-help {
+  /* position: absolute;
+      right: 0; */
+  float: right;
+  font-size: 24px;
+  color: #ced4da;
+}
+
+section.details a.show-help:hover {
+  color: #868e96;
+}
+
 @-webkit-keyframes fadeIn {
   0% {
     opacity: 0;
@@ -12298,6 +12343,71 @@ section.details textarea[disabled="disabled"] {
 .fade-in-enter,
 .fade-in-leave-to {
   opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  -webkit-transition: opacity .25s;
+  transition: opacity .25s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  -webkit-transition: opacity .25s, height .25s;
+  transition: opacity .25s, height .25s;
+  opacity: 1;
+}
+
+.slide-enter,
+.slide-leave-to {
+  opacity: 0;
+}
+
+.info-box {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition: height 350ms;
+  transition: height 350ms;
+}
+
+.info-box::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1rem;
+  background-image: -webkit-gradient(linear, left bottom, left top, from(#eae9e2), to(rgba(234, 233, 226, 0)));
+  background-image: linear-gradient(to top, #eae9e2, rgba(234, 233, 226, 0));
+}
+
+.info-box-enter,
+.info-box-leave-to {
+  opacity: 0;
+}
+
+.info-box-leave,
+.info-box-enter-to {
+  opacity: 1;
+}
+
+.info-box-enter-active,
+.info-box-leave-active {
+  position: absolute;
+  width: 100%;
+  -webkit-transition: opacity 200ms ease-in-out;
+  transition: opacity 200ms ease-in-out;
+}
+
+.info-box-enter-active {
+  -webkit-transition-delay: 100ms;
+          transition-delay: 100ms;
 }
 
 .iziToast.vue-toast {
@@ -12517,6 +12627,11 @@ body {
   padding-bottom: 90vh;
 }
 
+a {
+  -webkit-transition: color .25s, background .25s;
+  transition: color .25s, background .25s;
+}
+
 .card {
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -12535,10 +12650,23 @@ body {
   font-size: 12px !important;
   -webkit-box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09) !important;
           box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09) !important;
+  text-align: center;
 }
 
-.vue-popover::before {
+.vue-popover.dropdown-position-bottom::before {
   border-bottom-color: #0067b2 !important;
+}
+
+.vue-popover.dropdown-position-left::before {
+  border-left-color: #0067b2 !important;
+}
+
+.vue-popover.dropdown-position-right::before {
+  border-right-color: #0067b2 !important;
+}
+
+.vue-popover.dropdown-position-top::before {
+  border-bottom-top: #0067b2 !important;
 }
 
 .v-select.open .open-indicator:before {
@@ -12872,6 +13000,20 @@ section.orders .article-item {
   border-bottom: 1px solid #ced4da;
   position: relative;
   background-color: #fff;
+  -webkit-transition: border-color .25s;
+  transition: border-color .25s;
+}
+
+section.orders .article-item.selected {
+  border-color: #0067b2;
+}
+
+section.orders .article-item.selected .number-input-spinner-decrease-button {
+  border-left-color: #0067b2 !important;
+}
+
+section.orders .article-item.selected .btn-outline-danger.btn-block.btn {
+  border-right-color: #0067b2 !important;
 }
 
 @media (max-width: 991px) {

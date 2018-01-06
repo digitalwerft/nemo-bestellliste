@@ -12,6 +12,9 @@ body {
     padding-bottom: 90vh;
 }
 
+a {
+  transition: color .25s, background .25s;
+}
 .card {
   box-shadow: 0 2px 4px rgba(black, .05);
 }
@@ -28,8 +31,18 @@ body {
   padding: 12px !important;
   font-size: 12px !important;
   box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09) !important;
-  //border-right-color: $blue !important;
-  &::before {
-    border-bottom-color: $blue !important;
+  text-align: center;
+  
+  &.dropdown-position-bottom::before {
+      border-bottom-color: $blue !important;
+  }
+  &.dropdown-position-left::before {
+      border-left-color: $blue !important;
+  }
+  &.dropdown-position-right::before {
+      border-right-color: $blue !important;
+  }
+  &.dropdown-position-top::before {
+      border-bottom-top: $blue !important;
   }
 }

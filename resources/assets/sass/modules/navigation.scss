@@ -19,8 +19,26 @@ section.order-navigation {
       }
     }
 
+    .search-icon {
+        margin-left: -34px;
+        color: $gray-500;
+    }
+
     .save-indicator {
       cursor: pointer;
+      position: relative;
+      margin-right: 8px;
+      width: 40px;
+
+      i {
+        position: absolute;
+        right: 6px;
+      }
+      .sl-spinner {
+        margin-top: 8px;
+        position: absolute;
+        right: 8px;
+      }
     }
   }
 }

@@ -18,7 +18,8 @@ import Vue from 'vue';
 import VueWaypoint from 'vue-waypoint'
 import axios from 'axios';
 import shortkey from 'vue-shortkey'
-import Popover  from 'vue-js-popover'
+import Popover from 'vue-js-popover'
+import * as directives from './directives'
 
 Vue.use(VueWaypoint)
 Vue.use(shortkey)
@@ -44,8 +45,19 @@ import buyer from './components/buyer.vue'
 import footerNav from './components/footer-nav.vue'
 import navbar from './components/navbar.vue'
 import user from './components/user.vue'
+import infoBox from './components/info-box.vue'
 
 import store from './store'
+
+function save(payload) {
+  console.log("saving", payload);
+}
+
+var saveDebounced = _.wrap(_.memoize(function() {
+  return _.debounce(save, 5000);
+}, _.property("partId")), function(func, payload) {
+  return func(payload)(payload);
+});
 
 const app = new Vue({
   el: '#app',
@@ -53,7 +65,8 @@ const app = new Vue({
     buyer,
     footerNav,
     navbar,
-    user
+    user,
+    infoBox
   },
   mounted() {
     this.$store.dispatch('fetchBuyers', {
@@ -71,6 +84,9 @@ const app = new Vue({
     }).then(() => {
       this.loadingProgress++;
     });
+    if(!this.buyers) {
+      displayInfo = true;
+    }
   },
   store,
   data() {
@@ -80,7 +96,9 @@ const app = new Vue({
       search: '',
       totalWinnings: 0,
       showModal: false,
-      hasUnsavedBuyer: false
+      hasUnsavedBuyer: false,
+      savingComplete: false,
+      displayInfo: false
     };
   },
   computed: {
@@ -105,7 +123,10 @@ const app = new Vue({
       return this.$store.getters.getTotalOrdersAmount;
     },
     winnings() {
-      return this.$store.getters.getAllOrdersPrice
+      return this.$store.getters.getTotalOrdersWinnings
+    },
+    earnings() {
+      return this.$store.getters.getTotalOrdersEarnings
     }
   },
   watch: {
@@ -123,7 +144,7 @@ const app = new Vue({
   },
   methods: {
     handleEditing(isEditing) {
-      if(isEditing) {
+      if (isEditing) {
         this.hasUnsavedBuyer = true
       } else {
         this.hasUnsavedBuyer = false
@@ -133,12 +154,12 @@ const app = new Vue({
       //console.log(a)
     },
     onBuyerSaved() {
-      if(this.hasUnsavedBuyer) {
+      if (this.hasUnsavedBuyer) {
         this.hasUnsavedBuyer = false
       }
     },
     onBuyerDeleted() {
-      if(this.hasUnsavedBuyer) {
+      if (this.hasUnsavedBuyer) {
         this.hasUnsavedBuyer = false
       }
     },
@@ -161,10 +182,10 @@ const app = new Vue({
       iziToast.show(_.merge(opt, options));
     },
     createBuyer(e) {
-      if(e) {
+      if (e) {
         e.preventDefault();
       }
-      if(!this.hasUnsavedBuyer) {
+      if (!this.hasUnsavedBuyer) {
         this.hasUnsavedBuyer = true
         this.$store.commit('newBuyer')
       }

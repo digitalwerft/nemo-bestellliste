@@ -222,6 +222,17 @@ section.orders {
     border-bottom: 1px solid $gray-400;
     position: relative;
     background-color: $white;
+    transition: border-color .25s;
+
+    &.selected {
+      border-color: $blue;
+      .number-input-spinner-decrease-button {
+        border-left-color: $blue !important;
+      }
+      .btn-outline-danger.btn-block.btn {
+        border-right-color: $blue !important;
+      }
+    }
 
     .name-col {
       @include media-breakpoint-down(md) {

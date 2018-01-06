@@ -4,7 +4,7 @@
     <div class="card buyer-name-card" :class="{editing: editing, deleting: showModal}">
       <div class="card-body buyer-name">
         <div class="input-group">
-          <input type="text" class="form-control" v-if="editing" placeholder="Name" v-model="buyerName" ref="name">
+          <input type="text" class="form-control" v-if="editing" placeholder="Name" v-model="buyerName" ref="name" v-focus="true" @keydown.esc="cancelEdit">
           <div class="mobile-save-modal d-flex d-md-none">
             <a href="#" class="btn btn-light save-buyer text-success" @click="handleLeftButtonClick">
               <i class="mdi" :class="{'mdi-pencil': !editing, 'mdi-check': editing}"></i>
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="buyer-details mt-3">
-          <small class="text-muted">Artikel: {{ articleCount }} | Summe: {{ totalPrice }}€ | Erlös: {{ totalReturns }}€</small>
+          <small class="text-muted">Artikel: {{ articleCount }} | Summe: {{ totalPrice }}€ | Erlös: {{ totalEarnings }}€</small>
         </div>
       </div>
       <div class="card-footer" :class="{collapsed: collapsed}">
@@ -48,7 +48,7 @@
     <div class="card">
       <div class="card-body">
         <div v-for="(article, index) in buyer.articles">
-          <article-item :articleId="article.id" :amount="article.amount" :buyerId="buyerId" :article-index="index" :disabled="editing"></article-item>
+          <article-item :articleId="article.id" :amount="article.amount" :buyerId="buyerId" :article-index="index" :disabled="editing" v-on:selected="select"></article-item>
         </div>
         <div class="no-articles text-center" v-if="buyer.articles.length<1">
           <small class="text-muted text-danger text-center" v-if="!buyer.name">Dieser Teilnehmer braucht einen Namen, bevor du ihm Artikel zuweisen kannst.</small>
@@ -68,7 +68,7 @@
                 Diese Aktion kann nicht rückgängig gemacht werden.
             </span>
     <div slot="footer" class="modal-footer">
-      <a href="#" class="btn btn-secondary col" @click.prevent="showModal = false">abbrechen</a>
+      <a href="#" class="btn btn-secondary col" @click.prevent="showModal = false" v-shortkey="['esc']" @shortkey="showModal = false">abbrechen</a>
       <a href="#" class="btn btn-danger col" @click.prevent="archive" v-shortkey="['enter']" @shortkey="archive">löschen</a>
     </div>
   </modal>
@@ -136,8 +136,8 @@ export default {
     totalPrice() {
       return this.$store.getters.getTotalOrdersPriceByBuyerId(this.buyerId)
     },
-    totalReturns() {
-      return this.$store.getters.getTotalOrdersReturnsByBuyerId(this.buyerId)
+    totalEarnings() {
+      return this.$store.getters.getTotalOrdersEarningsByBuyerId(this.buyerId)
     }
   },
   watch: {
@@ -149,7 +149,7 @@ export default {
         this.$emit('editing-buyer', true)
         // and focus name (won't work without  timeout)
         setTimeout(() => {
-          this.$refs.name.focus()
+          //this.$refs.name.focus()
         }, 100)
       } else {
         // tell parent
@@ -158,6 +158,9 @@ export default {
     }
   },
   methods: {
+    select(article) {
+      console.log(article)
+    },
     makeEditable(e) {
       // enter editing mode
       e.preventDefault();
@@ -167,10 +170,13 @@ export default {
     },
     cancelEdit() {
       // Cancel Edit and revert Name Changes
-      this.$store.commit('updateBuyerName', {
-        buyer: this.buyer,
-        newName: this.oldName
-      })
+      if(this.editing) {
+        this.editing = false
+        this.$store.commit('updateBuyerName', {
+          buyer: this.buyer,
+          newName: this.oldName
+        })
+      }
     },
     // method to hilghlight words that are searched for
     highlight(words) {
@@ -199,7 +205,6 @@ export default {
         this.archive();
         // leave editing mode and revert changes
       } else {
-        this.editing = false;
         this.cancelEdit();
       }
     },
@@ -214,6 +219,14 @@ export default {
         this.$emit('save-buyer')
         this.oldName = '';
         this.editing = false;
+      }
+    },
+    handleShortkeys(e) {
+      if(e.srcKey == 'delete') {
+        this.archive()
+      }
+      if(e.srcKey == 'cancel') {
+        this.showModal = false
       }
     },
     // Wrapper for this.delete() for optional undo feature
