@@ -1,5 +1,5 @@
 <template>
-<div class="row buyer small-gutters mb-1 row-eq-height">
+<div class="row buyer small-gutters mb-1 row-eq-height" :class="{opened: !collapsed}">
   <div class="col-md-7">
     <div class="card buyer-name-card" :class="{editing: editing, deleting: showModal}">
       <div class="card-body buyer-name">
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="buyer-details mt-3">
-          <small class="text-muted">Artikel: {{ articleCount }} | Summe: {{ totalPrice }}€ | Erlös: {{ totalEarnings }}€</small>
+          <small class="text-muted">Boxen: {{ articleCount }} | Summe: {{ totalPrice }}€ | davon Spenden: {{ totalEarnings }}€</small>
         </div>
       </div>
       <div class="card-footer" :class="{collapsed: collapsed}">
@@ -63,7 +63,7 @@
     </div>
   </div>
   <modal v-if="showModal" @close="showModal = false">
-    <h5 slot="header">Bestellung wirklich löschen?</h5>
+    <h5 slot="header">Teilnehmer wirklich löschen?</h5>
     <span slot="body">
                 Diese Aktion kann nicht rückgängig gemacht werden.
             </span>

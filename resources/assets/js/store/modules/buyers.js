@@ -1,5 +1,6 @@
 const state = {
-  all: []
+  all: [],
+  requestComplete: false
 }
 
 const getters = {
@@ -52,7 +53,7 @@ const getters = {
     return sum;
   },
   getTotalOrdersWinnings: (state, getters) => {
-    var buyers = state.all
+    var buyers = getters.getAllBuyers
     var sum = 0
     buyers.forEach(buyer => {
       sum = sum + getters.getTotalOrdersPriceByBuyerId(buyer.id)
@@ -60,7 +61,7 @@ const getters = {
     return sum
   },
   getTotalOrdersEarnings: (state, getters) => {
-    var buyers = state.all
+    var buyers = getters.getAllBuyers
     var sum = 0
     buyers.forEach(buyer => {
       sum = sum + getters.getTotalOrdersEarningsByBuyerId(buyer.id)
@@ -78,6 +79,35 @@ const getters = {
   getArticlesByBuyerId: (state, getters) => id => {
     var buyer = getters.getBuyerById(id);
     return buyer.articles
+  },
+  getSummarizedArticles: (state, getters) => {
+    var allBuyers = _.clone(getters.getAllBuyers)
+    var allArticles = _.clone(getters.getAllArticles)
+    var currArticle = null
+    var amounts = []
+    allBuyers.forEach(buyer => {
+      var articles = getters.getArticlesByBuyerId(buyer.id)
+      var totalAmount = 0
+      articles.forEach(article => {
+        if(!amounts[article.id]) {
+          amounts[article.id] = 0
+        }
+        amounts[article.id] += article.amount
+      })
+    })
+
+    amounts.forEach((amount, key) => {
+      allArticles.forEach(article => {
+        if(article.id == key) {
+          article.amount = amount
+        }
+      })
+    })
+
+    return allArticles
+  },
+  getAllBuyers: (state, getters) => {
+    return state.all
   }
 }
 
@@ -95,16 +125,13 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
-  },
-  "UPDATE_PART_PROPS": ({ commit }, payload) => {
-     commit("UPDATE_PART_PROPERTIES", payload);
-     saveDebounced(payload);
-   }
+  }
 }
 
 const mutations = {
   FETCH_BUYERS(state, buyers) {
     state.all = buyers;
+    state.requestComplete = true;
   },
   UPDATE_PART_PROPERTIES(state, payload) {
     console.log('ssssaaaavved')

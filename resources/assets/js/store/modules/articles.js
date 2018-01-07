@@ -1,5 +1,6 @@
 const state = {
-  all: []
+  all: [],
+  requestComplete: false
 }
 
 const getters = {
@@ -33,6 +34,7 @@ const actions = {
 const mutations = {
   FETCH_ARTICLES(state, articles) {
     state.all = articles;
+    state.requestComplete = true;
   }
 }
 

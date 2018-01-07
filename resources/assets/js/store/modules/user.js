@@ -1,8 +1,13 @@
 const state = {
-  data: {}
+  data: {},
+  requestComplete: false
 }
 
-const getters = {}
+const getters = {
+  getUser(state, getters) {
+    return state.data
+  }
+}
 
 const actions = {
   fetchUser({
@@ -24,6 +29,7 @@ const actions = {
 const mutations = {
   FETCH_USER(state, user) {
     state.data = user;
+    state.requestComplete = true;
   }
 }
 

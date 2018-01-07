@@ -112,3 +112,16 @@
 
   &-enter-active { transition-delay: 100ms }
 }
+
+.fade-page-enter-active, .fade-page-leave-active {
+  transition-property: opacity;
+  transition-duration: .25s;
+}
+
+.fade-page-enter-active {
+  transition-delay: .25s;
+}
+
+.fade-page-enter, .fade-page-leave-active {
+  opacity: 0
+}

@@ -146,13 +146,11 @@ Route::get('user/123', function () {
         'zip' => '19283',
         'city' => 'Freiburg',
         'message' => 'Ich will meine Socken in Rosarot!',
-        'shipping' => [
-          'name' => 'Alfred Befred',
-          'organisation' => 'Befred & Co. KG',
-          'street' => 'Straßenname 12',
-          'zip' => '79199',
-          'city' => 'Kirchzarten'
-        ]
+        'shipping_name' => 'Alfred Befred',
+        'shipping_organisation' => 'Befred & Co. KG',
+        'shipping_street' => 'Straßenname 12',
+        'shipping_zip' => '79199',
+        'shipping_city' => 'Kirchzarten'
     ];
 });
 

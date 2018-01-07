@@ -17,7 +17,25 @@ export default new Vuex.Store({
     user
   },
   mutations: {},
-  getters: {},
-  actions: {},
+  getters: {
+    hasFullyLoaded(state, getters) {
+      var buyers = !_.isEmpty(state.buyers.all)
+      var articles = !_.isEmpty(state.articles.all)
+      var user = !_.isEmpty(state.user.data)
+
+      return state.buyers.requestComplete == state.user.requestComplete == state.articles.requestComplete
+    }
+  },
+  actions: {
+    fetchAll({
+      dispatch, commit
+    }, {
+      self
+    }) {
+      dispatch('fetchBuyers', {self: self})
+      dispatch('fetchArticles', {self: self})
+      dispatch('fetchUser', {self: self})
+    }
+  },
   strict: debug
 });

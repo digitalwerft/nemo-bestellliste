@@ -5,6 +5,13 @@ section.orders {
     background: rgba($black, .03);
   }
   .buyer {
+    @include media-breakpoint-down(sm) {
+      &.opened {
+        .card {
+          border: 1px solid rgba($black, .6) !important;
+        }
+      }
+    }
     .card {
       height: 100%;
       box-shadow: inset 0 0 0 transparent, 0 2px 4px rgba(black, .05);
@@ -151,10 +158,12 @@ section.orders {
   }
 
   .article-list {
-    &.collapsed {
-      @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(sm) {
+      &.collapsed {
         display: none;
       }
+      margin-top: -2px;
+      margin-bottom: 8px;
     }
 
     &.editing {

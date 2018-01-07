@@ -1,4 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,900);/*!
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,900);/*$table-head-bg:               desaturate(lighten($primary, 50%), 12%);
+$table-border-color:          rgba($blue, .5);
+ */
+
+/*!
  * Bootstrap v4.0.0-beta.2 (https://getbootstrap.com)
  * Copyright 2011-2017 The Bootstrap Authors
  * Copyright 2011-2017 Twitter, Inc.
@@ -2547,7 +2551,7 @@ pre code {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 .table-hover tbody tr:hover {
@@ -11898,6 +11902,12 @@ section.orders .alert-no-buyers {
   background: rgba(0, 0, 0, 0.03);
 }
 
+@media (max-width: 767px) {
+  section.orders .buyer.opened .card {
+    border: 1px solid rgba(0, 0, 0, 0.6) !important;
+  }
+}
+
 section.orders .buyer .card {
   height: 100%;
   -webkit-box-shadow: inset 0 0 0 transparent, 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -12038,6 +12048,11 @@ section.orders .card-footer .btn.show-articles {
 }
 
 @media (max-width: 767px) {
+  section.orders .article-list {
+    margin-top: -2px;
+    margin-bottom: 8px;
+  }
+
   section.orders .article-list.collapsed {
     display: none;
   }
@@ -12410,6 +12425,24 @@ section.details a.show-help:hover {
           transition-delay: 100ms;
 }
 
+.fade-page-enter-active,
+.fade-page-leave-active {
+  -webkit-transition-property: opacity;
+  transition-property: opacity;
+  -webkit-transition-duration: .25s;
+          transition-duration: .25s;
+}
+
+.fade-page-enter-active {
+  -webkit-transition-delay: .25s;
+          transition-delay: .25s;
+}
+
+.fade-page-enter,
+.fade-page-leave-active {
+  opacity: 0;
+}
+
 .iziToast.vue-toast {
   -webkit-box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09);
           box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.09);
@@ -12637,6 +12670,10 @@ a {
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.bg-danger-light {
+  background-color: #f7d1d5;
+}
+
 @media (max-width: 991px) {
   .container {
     max-width: 100%;
@@ -12667,6 +12704,15 @@ a {
 
 .vue-popover.dropdown-position-top::before {
   border-bottom-top: #0067b2 !important;
+}
+
+.table tr.tfooter {
+  border-top: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.table tr.tfooter td {
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.08);
 }
 
 .v-select.open .open-indicator:before {
@@ -12791,6 +12837,12 @@ a {
 section.orders .alert-no-buyers {
   border: 1px solid rgba(0, 0, 0, 0.3);
   background: rgba(0, 0, 0, 0.03);
+}
+
+@media (max-width: 767px) {
+  section.orders .buyer.opened .card {
+    border: 1px solid rgba(0, 0, 0, 0.6) !important;
+  }
 }
 
 section.orders .buyer .card {
@@ -12933,6 +12985,11 @@ section.orders .card-footer .btn.show-articles {
 }
 
 @media (max-width: 767px) {
+  section.orders .article-list {
+    margin-top: -2px;
+    margin-bottom: 8px;
+  }
+
   section.orders .article-list.collapsed {
     display: none;
   }
@@ -13118,5 +13175,62 @@ section.orders .input-group .form-control {
   border-right: 0;
   border-color: #ced4da;
   margin-bottom: 0;
+}
+
+table.table-mobile {
+  -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+          box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  border: none;
+}
+
+table.table-mobile thead.thead-light th {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 767px) {
+  table.table-mobile {
+    border: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
+
+  table.table-mobile thead {
+    display: none;
+  }
+
+  table.table-mobile tr:not(.detail):not(.is-empty):not(.tfooter) {
+    margin-bottom: 1rem;
+    -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+            box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+    max-width: 100%;
+    position: relative;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  table.table-mobile tr:not(.detail):not(.is-empty):not(.tfooter) td {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: auto;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    text-align: right;
+    border-color: rgba(0, 0, 0, 0.05);
+  }
+
+  table.table-mobile tr:not(.detail):not(.is-empty):not(.tfooter) td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    margin-right: auto;
+    padding-right: .5em;
+    text-align: left;
+    color: #868e96;
+  }
+
+  table.table-mobile.table-mobile-grouped tr:not(.detail):not(.is-empty):not(.table-footer) {
+    margin-bottom: 0;
+  }
 }
 

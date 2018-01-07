@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "vue-js-popover": "^1.1.6",
+    "vue-router": "^3.0.1",
     "vue-spinner-component": "^1.0.4"
   },
   "jshintConfig": {

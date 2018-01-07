@@ -5,7 +5,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
 
-      <a class="navbar-brand" href="#">Bestelliste</a>
+      <a class="navbar-brand" href="#">Bestellliste</a>
       <div class="form-inline">
         <input class="form-control" type="search" ref="searchInput" placeholder="Suchen" aria-label="Search" :value="value" @input="updateSearch()" id="search-input">
         <label for="search-input" class="search-icon" v-if="!value">
@@ -40,16 +40,16 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="btn btn-outline-primary mr-2">
+            <router-link :to="{name: 'print'}" class="btn btn-outline-primary mr-2">
               <i class="mdi mdi-printer">&nbsp;</i>
               Drucken
-            </a>
+            </router-link>
           </li>
           <li class="nav-item">
-            <a href="#" class="btn btn-outline-primary">
+            <router-link :to="{name: 'summary'}" class="btn btn-outline-primary">
               <i class="mdi mdi-grid">&nbsp;</i>
-              Übersicht
-            </a>
+              Zusammenfassung
+            </router-link>
           </li>
         </ul>
         <transition name="fade" mode="out-in">
@@ -76,7 +76,7 @@
               <h6 class="">Produktname</h6>
             </div>
             <div class="col-4">
-              <h6 class="">Summe/Erlös</h6>
+              <h6 class="">Summe</h6>
             </div>
           </div>
         </div>

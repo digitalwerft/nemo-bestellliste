@@ -18,14 +18,14 @@
   </div>
   <div class="col-6 col-lg-4 select-col">
     <v-select v-model="details.id" :options="autocomplete" :on-change="onArticleChange" label="id">
-      <span slot="no-options">Keine(n) Artikel gefunden.</span>
+      <span slot="no-options">Keine(n) Boxen gefunden.</span>
     </v-select>
   </div>
   <span class="input-group-addon col-lg-5 col-9 name-col">
             {{ name ? name : '--' }}&nbsp;<small class="text-muted">{{ size ? '('+size+')' : '' }}</small>
         </span>
   <span class="input-group-addon col-lg-2 col-9 font-weight-bold sum-col">
-            <small class="d-inline d-lg-none font-weight-normal text-muted">Summe/Erlös:&nbsp;</small>{{ sum }}€<small class="text-muted">/{{ returns }}€</small>
+            <small class="d-inline d-lg-none font-weight-normal text-muted">Summe:&nbsp;</small>{{ sum }}€
         </span>
   <span class="input-group-btn col-4 col-lg-2 delete-col">
             <a href="#" class="btn btn-outline-danger btn-block" v-on:click.prevent="showModal = true">
@@ -146,7 +146,8 @@ export default {
       return this.details ? this.amount * this.details.price : '';
     },
     returns() {
-      return this.details ? this.amount * this.details.returns : '';
+      var returns = parseInt(this.amount) * parseInt(this.details.returns);
+      return returns ? returns : 0
     },
     // get array with all available articles
     autocomplete() {

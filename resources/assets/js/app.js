@@ -8,6 +8,7 @@ import 'babel-polyfill'
 import './bootstrap';
 
 import Vue from 'vue';
+import VueRouter from 'vue-router'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -21,6 +22,8 @@ import shortkey from 'vue-shortkey'
 import Popover from 'vue-js-popover'
 import * as directives from './directives'
 
+// Use Plugins
+Vue.use(VueRouter)
 Vue.use(VueWaypoint)
 Vue.use(shortkey)
 Vue.use(Popover)
@@ -41,155 +44,32 @@ iziToast.settings({
 
 Vue.prototype.$note = iziToast;
 
-import buyer from './components/buyer.vue'
-import footerNav from './components/footer-nav.vue'
-import navbar from './components/navbar.vue'
-import user from './components/user.vue'
-import infoBox from './components/info-box.vue'
+import Home from './pages/home.vue'
+import Print from './pages/print.vue'
+import Summary from './pages/summary.vue'
 
-import store from './store'
-
-function save(payload) {
-  console.log("saving", payload);
-}
-
-var saveDebounced = _.wrap(_.memoize(function() {
-  return _.debounce(save, 5000);
-}, _.property("partId")), function(func, payload) {
-  return func(payload)(payload);
-});
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/',
+      component: Home,
+      name: 'home'
+    },
+    {
+      path: '/drucken',
+      component: Print,
+      name: 'print'
+    },
+    {
+      path: '/zusammenfassung',
+      component: Summary,
+      name: 'summary'
+    }
+  ]
+})
 
 const app = new Vue({
-  el: '#app',
-  components: {
-    buyer,
-    footerNav,
-    navbar,
-    user,
-    infoBox
-  },
-  mounted() {
-    this.$store.dispatch('fetchBuyers', {
-      self: this
-    }).then(() => {
-      this.loadingProgress++;
-    });
-    this.$store.dispatch('fetchArticles', {
-      self: this
-    }).then(() => {
-      this.loadingProgress++;
-    });
-    this.$store.dispatch('fetchUser', {
-      self: this
-    }).then(() => {
-      this.loadingProgress++;
-    });
-    if(!this.buyers) {
-      displayInfo = true;
-    }
-  },
-  store,
-  data() {
-    return {
-      isLoading: true,
-      loadingProgress: 0,
-      search: '',
-      totalWinnings: 0,
-      showModal: false,
-      hasUnsavedBuyer: false,
-      savingComplete: false,
-      displayInfo: false
-    };
-  },
-  computed: {
-    buyers() {
-      return this.$store.state.buyers.all;
-    },
-    articles() {
-      return this.$store.state.articles.all;
-    },
-    filteredBuyer() {
-      if (!_.isEmpty(this.buyers)) {
-        var v = this.buyers.filter((buyer) => {
-          return _.lowerCase(buyer.name).match(_.lowerCase(this.search));
-        });
-        return v;
-      }
-    },
-    totalBuyers() {
-      return this.buyers.length;
-    },
-    totalOrders() {
-      return this.$store.getters.getTotalOrdersAmount;
-    },
-    winnings() {
-      return this.$store.getters.getTotalOrdersWinnings
-    },
-    earnings() {
-      return this.$store.getters.getTotalOrdersEarnings
-    }
-  },
-  watch: {
-    search(term) {
-      //$list = $('.orders')
-    },
-    data(obj) {
-      //console.log(obj);
-    },
-    loadingProgress(num) {
-      if (num === 3) {
-        this.finishLoading();
-      }
-    }
-  },
-  methods: {
-    handleEditing(isEditing) {
-      if (isEditing) {
-        this.hasUnsavedBuyer = true
-      } else {
-        this.hasUnsavedBuyer = false
-      }
-    },
-    onBuyerEdit(a) {
-      //console.log(a)
-    },
-    onBuyerSaved() {
-      if (this.hasUnsavedBuyer) {
-        this.hasUnsavedBuyer = false
-      }
-    },
-    onBuyerDeleted() {
-      if (this.hasUnsavedBuyer) {
-        this.hasUnsavedBuyer = false
-      }
-    },
-    finishLoading() {
-      setTimeout(() => {
-        this.isLoading = false
-        $('.loading-overlay').removeClass('loading');
-        setTimeout(() => {
-          $('.loading-overlay').remove();
-        }, 1000);
-      }, 600);
-    },
-    note(options) {
-      var opt = {
-        title: 'title',
-        message: 'message',
-        color: 'green',
-        icon: 'mdi mdi-check'
-      };
-      iziToast.show(_.merge(opt, options));
-    },
-    createBuyer(e) {
-      if (e) {
-        e.preventDefault();
-      }
-      if (!this.hasUnsavedBuyer) {
-        this.hasUnsavedBuyer = true
-        this.$store.commit('newBuyer')
-      }
-    }
-  }
+  router,
+}).$mount('#app');
 
-});
+router.replace('/')

@@ -1,47 +1,62 @@
 <template>
-<div class="container sticky-container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-bottom">
-
-        <a class="navbar-brand" href="#">Neue Masche</a>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    Besteller: {{ totalBuyers }}&nbsp;|&nbsp;
-                </li>
-                <li class="nav-item">
-                    Bestellungen: {{ totalOrders }}&nbsp;|&nbsp;
-                </li>
-                <li class="nav item">
-                    Gewinn: {{ winnings }}
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item mr-3">
-                    <a href="#" class="btn btn-outline-secondary my-2 my-sm-0">
-                        <i class="mdi mdi-plus"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="btn btn-outline-danger my-2 my-sm-0">Bestellung aufgeben
-                        <i class="mdi mdi-chevron-right"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
+  <div class="container sticky-container ">
+    <nav class="navbar navbar-expand-md navbar-light bg-white fixed-bottom footer-bar">
+            <router-link :to="{name: 'summary'}" class="btn btn-success btn-block btn-lg">Zusammenfassung
+          </router-link>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <i class="mdi mdi-account">&nbsp;</i>Teilnehmer: {{ buyers.length }}&nbsp;|&nbsp;
+          </li>
+          <li class="nav-item">
+            <i class="mdi mdi-library-books">&nbsp;</i>Bestellte Boxen: {{ totalOrders }}&nbsp;|&nbsp;
+          </li>
+          <li class="nav-item">
+            <i class="mdi mdi-currency-eur">&nbsp;</i>Rechnungsbetrag: {{ winnings }}€&nbsp;|&nbsp;
+          </li>
+          <li class="nav-item">
+            <i class="mdi mdi-currency-eur">&nbsp;</i>Spendensumme: {{ earnings }}€
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <router-link :to="{name: 'summary'}" class="btn btn-outline-danger my-2 my-sm-0 order-now">Zusammenfassung
+              <i class="mdi mdi-chevron-right"></i>
+            </router-link>
+          </li>
+        </ul>
+      </div>
     </nav>
-</div>
+  </div>
 </template>
 
 <script>
 export default {
-    props: ['totalBuyers', 'totalOrders', 'winnings'],
     mounted() {
         //
     },
     data() {
         return {}
     },
-    methods: {}
+    methods: {
+
+    },
+    computed: {
+      buyers() {
+        return this.$store.state.buyers.all;
+      },
+      totalBuyers() {
+        return this.buyers.length;
+      },
+      totalOrders() {
+        return this.$store.getters.getTotalOrdersAmount;
+      },
+      winnings() {
+        return this.$store.getters.getTotalOrdersWinnings
+      },
+      earnings() {
+        return this.$store.getters.getTotalOrdersEarnings
+      }
+    }
 }
 </script>

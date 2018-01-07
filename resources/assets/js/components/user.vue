@@ -27,31 +27,31 @@
             </label>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-name">Vorname, Nachname</label>
-            <input id="shipping-name" type="text" class="form-control form-control" v-bind:value="user.shipping.name" placeholder="Vorname, Nachname">
+            <input id="shipping-name" type="text" class="form-control form-control" v-bind:value="user.shipping_name" placeholder="Vorname, Nachname">
           </div>
-          <h6 v-if="!editingDetails">{{ user.shipping.name }}</h6>
+          <h6 v-if="!editingDetails">{{ user.shipping_name }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-organisation">Name der Firma/Organisation/ Schule/Pfarrei <small>(optional)</small></label>
-            <input id="shipping-organisation" type="text" class="form-control form-control" v-bind:value="user.shipping.organisation" placeholder="Name der Firma/Organisation/Schule/Pfarrei">
+            <input id="shipping-organisation" type="text" class="form-control form-control" v-bind:value="user.shipping_organisation" placeholder="Name der Firma/Organisation/Schule/Pfarrei">
           </div>
-          <h6 v-if="!editingDetails">{{ user.shipping.organisation }}</h6>
+          <h6 v-if="!editingDetails">{{ user.shipping_organisation }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-street">Straße, Hausnummer</label>
-            <input id="shipping-street" type="text" class="form-control form-control" v-bind:value="user.shipping.street" placeholder="Straße, Hausnummer">
+            <input id="shipping-street" type="text" class="form-control form-control" v-bind:value="user.shipping_street" placeholder="Straße, Hausnummer">
           </div>
-          <h6 v-if="!editingDetails">{{ user.shipping.street }}</h6>
+          <h6 v-if="!editingDetails">{{ user.shipping_street }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-zip">PLZ, Ort</label>
             <div class="row">
               <div class="col-18 col-sm-5 mb-3">
-                <input id="shipping-zip" type="text" class="form-control form-control" v-bind:value="user.shipping.zip" placeholder="PLZ">
+                <input id="shipping-zip" type="text" class="form-control form-control" v-bind:value="user.shipping_zip" placeholder="PLZ">
               </div>
               <div class="col">
-                <input id="shipping-city" type="text" class="form-control form-control" v-bind:value="user.shipping.city" placeholder="Ort">
+                <input id="shipping-city" type="text" class="form-control form-control" v-bind:value="user.shipping_city" placeholder="Ort">
               </div>
             </div>
           </div>
-          <h6 v-if="!editingDetails">{{ user.shipping.zip }} {{ user.shipping.city }}</h6>
+          <h6 v-if="!editingDetails">{{ user.shipping_zip }} {{ user.shipping_city }}</h6>
         </div>
       </div>
       <div class="row">
@@ -59,7 +59,7 @@
           <label for="user-message" class="text-muted mt-3">Kommentar zu deiner Bestellung</label>
           <textarea v-bind:value="user.message" class="form-control" id="user-message" :disabled="!editingDetails"></textarea>
           <small class="form-text text-muted">
-                Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns bitte jederzeit unter 0761 / 707 888 33 an.
+                Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns bitte jederzeit unter <a href="tel:076170788833">0761 / 707 888 33</a> an.
               </small>
         </div>
       </div>
@@ -86,10 +86,14 @@
     computed: {
       user() {
         var user = this.$store.state.user.data;
-        if(user) {
+        if(this.$store.getters.hasFullyLoaded) {
           return user
         }
-        return {}
+        return {
+          shipping: {
+            name: ''
+          }
+        }
       },
     },
     methods: {
