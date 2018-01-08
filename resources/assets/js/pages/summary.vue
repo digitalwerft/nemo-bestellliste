@@ -27,9 +27,9 @@
             </tr>
             <tr class="tfooter">
               <td>Summe:</td>
-              <td colspan="2">{{ totalOrdersAmount }}</td>
-              <td>{{ allArticlesSum }}€</td>
-              <td>{{ allArticlesEarnings }}</td>
+              <td colspan="2" data-label="Anzahl der bestellten Boxen">{{ totalOrdersAmount }}</td>
+              <td data-label="Rechnungsbetrag">{{ allArticlesSum }}€</td>
+              <td data-label="Spendensumme">{{ allArticlesEarnings }}</td>
             </tr>
           </tbody>
         </table>

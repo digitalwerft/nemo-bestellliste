@@ -11,7 +11,7 @@
 
   <!-- Fonts -->
   <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="css/app.css?v=1.05">
+  <link rel="stylesheet" href="css/app.css?v=1.06">
 </head>
 
 <body>
@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=1.09" charset="utf-8"></script>
+  <script src="js/app.js?v=1.10" charset="utf-8"></script>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 <template>
   <div class="container sticky-container ">
     <nav class="navbar navbar-expand-md navbar-light bg-white fixed-bottom footer-bar">
-            <router-link :to="{name: 'summary'}" class="btn btn-success btn-block btn-lg">Zusammenfassung
+            <router-link :to="{name: 'summary'}" class="d-block d-md-none btn btn-success btn-block btn-lg">Zusammenfassung
           </router-link>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">

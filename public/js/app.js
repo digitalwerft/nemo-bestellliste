@@ -61963,7 +61963,7 @@ var render = function() {
         _c(
           "router-link",
           {
-            staticClass: "btn btn-success btn-block btn-lg",
+            staticClass: "d-block d-md-none btn btn-success btn-block btn-lg",
             attrs: { to: { name: "summary" } }
           },
           [_vm._v("Zusammenfassung\n        ")]
@@ -64014,13 +64014,24 @@ var render = function() {
                   _c("tr", { staticClass: "tfooter" }, [
                     _c("td", [_vm._v("Summe:")]),
                     _vm._v(" "),
-                    _c("td", { attrs: { colspan: "2" } }, [
-                      _vm._v(_vm._s(_vm.totalOrdersAmount))
+                    _c(
+                      "td",
+                      {
+                        attrs: {
+                          colspan: "2",
+                          "data-label": "Anzahl der bestellten Boxen"
+                        }
+                      },
+                      [_vm._v(_vm._s(_vm.totalOrdersAmount))]
+                    ),
+                    _vm._v(" "),
+                    _c("td", { attrs: { "data-label": "Rechnungsbetrag" } }, [
+                      _vm._v(_vm._s(_vm.allArticlesSum) + "€")
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.allArticlesSum) + "€")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(_vm.allArticlesEarnings))])
+                    _c("td", { attrs: { "data-label": "Spendensumme" } }, [
+                      _vm._v(_vm._s(_vm.allArticlesEarnings))
+                    ])
                   ])
                 ],
                 2

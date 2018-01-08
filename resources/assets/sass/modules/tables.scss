@@ -12,8 +12,7 @@ table.table-mobile {
     thead {
         display: none;
       }
-
-    tr:not(.detail):not(.is-empty):not(.tfooter) {
+    tr:not(.detail):not(.is-empty) {
       margin-bottom: 1rem;
       //border: 1px solid rgba($black, .1);
       box-shadow: 0 2px 3px hsla(0,0%,4%,.1), 0 0 0 1px hsla(0,0%,4%,.1);
@@ -40,7 +39,7 @@ table.table-mobile {
     }
 
     &.table-mobile-grouped {
-      tr:not(.detail):not(.is-empty):not(.table-footer) {
+      tr:not(.detail):not(.is-empty):not(.tfooter) {
         margin-bottom: 0;
       }
     }
