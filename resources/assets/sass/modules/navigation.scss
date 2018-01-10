@@ -9,36 +9,38 @@ section.order-navigation {
     box-sizing: border-box;
     box-shadow: 0 4px 0 0 $body-bg;
     flex-wrap: nowrap;
+  }
+}
 
-    .clear-search {
+.navbar {
+  .clear-search {
+    margin-left: -34px;
+    color: $gray-500;
+
+    &:hover {
+      color: $gray-700;
+    }
+  }
+
+  .search-icon {
       margin-left: -34px;
       color: $gray-500;
+  }
 
-      &:hover {
-        color: $gray-700;
-      }
+  .save-indicator {
+    cursor: pointer;
+    position: relative;
+    margin-right: 8px;
+    width: 40px;
+
+    i {
+      position: absolute;
+      right: 6px;
     }
-
-    .search-icon {
-        margin-left: -34px;
-        color: $gray-500;
-    }
-
-    .save-indicator {
-      cursor: pointer;
-      position: relative;
-      margin-right: 8px;
-      width: 40px;
-
-      i {
-        position: absolute;
-        right: 6px;
-      }
-      .sl-spinner {
-        margin-top: 8px;
-        position: absolute;
-        right: 8px;
-      }
+    .sl-spinner {
+      margin-top: 8px;
+      position: absolute;
+      right: 8px;
     }
   }
 }

@@ -16,34 +16,14 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item text-success save-indicator" v-popover:save @click="isSaving = !isSaving">
-            <transition name="fade">
-              <i class="mdi mdi-check-circle-outline mdi-24px" v-if="!isSaving"></i>
-            </transition>
-            <transition name="fade">
-              <spinner
-                :status="true"
-                :color="'#627794'"
-                :size="20"
-                :depth="3"
-                :rotation="true"
-                :speed="0.8" v-if="isSaving">
-              </spinner>
-            </transition>
-
-
+          <li class="nav-item text-success save-indicator">
+            <save-indicator :is-saving="isSaving" @saving="saving"></save-indicator>
           </li>
           <li class="nav-item">
             <a href="#" class="btn btn-outline-primary mr-2" @click.prevent="createBuyer()">
               <i class="mdi mdi-account-plus">&nbsp;</i>
               neuer Teilnehmer
             </a>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{name: 'print'}" class="btn btn-outline-primary mr-2">
-              <i class="mdi mdi-printer">&nbsp;</i>
-              Drucken
-            </router-link>
           </li>
           <li class="nav-item">
             <router-link :to="{name: 'summary'}" class="btn btn-outline-primary">
@@ -88,7 +68,8 @@
 </template>
 
 <script>
-import Spinner from './spinner.vue'
+//import Spinner from './spinner.vue'
+import SaveIndicator from './save-indicator.vue'
 
 export default {
   props: {
@@ -98,7 +79,7 @@ export default {
     }
   },
   components: {
-    Spinner
+    SaveIndicator
   },
   mounted() {
   },
@@ -125,6 +106,9 @@ export default {
     clearSearch(e) {
       e.preventDefault();
       this.$emit('input', '');
+    },
+    saving(isSaving) {
+      this.isSaving = isSaving;
     }
   }
 }

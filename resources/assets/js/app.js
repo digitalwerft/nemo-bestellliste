@@ -45,7 +45,6 @@ iziToast.settings({
 Vue.prototype.$note = iziToast;
 
 import Home from './pages/home.vue'
-import Print from './pages/print.vue'
 import Summary from './pages/summary.vue'
 
 const router = new VueRouter({
@@ -54,11 +53,6 @@ const router = new VueRouter({
       path: '/',
       component: Home,
       name: 'home'
-    },
-    {
-      path: '/drucken',
-      component: Print,
-      name: 'print'
     },
     {
       path: '/zusammenfassung',

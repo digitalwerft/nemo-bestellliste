@@ -81,7 +81,7 @@
   opacity: 0
 }
 
-.info-box {
+.info-box, .print-list {
   position: relative;
   height: 0;
   overflow: hidden;
@@ -111,6 +111,10 @@
   }
 
   &-enter-active { transition-delay: 100ms }
+}
+
+.print-list::after {
+  background-image: linear-gradient(to top, $white, rgba($white, 0));
 }
 
 .fade-page-enter-active, .fade-page-leave-active {
