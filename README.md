@@ -8,3 +8,7 @@ Bestellliste für das NMO CRM von Bene
 4. add .env
 
 Dist folder = `public/`
+
+## Build Frontend
+From home-dir run `npm run dev`
+To watch for changes run `npm run watch` or `npm watch-poll`.
