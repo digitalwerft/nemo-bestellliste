@@ -2,7 +2,7 @@
 <div class="container">
   <div class="card">
     <div class="card-body">
-      <a href="#" class="show-help" v-popover:help-info.left @click="$emit('display-info')">
+      <a href="#" class="show-help"  @click="$emit('display-info')">
         <i class="mdi mdi-help-box"></i>
       </a>
       <transition name="fade" mode="out-in">

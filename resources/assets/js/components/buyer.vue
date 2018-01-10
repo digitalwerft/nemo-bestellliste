@@ -1,6 +1,6 @@
 <template>
 <div class="row buyer small-gutters mb-1 row-eq-height" :class="{opened: !collapsed}">
-  <div class="col-md-7">
+  <div class="col-md-5">
     <div class="card buyer-name-card" :class="{editing: editing, deleting: showModal}">
       <div class="card-body buyer-name">
         <div class="input-group">
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="buyer-details mt-3">
-          <small class="text-muted">Boxen: {{ articleCount }} | Summe: {{ totalPrice }}€ | davon Spenden: {{ totalEarnings }}€</small>
+          <small class="text-muted">Boxen: {{ articleCount }} | Summe: {{ totalPrice }}€ | <span class="d-none d-sm-inline">davon</span> Spenden: {{ totalEarnings }}€</small>
         </div>
       </div>
       <div class="card-footer" :class="{collapsed: collapsed}">
@@ -44,11 +44,11 @@
     </div>
 
   </div>
-  <div class="col-md-11 article-list" :class="{editing: editing, deleting: showModal, collapsed: collapsed}">
+  <div class="col-md-13 article-list" :class="{editing: editing, deleting: showModal, collapsed: collapsed}">
     <div class="card">
       <div class="card-body">
         <div v-for="(article, index) in buyer.articles">
-          <article-item :articleId="article.id" :amount="article.amount" :buyerId="buyerId" :article-index="index" :disabled="editing" v-on:selected="select"></article-item>
+          <article-item :articleId="article.id" :amount="article.amount" :buyerId="buyerId" :article-index="index" :disabled="editing" v-on:selected="select" :uid="article.uid"></article-item>
         </div>
         <div class="no-articles text-center" v-if="buyer.articles.length<1">
           <small class="text-muted text-danger text-center" v-if="!buyer.name">Dieser Teilnehmer braucht einen Namen, bevor du ihm Artikel zuweisen kannst.</small>

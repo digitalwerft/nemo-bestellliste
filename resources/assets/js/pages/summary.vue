@@ -41,26 +41,30 @@
             </tr>
           </tbody>
         </table>
+        <p>
+          Voraussichtliche Versandkosten: {{ shippingCost }}€ <br>
+          Rechnungsbetrag inkl. Versandkosten: {{ allArticlesSum+shippingCost }}€
+        </p>
       </div>
     </div>
     <div class="card mt-2 print-view">
       <div class="card-body pt-1 pb-0">
         <div class="navbar pl-0 pr-0">
           <span class="navbar-brand">Zusammenfassung pro Teilnehmer</span>
-          <div class="form-inline">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a href="#" class="btn btn-sm float-right" @click.prevent="showPrintList = !showPrintList" :class="{'btn-success': showPrintList, 'btn-light': !showPrintList}">
+                <i class="mdi" :class="{'mdi-chevron-down': !showPrintList, 'mdi-chevron-up':  showPrintList}">&nbsp;</i>{{ !showPrintList ? 'anzeigen' : 'verstecken'}}
+              </a>
+            </li>
+          </ul>
+          <div class="form-inline ml-auto">
             <input class="form-control" type="search" ref="searchInput" placeholder="Suchen" aria-label="Search" :value="value" @input="updateSearch()" id="search-input">
             <label for="search-input" class="search-icon" v-if="!value">
               <i class="mdi mdi-magnify"></i>
             </label>
             <a href="" class="mdi mdi-close-circle-outline clear-search" @click="clearSearch" :class="{hidden: (value=='')}"></a>
           </div>
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a href="#" class="btn btn-sm float-right" @click="showPrintList = !showPrintList" :class="{'btn-success': showPrintList, 'btn-light': !showPrintList}">
-                <i class="mdi" :class="{'mdi-chevron-down': !showPrintList, 'mdi-chevron-up':  showPrintList}">&nbsp;</i>{{ !showPrintList ? 'anzeigen' : 'verstecken'}}
-              </a>
-            </li>
-          </ul>
         </div>
 
         <transition name="info-box">

@@ -59551,6 +59551,7 @@ var getters = {
   getBuyerById: function getBuyerById(state) {
     return function (id) {
       return state.all.find(function (buyer) {
+
         return parseInt(buyer.id) === parseInt(id);
       });
     };
@@ -59680,18 +59681,20 @@ var actions = {
 
 var mutations = {
   FETCH_BUYERS: function FETCH_BUYERS(state, buyers) {
+    buyers.forEach(function (buyer) {
+      buyer.articles.forEach(function (article) {
+        article.uid = _.uniqueId();
+      });
+    });
     state.all = buyers;
     state.requestComplete = true;
-  },
-  UPDATE_PART_PROPERTIES: function UPDATE_PART_PROPERTIES(state, payload) {
-    console.log('ssssaaaavved');
   },
   changeArticleAmount: function changeArticleAmount(state, payload) {
     var buyer = state.all.find(function (buyer) {
       return parseInt(buyer.id) === parseInt(payload.buyerId);
     });
     var article = buyer.articles.find(function (article) {
-      return article.id === payload.index;
+      return article.uid === payload.index;
     });
     if (article.length > 1) {
       return false;
@@ -59703,7 +59706,7 @@ var mutations = {
       return parseInt(buyer.id) === parseInt(payload.buyerId);
     });
     var article = buyer.articles.find(function (article) {
-      return article.id === payload.oldId;
+      return article.uid === payload.oldId;
     });
     article.id = parseInt(payload.newId);
   },
@@ -59713,6 +59716,7 @@ var mutations = {
     });
     buyer.articles.push({
       id: 0,
+      uid: _.uniqueId(),
       amount: 1
     });
   },
@@ -59744,7 +59748,7 @@ var mutations = {
       articles: [],
       name: '',
       state: 'active',
-      id: Math.floor(Math.random() * 1110 + 1)
+      id: _.uniqueId()
     });
   }
 };
@@ -60216,7 +60220,7 @@ exports = module.exports = __webpack_require__(137)(undefined);
 
 
 // module
-exports.push([module.i, "\n.v-select.open .open-indicator:before {\n  -webkit-transform: rotate(180deg);\n          transform: rotate(180deg);\n}\n.v-select.open .dropdown-menu {\n  border-radius: 0;\n  -webkit-box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);\n          box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);\n}\n.v-select .dropdown-toggle .selected-tag {\n  position: absolute;\n}\n.v-select .open-indicator {\n  width: auto;\n  height: auto;\n  top: 4px;\n}\n.v-select .open-indicator:before {\n    font-size: 20px;\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n    width: auto;\n    height: auto;\n    border: none;\n    content: \"\\F140\";\n    display: inline-block;\n    font: normal normal normal 24px/1 \"Material Design Icons\";\n    font-size: inherit;\n    text-rendering: auto;\n    line-height: inherit;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n}\n.v-select.searchable .dropdown-toggle {\n  border-right: none;\n  border-left: none;\n  border-radius: 0;\n  border-top: 1px solid transparent;\n  border-bottom: 1px solid transparent;\n}\n", ""]);
+exports.push([module.i, "\n.v-select.open .open-indicator:before {\n  -webkit-transform: rotate(180deg);\n          transform: rotate(180deg);\n}\n.v-select.open .dropdown-menu {\n  border-radius: 0;\n  -webkit-box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);\n          box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);\n}\n.v-select .dropdown-toggle .selected-tag {\n  position: absolute;\n}\n.v-select .dropdown-toggle .form-control {\n  width: 100% !important;\n}\n.v-select .open-indicator {\n  width: auto;\n  height: auto;\n  top: 4px;\n}\n.v-select .open-indicator:before {\n    font-size: 20px;\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n    width: auto;\n    height: auto;\n    border: none;\n    content: \"\\F140\";\n    display: inline-block;\n    font: normal normal normal 24px/1 \"Material Design Icons\";\n    font-size: inherit;\n    text-rendering: auto;\n    line-height: inherit;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n}\n.v-select.searchable .dropdown-toggle {\n  border-right: none;\n  border-left: none;\n  border-radius: 0;\n  border-top: 1px solid transparent;\n  border-bottom: 1px solid transparent;\n}\n", ""]);
 
 // exports
 
@@ -60321,9 +60325,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 //
 //
 //
-//
-//
-//
 
 
 
@@ -60342,6 +60343,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       default: 0
     },
     articleId: {},
+    uid: {},
     articleIndex: {
       type: Number
     },
@@ -60391,7 +60393,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         this.$store.commit('changeArticleAmount', {
           buyerId: this.buyerId,
           value: value,
-          index: this.articleId
+          index: this.uid
         });
       }
     },
@@ -60424,24 +60426,28 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     // get array with all available articles
     autocomplete: function autocomplete() {
-      var articles = _.clone(this.$store.state.articles.all);
-      var buyerArticles = this.$store.getters.getArticlesByBuyerId(this.buyerId);
-      var newArticles = [];
-      for (var i = 0; i < articles.length + 1; i++) {
-        for (var j = 0; j < buyerArticles.length; j++) {
-          if (articles[i]) {
-            if (parseInt(articles[i].id) == parseInt(buyerArticles[j].id) || parseInt(articles[i].id == parseInt(this.articleId))) {
-              //console.log('same', articles[i].id)
-              //articles.splice(i, 1)
-              newArticles[i] = articles[i];
-            }
-          }
-        }
-      }
-      _.each(newArticles, function (newArticle) {
-        _.pull(articles, newArticle);
-      });
-      return articles;
+      return this.$store.state.articles.all;
+      // var articles = _.clone(this.$store.state.articles.all)
+      // var buyerArticles = this.$store.getters.getArticlesByBuyerId(this.buyerId);
+      // var newArticles = [];
+      // for(var i =0; i < articles.length+1; i++) {
+      //   for(var j = 0; j < buyerArticles.length; j++) {
+      //     if(articles[i]) {
+      //       if(
+      //         parseInt(articles[i].id) == parseInt(buyerArticles[j].id)
+      //         || parseInt(articles[i].id == parseInt(this.articleId))
+      //       ) {
+      //         //console.log('same', articles[i].id)
+      //         //articles.splice(i, 1)
+      //         newArticles[i] = articles[i]
+      //       }
+      //     }
+      //   }
+      // }
+      // _.each(newArticles, newArticle => {
+      //   _.pull(articles, newArticle)
+      // })
+      // return articles
     }
   },
   methods: {
@@ -60450,7 +60456,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       this.$store.commit('changeArticleAmount', {
         buyerId: this.buyerId,
         value: value,
-        index: this.articleId
+        index: this.uid
       });
     },
 
@@ -60473,7 +60479,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         this.$store.commit('changeArticleId', {
           buyerId: this.buyerId,
           newId: newArticle.id,
-          oldId: this.articleId
+          oldId: this.uid
         });
       }
     }
@@ -61014,7 +61020,7 @@ var render = function() {
     [
       _c(
         "div",
-        { staticClass: "input-group col-8 col-lg-5 no-gutters spinner-col" },
+        { staticClass: "input-group col-4 col-lg-3 no-gutters spinner-col" },
         [
           _c(
             "span",
@@ -61033,15 +61039,13 @@ var render = function() {
               })
             ],
             1
-          ),
-          _vm._v(" "),
-          _vm._m(0, false, false)
+          )
         ]
       ),
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col-6 col-lg-4 select-col" },
+        { staticClass: "col select-col" },
         [
           _c(
             "v-select",
@@ -61049,7 +61053,8 @@ var render = function() {
               attrs: {
                 options: _vm.autocomplete,
                 "on-change": _vm.onArticleChange,
-                label: "id"
+                label: "id",
+                placeholder: "Art.-Nr."
               },
               model: {
                 value: _vm.details.id,
@@ -61094,7 +61099,7 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c("span", { staticClass: "input-group-btn col-4 col-lg-2 delete-col" }, [
+      _c("span", { staticClass: "input-group-btn col-3 col-lg-2 delete-col" }, [
         _c(
           "a",
           {
@@ -61120,7 +61125,7 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "row no-gutters" }, [
-                _vm._m(1, false, false),
+                _vm._m(0, false, false),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-4 cancel-article-delete" }, [
                   _c(
@@ -61206,14 +61211,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "input-group col-hash" }, [
-      _c("i", { staticClass: "mdi mdi-pound" })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -61374,7 +61371,7 @@ var render = function() {
       class: { opened: !_vm.collapsed }
     },
     [
-      _c("div", { staticClass: "col-md-7" }, [
+      _c("div", { staticClass: "col-md-5" }, [
         _c(
           "div",
           {
@@ -61495,10 +61492,12 @@ var render = function() {
                       _vm._s(_vm.articleCount) +
                       " | Summe: " +
                       _vm._s(_vm.totalPrice) +
-                      "€ | davon Spenden: " +
-                      _vm._s(_vm.totalEarnings) +
-                      "€"
-                  )
+                      "€ | "
+                  ),
+                  _c("span", { staticClass: "d-none d-sm-inline" }, [
+                    _vm._v("davon")
+                  ]),
+                  _vm._v(" Spenden: " + _vm._s(_vm.totalEarnings) + "€")
                 ])
               ])
             ]),
@@ -61607,7 +61606,7 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "col-md-11 article-list",
+          staticClass: "col-md-13 article-list",
           class: {
             editing: _vm.editing,
             deleting: _vm.showModal,
@@ -61630,7 +61629,8 @@ var render = function() {
                           amount: article.amount,
                           buyerId: _vm.buyerId,
                           "article-index": index,
-                          disabled: _vm.editing
+                          disabled: _vm.editing,
+                          uid: article.uid
                         },
                         on: { selected: _vm.select }
                       })
@@ -62820,14 +62820,6 @@ var render = function() {
           _c(
             "a",
             {
-              directives: [
-                {
-                  name: "popover",
-                  rawName: "v-popover:help-info.left",
-                  arg: "help-info",
-                  modifiers: { left: true }
-                }
-              ],
               staticClass: "show-help",
               attrs: { href: "#" },
               on: {
@@ -63588,6 +63580,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -63768,7 +63764,21 @@ var render = function() {
               2
             )
           ]
-        )
+        ),
+        _vm._v(" "),
+        _c("p", [
+          _vm._v(
+            "\n        Voraussichtliche Versandkosten: " +
+              _vm._s(_vm.shippingCost) +
+              "€ "
+          ),
+          _c("br"),
+          _vm._v(
+            "\n        Rechnungsbetrag inkl. Versandkosten: " +
+              _vm._s(_vm.allArticlesSum + _vm.shippingCost) +
+              "€\n      "
+          )
+        ])
       ])
     ]),
     _vm._v(" "),
@@ -63782,7 +63792,46 @@ var render = function() {
               _vm._v("Zusammenfassung pro Teilnehmer")
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-inline" }, [
+            _c("ul", { staticClass: "navbar-nav" }, [
+              _c("li", { staticClass: "nav-item" }, [
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-sm float-right",
+                    class: {
+                      "btn-success": _vm.showPrintList,
+                      "btn-light": !_vm.showPrintList
+                    },
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.showPrintList = !_vm.showPrintList
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "i",
+                      {
+                        staticClass: "mdi",
+                        class: {
+                          "mdi-chevron-down": !_vm.showPrintList,
+                          "mdi-chevron-up": _vm.showPrintList
+                        }
+                      },
+                      [_vm._v(" ")]
+                    ),
+                    _vm._v(
+                      _vm._s(!_vm.showPrintList ? "anzeigen" : "verstecken") +
+                        "\n            "
+                    )
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-inline ml-auto" }, [
               _c("input", {
                 ref: "searchInput",
                 staticClass: "form-control",
@@ -63817,44 +63866,6 @@ var render = function() {
                 attrs: { href: "" },
                 on: { click: _vm.clearSearch }
               })
-            ]),
-            _vm._v(" "),
-            _c("ul", { staticClass: "navbar-nav" }, [
-              _c("li", { staticClass: "nav-item" }, [
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-sm float-right",
-                    class: {
-                      "btn-success": _vm.showPrintList,
-                      "btn-light": !_vm.showPrintList
-                    },
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        _vm.showPrintList = !_vm.showPrintList
-                      }
-                    }
-                  },
-                  [
-                    _c(
-                      "i",
-                      {
-                        staticClass: "mdi",
-                        class: {
-                          "mdi-chevron-down": !_vm.showPrintList,
-                          "mdi-chevron-up": _vm.showPrintList
-                        }
-                      },
-                      [_vm._v(" ")]
-                    ),
-                    _vm._v(
-                      _vm._s(!_vm.showPrintList ? "anzeigen" : "verstecken") +
-                        "\n            "
-                    )
-                  ]
-                )
-              ])
             ])
           ]),
           _vm._v(" "),

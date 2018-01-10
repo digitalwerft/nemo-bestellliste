@@ -87,6 +87,10 @@ section.orders {
   .buyer-name {
     position: relative;
     padding-bottom: 42px;
+
+    @include media-breakpoint-down(xs) {
+      padding-bottom: 80px;
+    }
     .input-group{
 
       .mobile-save-modal {
@@ -107,6 +111,20 @@ section.orders {
       }
       .form-control {
         border: 1px solid $gray-400;
+      }
+
+      @include media-breakpoint-down(xs) {
+        flex-direction: column;
+
+        .mobile-save-modal {
+          order: 2;
+          position: relative;
+          width: 100%;
+
+          a.btn.btn-light {
+            flex-grow: 1;
+          }
+        }
       }
     }
 
@@ -260,6 +278,10 @@ section.orders {
         border-bottom: 1px solid $gray-400 !important;
         background-color: $gray-100 !important;
       }
+    }
+
+    .delete-col {
+      min-width: 45px;
     }
 
     &.disabled {

@@ -6,6 +6,7 @@ const state = {
 const getters = {
   getBuyerById: state => id => {
     return state.all.find(buyer => {
+
       return parseInt(buyer.id) === parseInt(id)
     });
   },
@@ -130,17 +131,19 @@ const actions = {
 
 const mutations = {
   FETCH_BUYERS(state, buyers) {
+    buyers.forEach(buyer => {
+      buyer.articles.forEach(article => {
+        article.uid = _.uniqueId()
+      })
+    })
     state.all = buyers;
     state.requestComplete = true;
-  },
-  UPDATE_PART_PROPERTIES(state, payload) {
-    console.log('ssssaaaavved')
   },
   changeArticleAmount(state, payload) {
     var buyer = state.all.find(buyer => {
       return parseInt(buyer.id) === parseInt(payload.buyerId)
     });
-    var article = buyer.articles.find(article => article.id === payload.index)
+    var article = buyer.articles.find(article => article.uid === payload.index)
     if(article.length > 1) {
       return false
     }
@@ -150,7 +153,7 @@ const mutations = {
     var buyer = state.all.find(buyer => {
       return parseInt(buyer.id) === parseInt(payload.buyerId)
     });
-    var article = buyer.articles.find(article => article.id === payload.oldId)
+    var article = buyer.articles.find(article => article.uid === payload.oldId)
     article.id = parseInt(payload.newId)
   },
   newArticle(state, payload) {
@@ -159,6 +162,7 @@ const mutations = {
     });
     buyer.articles.push({
       id: 0,
+      uid: _.uniqueId(),
       amount: 1
     });
   },
@@ -190,7 +194,7 @@ const mutations = {
       articles: [],
       name: '',
       state: 'active',
-      id: Math.floor((Math.random() * 1110) + 1)
+      id: _.uniqueId()
     })
   }
 }

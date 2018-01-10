@@ -1,6 +1,6 @@
 <template>
 <div class="input-group row no-gutters article-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected}"  ref="article">
-  <div class="input-group col-8 col-lg-5 no-gutters spinner-col">
+  <div class="input-group col-4 col-lg-3 no-gutters spinner-col">
     <span class="input-group-btn col">
                 <!--<input-number :step="step" :min="min" :max="max" :maxlength="maxLength"  :startQuantity="amount" @onInputNumberChange="onAmountChange"></input-number>-->
                 <input-spinner
@@ -12,12 +12,9 @@
                   @onInputNumberChange="onAmountChange"
                   ></input-spinner>
             </span>
-    <span class="input-group col-hash">
-      <i class="mdi mdi-pound"></i>
-    </span>
   </div>
-  <div class="col-6 col-lg-4 select-col">
-    <v-select v-model="details.id" :options="autocomplete" :on-change="onArticleChange" label="id">
+  <div class="col select-col">
+    <v-select v-model="details.id" :options="autocomplete" :on-change="onArticleChange" label="id" placeholder="Art.-Nr.">
       <span slot="no-options">Keine(n) Boxen gefunden.</span>
     </v-select>
   </div>
@@ -27,7 +24,7 @@
   <span class="input-group-addon col-lg-2 col-9 font-weight-bold sum-col">
             <small class="d-inline d-lg-none font-weight-normal text-muted">Summe:&nbsp;</small>{{ sum }}€
         </span>
-  <span class="input-group-btn col-4 col-lg-2 delete-col">
+  <span class="input-group-btn col-3 col-lg-2 delete-col">
             <a href="#" class="btn btn-outline-danger btn-block" v-on:click.prevent="showModal = true">
                 <i class="mdi mdi-delete"></i>
             </a>
@@ -71,8 +68,8 @@ export default {
       type: Number,
       default: 0
     },
-    articleId: {
-    },
+    articleId: {},
+    uid: {},
     articleIndex: {
       type: Number
     },
@@ -98,8 +95,6 @@ export default {
     selected(val) {
       if(val) {
         this.$emit('selected', this.$refs.article)
-
-
       }
     }
   },
@@ -121,7 +116,7 @@ export default {
         this.$store.commit('changeArticleAmount', {
           buyerId: this.buyerId,
           value: value,
-          index: this.articleId
+          index: this.uid
         });
       }
     },
@@ -151,27 +146,28 @@ export default {
     },
     // get array with all available articles
     autocomplete() {
-      var articles = _.clone(this.$store.state.articles.all)
-      var buyerArticles = this.$store.getters.getArticlesByBuyerId(this.buyerId);
-      var newArticles = [];
-      for(var i =0; i < articles.length+1; i++) {
-        for(var j = 0; j < buyerArticles.length; j++) {
-          if(articles[i]) {
-            if(
-              parseInt(articles[i].id) == parseInt(buyerArticles[j].id)
-              || parseInt(articles[i].id == parseInt(this.articleId))
-            ) {
-              //console.log('same', articles[i].id)
-              //articles.splice(i, 1)
-              newArticles[i] = articles[i]
-            }
-          }
-        }
-      }
-      _.each(newArticles, newArticle => {
-        _.pull(articles, newArticle)
-      })
-      return articles
+      return this.$store.state.articles.all
+      // var articles = _.clone(this.$store.state.articles.all)
+      // var buyerArticles = this.$store.getters.getArticlesByBuyerId(this.buyerId);
+      // var newArticles = [];
+      // for(var i =0; i < articles.length+1; i++) {
+      //   for(var j = 0; j < buyerArticles.length; j++) {
+      //     if(articles[i]) {
+      //       if(
+      //         parseInt(articles[i].id) == parseInt(buyerArticles[j].id)
+      //         || parseInt(articles[i].id == parseInt(this.articleId))
+      //       ) {
+      //         //console.log('same', articles[i].id)
+      //         //articles.splice(i, 1)
+      //         newArticles[i] = articles[i]
+      //       }
+      //     }
+      //   }
+      // }
+      // _.each(newArticles, newArticle => {
+      //   _.pull(articles, newArticle)
+      // })
+      // return articles
     }
   },
   methods: {
@@ -180,7 +176,7 @@ export default {
       this.$store.commit('changeArticleAmount', {
         buyerId: this.buyerId,
         value: value,
-        index: this.articleId
+        index: this.uid
       });
     },
     // Invoke article deletion
@@ -203,7 +199,7 @@ export default {
         this.$store.commit('changeArticleId', {
           buyerId: this.buyerId,
           newId: newArticle.id,
-          oldId: this.articleId
+          oldId: this.uid
         })
       }
     }
