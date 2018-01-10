@@ -11851,33 +11851,33 @@ section.order-navigation nav.navbar {
       flex-wrap: nowrap;
 }
 
-section.order-navigation nav.navbar .clear-search {
+.navbar .clear-search {
   margin-left: -34px;
   color: #adb5bd;
 }
 
-section.order-navigation nav.navbar .clear-search:hover {
+.navbar .clear-search:hover {
   color: #495057;
 }
 
-section.order-navigation nav.navbar .search-icon {
+.navbar .search-icon {
   margin-left: -34px;
   color: #adb5bd;
 }
 
-section.order-navigation nav.navbar .save-indicator {
+.navbar .save-indicator {
   cursor: pointer;
   position: relative;
   margin-right: 8px;
   width: 40px;
 }
 
-section.order-navigation nav.navbar .save-indicator i {
+.navbar .save-indicator i {
   position: absolute;
   right: 6px;
 }
 
-section.order-navigation nav.navbar .save-indicator .sl-spinner {
+.navbar .save-indicator .sl-spinner {
   margin-top: 8px;
   position: absolute;
   right: 8px;
@@ -12383,7 +12383,8 @@ section.details a.show-help:hover {
   opacity: 0;
 }
 
-.info-box {
+.info-box,
+.print-list {
   position: relative;
   height: 0;
   overflow: hidden;
@@ -12391,7 +12392,8 @@ section.details a.show-help:hover {
   transition: height 350ms;
 }
 
-.info-box::after {
+.info-box::after,
+.print-list::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -12403,26 +12405,38 @@ section.details a.show-help:hover {
 }
 
 .info-box-enter,
-.info-box-leave-to {
+.info-box-leave-to,
+.print-list-enter,
+.print-list-leave-to {
   opacity: 0;
 }
 
 .info-box-leave,
-.info-box-enter-to {
+.info-box-enter-to,
+.print-list-leave,
+.print-list-enter-to {
   opacity: 1;
 }
 
 .info-box-enter-active,
-.info-box-leave-active {
+.info-box-leave-active,
+.print-list-enter-active,
+.print-list-leave-active {
   position: absolute;
   width: 100%;
   -webkit-transition: opacity 200ms ease-in-out;
   transition: opacity 200ms ease-in-out;
 }
 
-.info-box-enter-active {
+.info-box-enter-active,
+.print-list-enter-active {
   -webkit-transition-delay: 100ms;
           transition-delay: 100ms;
+}
+
+.print-list::after {
+  background-image: -webkit-gradient(linear, left bottom, left top, from(#fff), to(rgba(255, 255, 255, 0)));
+  background-image: linear-gradient(to top, #fff, rgba(255, 255, 255, 0));
 }
 
 .fade-page-enter-active,
