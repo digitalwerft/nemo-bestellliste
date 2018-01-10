@@ -11984,6 +11984,12 @@ section.orders .buyer-name {
   padding-bottom: 42px;
 }
 
+@media (max-width: 575px) {
+  section.orders .buyer-name {
+    padding-bottom: 80px;
+  }
+}
+
 section.orders .buyer-name .input-group .mobile-save-modal {
   position: absolute;
   top: 0;
@@ -12007,6 +12013,29 @@ section.orders .buyer-name .input-group .mobile-save-modal a {
 
 section.orders .buyer-name .input-group .form-control {
   border: 1px solid #ced4da;
+}
+
+@media (max-width: 575px) {
+  section.orders .buyer-name .input-group {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+
+  section.orders .buyer-name .input-group .mobile-save-modal {
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+    position: relative;
+    width: 100%;
+  }
+
+  section.orders .buyer-name .input-group .mobile-save-modal a.btn.btn-light {
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+  }
 }
 
 section.orders .buyer-name .buyer-name-title {
@@ -12157,6 +12186,10 @@ section.orders .article-item.selected .btn-outline-danger.btn-block.btn {
     border-bottom: 1px solid #ced4da !important;
     background-color: #f8f9fa !important;
   }
+}
+
+section.orders .article-item .delete-col {
+  min-width: 45px;
 }
 
 section.orders .article-item.disabled {
@@ -12659,6 +12692,10 @@ section.details a.show-help:hover {
   border: none;
 }
 
+.spinner-col {
+  min-width: 100px;
+}
+
 .spinner {
   width: 40px;
   height: 40px;
@@ -12742,6 +12779,10 @@ a {
 
 .v-select .dropdown-toggle .selected-tag {
   position: absolute;
+}
+
+.v-select .dropdown-toggle .form-control {
+  width: 100% !important;
 }
 
 .v-select .open-indicator {
@@ -12935,6 +12976,12 @@ section.orders .buyer-name {
   padding-bottom: 42px;
 }
 
+@media (max-width: 575px) {
+  section.orders .buyer-name {
+    padding-bottom: 80px;
+  }
+}
+
 section.orders .buyer-name .input-group .mobile-save-modal {
   position: absolute;
   top: 0;
@@ -12958,6 +13005,29 @@ section.orders .buyer-name .input-group .mobile-save-modal a {
 
 section.orders .buyer-name .input-group .form-control {
   border: 1px solid #ced4da;
+}
+
+@media (max-width: 575px) {
+  section.orders .buyer-name .input-group {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+
+  section.orders .buyer-name .input-group .mobile-save-modal {
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+    position: relative;
+    width: 100%;
+  }
+
+  section.orders .buyer-name .input-group .mobile-save-modal a.btn.btn-light {
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+  }
 }
 
 section.orders .buyer-name .buyer-name-title {
@@ -13108,6 +13178,10 @@ section.orders .article-item.selected .btn-outline-danger.btn-block.btn {
     border-bottom: 1px solid #ced4da !important;
     background-color: #f8f9fa !important;
   }
+}
+
+section.orders .article-item .delete-col {
+  min-width: 45px;
 }
 
 section.orders .article-item.disabled {
