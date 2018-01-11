@@ -30,7 +30,7 @@ Vue.use(Popover)
 
 Vue.prototype.$http = axios;
 
-import iziToast from 'iziToast';
+import iziToast from 'izitoast';
 
 iziToast.settings({
   close: false,

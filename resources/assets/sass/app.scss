@@ -4,7 +4,7 @@
 // Styles
 @import "variables"; // Variables
 @import "~bootstrap/scss/bootstrap"; // Bootstrap
-@import "~iziToast/dist/css/iziToast"; // iziToast
+@import "~iziToast/dist/css/izitoast"; // iziToast
 
 @import "./modules/layout.scss";
 @import "./modules/footer.scss";
@@ -20,3 +20,4 @@
 @import "./modules/modal.scss";
 @import "./modules/order-list.scss";
 @import "./modules/tables.scss";
+@import "./modules/utilities.scss";
