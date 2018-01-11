@@ -84,10 +84,10 @@
           </ul>
           <div class="form-inline ml-auto">
             <input class="form-control" type="search" ref="searchInput" placeholder="Filtern" aria-label="Search" v-model="search" @input="updateSearch()" id="search-input">
-            <label for="search-input" class="search-icon" v-if="!value">
+            <label for="search-input" class="search-icon" v-if="!search">
               <i class="mdi mdi-magnify"></i>
             </label>
-            <a href="" class="mdi mdi-close-circle-outline clear-search" @click="clearSearch" :class="{hidden: (value=='')}"></a>
+            <a href="" class="mdi mdi-close-circle-outline clear-search" @click.prevent="clearSearch" :class="{hidden: (search=='')}"></a>
           </div>
         </div>
 

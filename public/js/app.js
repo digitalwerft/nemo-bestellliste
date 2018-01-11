@@ -64079,7 +64079,7 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              !_vm.value
+              !_vm.search
                 ? _c(
                     "label",
                     {
@@ -64092,9 +64092,14 @@ var render = function() {
               _vm._v(" "),
               _c("a", {
                 staticClass: "mdi mdi-close-circle-outline clear-search",
-                class: { hidden: _vm.value == "" },
+                class: { hidden: _vm.search == "" },
                 attrs: { href: "" },
-                on: { click: _vm.clearSearch }
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.clearSearch($event)
+                  }
+                }
               })
             ])
           ]),
