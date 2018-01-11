@@ -12273,7 +12273,7 @@ section.orders .input-group .form-control {
   margin-bottom: 0;
 }
 
-.highlight {
+span.highlight {
   background: #ffc107;
 }
 
@@ -13319,6 +13319,34 @@ table.table-mobile thead.thead-light th {
 
   table.table-mobile.table-mobile-grouped tr:not(.detail):not(.is-empty):not(.tfooter) {
     margin-bottom: 0;
+  }
+}
+
+.d-list-item {
+  display: list-item !important;
+}
+
+@media (min-width: 576px) {
+  .d-sm-list-item {
+    display: list-item !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .d-md-list-item {
+    display: list-item !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .d-lg-list-item {
+    display: list-item !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .d-xl-list-item {
+    display: list-item !important;
   }
 }
 
