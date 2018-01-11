@@ -22,6 +22,36 @@ section.order-navigation {
     }
   }
 
+  .form-inline {
+    label {
+      display: flex;
+      margin-bottom: 0;
+    }
+
+    @include media-breakpoint-down(xs) {
+      display: block;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      padding: 10px 10px;
+      background: white;
+      z-index: 12;
+
+      label, .clear-search {
+        display: inline-block;
+        position: absolute;
+        right: 20px;
+        top: 16px;
+      }
+
+      input.form-control {
+        height: 100%;
+      }
+    }
+  }
+
   .search-icon {
       margin-left: -34px;
       color: $gray-500;
@@ -57,4 +87,12 @@ section.order-navigation {
   box-shadow: 0 5px 0 0 $body-bg;
   position: relative;
   z-index: 10;
+}
+
+.btn.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 20;
+  box-shadow: 0 3px 8px 0px rgba(black, 0.2);
 }

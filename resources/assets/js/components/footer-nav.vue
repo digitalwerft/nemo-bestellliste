@@ -1,5 +1,5 @@
 <template>
-  <div class="container sticky-container ">
+  <div class="container sticky-container d-none d-md-block">
     <nav class="navbar navbar-expand-md navbar-light bg-white fixed-bottom footer-bar">
             <router-link :to="{name: 'summary'}" class="d-block d-md-none btn btn-success btn-block btn-lg">Zusammenfassung
           </router-link>
@@ -18,13 +18,14 @@
             <i class="mdi mdi-currency-eur">&nbsp;</i>Spendensumme: {{ earnings }}€
           </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
+        <!-- <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <router-link :to="{name: 'summary'}" class="btn btn-outline-danger my-2 my-sm-0 order-now">Zusammenfassung
-              <i class="mdi mdi-chevron-right"></i>
+            <router-link :to="{name: 'summary'}" class="btn btn-outline-danger my-2 my-sm-0 order-now">
+              <i class="mdi mdi-grid">&nbsp;</i>
+              Zusammenfassung
             </router-link>
           </li>
-        </ul>
+        </ul> -->
       </div>
     </nav>
   </div>

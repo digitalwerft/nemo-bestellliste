@@ -115,6 +115,9 @@ section.orders {
 
       @include media-breakpoint-down(xs) {
         flex-direction: column;
+        .form-control {
+          width: 100%;
+        }
 
         .mobile-save-modal {
           order: 2;

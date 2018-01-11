@@ -11860,6 +11860,39 @@ section.order-navigation nav.navbar {
   color: #495057;
 }
 
+.navbar .form-inline label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 0;
+}
+
+@media (max-width: 575px) {
+  .navbar .form-inline {
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 10px 10px;
+    background: white;
+    z-index: 12;
+  }
+
+  .navbar .form-inline label,
+  .navbar .form-inline .clear-search {
+    display: inline-block;
+    position: absolute;
+    right: 20px;
+    top: 16px;
+  }
+
+  .navbar .form-inline input.form-control {
+    height: 100%;
+  }
+}
+
 .navbar .search-icon {
   margin-left: -34px;
   color: #adb5bd;
@@ -11895,6 +11928,15 @@ section.order-navigation nav.navbar {
           box-shadow: 0 5px 0 0 #eae9e2;
   position: relative;
   z-index: 10;
+}
+
+.btn.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 20;
+  -webkit-box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 3px 8px 0px rgba(0, 0, 0, 0.2);
 }
 
 section.orders .alert-no-buyers {
@@ -12021,6 +12063,10 @@ section.orders .buyer-name .input-group .form-control {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
+  }
+
+  section.orders .buyer-name .input-group .form-control {
+    width: 100%;
   }
 
   section.orders .buyer-name .input-group .mobile-save-modal {
@@ -13013,6 +13059,10 @@ section.orders .buyer-name .input-group .form-control {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
+  }
+
+  section.orders .buyer-name .input-group .form-control {
+    width: 100%;
   }
 
   section.orders .buyer-name .input-group .mobile-save-modal {
