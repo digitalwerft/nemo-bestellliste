@@ -88,7 +88,6 @@ const getters = {
     var amounts = []
     allBuyers.forEach(buyer => {
       var articles = getters.getArticlesByBuyerId(buyer.id)
-      var totalAmount = 0
       articles.forEach(article => {
         if(!amounts[article.id]) {
           amounts[article.id] = 0
@@ -103,6 +102,10 @@ const getters = {
           article.amount = amount
         }
       })
+    })
+
+    allArticles.forEach(article => {
+      article.total = article.price*article.amount
     })
 
     return allArticles

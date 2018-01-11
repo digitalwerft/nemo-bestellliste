@@ -59642,7 +59642,6 @@ var getters = {
     var amounts = [];
     allBuyers.forEach(function (buyer) {
       var articles = getters.getArticlesByBuyerId(buyer.id);
-      var totalAmount = 0;
       articles.forEach(function (article) {
         if (!amounts[article.id]) {
           amounts[article.id] = 0;
@@ -59657,6 +59656,10 @@ var getters = {
           article.amount = amount;
         }
       });
+    });
+
+    allArticles.forEach(function (article) {
+      article.total = article.price * article.amount;
     });
 
     return allArticles;
@@ -63584,6 +63587,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -63599,6 +63626,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       showPrintList: false,
       search: '',
       value: '',
+      sortBy: 'id',
+      reverseSort: false,
       style: {
         height: 0
       }
@@ -63612,8 +63641,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     buyers: function buyers() {
       return this.$store.getters.getAllBuyers;
     },
+    filteredBuyers: function filteredBuyers() {
+      var _this = this;
+
+      if (!_.isEmpty(this.buyers)) {
+        var v = this.buyers.filter(function (buyer) {
+          return _.lowerCase(buyer.name).match(_.lowerCase(_this.search));
+        });
+        return v;
+      }
+    },
+    sortedArticles: function sortedArticles() {
+      if (this.reverseSort) {
+        return _.reverse(_.sortBy(this.articles, this.sortBy));
+      }
+      return _.sortBy(this.articles, this.sortBy);
+    },
     articles: function articles() {
-      //console.log(this.$store.getters.getSummarizedArticles)
       return this.$store.getters.getSummarizedArticles;
     },
     allArticlesSum: function allArticlesSum() {
@@ -63637,6 +63681,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   methods: {
+    sort: function sort(key) {
+      if (key == this.sortBy) {
+        console.log(key, this.sortBy, this.reverseSort);
+        this.reverseSort = !this.reverseSort;
+      } else {
+        console.log(key, this.sortBy, this.reverseSort);
+        this.sortBy = key;
+      }
+    },
     getArticleById: function getArticleById(id) {
       return this.$store.getters.getArticleById(id);
     },
@@ -63644,7 +63697,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return this.$store.getters.getTotalOrdersPriceByBuyerId(id);
     },
     updateSearch: function updateSearch() {},
-    clearSearch: function clearSearch() {}
+    clearSearch: function clearSearch() {
+      this.search = '';
+    },
+    highlight: function highlight(words) {
+      // only highlight text if search term (this.filterkey) isn't empty
+      if (this.search != '') {
+        // match pattern for search term (i = ignore case, g = global match;
+        // find all matches rather than stopping after the first match)
+        var iQuery = new RegExp(this.search, "ig");
+        // wrap matched term in <span class="highlight">$term</span>
+        return words.toString().replace(iQuery, function (matchedTxt, a, b) {
+          return '<span class=\'highlight\'>' + matchedTxt + '</span>';
+        });
+      } else {
+        // don't highlight anything if nothing was searched
+        return words;
+      }
+    },
+    sortArticles: function sortArticles(articles) {
+      return articles;
+    }
   },
   watch: {
     showPrintList: function showPrintList(newVal, oldVal) {
@@ -63700,12 +63773,153 @@ var render = function() {
           "table",
           { staticClass: "table table-bordered table-striped table-mobile" },
           [
-            _vm._m(2, false, false),
+            _c("thead", { staticClass: "thead-light" }, [
+              _c("tr", [
+                _c("th", { attrs: { scope: "col" } }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.sort("id")
+                        }
+                      }
+                    },
+                    [
+                      _vm._v("\n                Artikel\n                "),
+                      _vm.sortBy == "id"
+                        ? _c("i", {
+                            staticClass: "mdi",
+                            class: {
+                              "mdi-chevron-up": _vm.reverseSort,
+                              "mdi-chevron-down": !_vm.reverseSort
+                            }
+                          })
+                        : _vm._e()
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.sort("amount")
+                        }
+                      }
+                    },
+                    [
+                      _vm._v("\n                Menge\n                "),
+                      _vm.sortBy == "amount"
+                        ? _c("i", {
+                            staticClass: "mdi",
+                            class: {
+                              "mdi-chevron-up": _vm.reverseSort,
+                              "mdi-chevron-down": !_vm.reverseSort
+                            }
+                          })
+                        : _vm._e()
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.sort("price")
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                Kaufpreis pro Box\n                "
+                      ),
+                      _vm.sortBy == "price"
+                        ? _c("i", {
+                            staticClass: "mdi",
+                            class: {
+                              "mdi-chevron-up": _vm.reverseSort,
+                              "mdi-chevron-down": !_vm.reverseSort
+                            }
+                          })
+                        : _vm._e()
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.sort("total")
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                Rechnungsbetrag\n                "
+                      ),
+                      _vm.sortBy == "total"
+                        ? _c("i", {
+                            staticClass: "mdi",
+                            class: {
+                              "mdi-chevron-up": _vm.reverseSort,
+                              "mdi-chevron-down": !_vm.reverseSort
+                            }
+                          })
+                        : _vm._e()
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.sort("returns")
+                        }
+                      }
+                    },
+                    [
+                      _vm._v("\n                Spende\n                "),
+                      _vm.sortBy == "returns"
+                        ? _c("i", {
+                            staticClass: "mdi",
+                            class: {
+                              "mdi-chevron-up": _vm.reverseSort,
+                              "mdi-chevron-down": !_vm.reverseSort
+                            }
+                          })
+                        : _vm._e()
+                    ]
+                  )
+                ])
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "tbody",
               [
-                _vm._l(_vm.articles, function(article) {
+                _vm._l(_vm.sortedArticles, function(article) {
                   return _c("tr", [
                     _c("td", { attrs: { "data-label": "Artikel" } }, [
                       _vm._v(
@@ -63729,7 +63943,7 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", { attrs: { "data-label": "Rechnungsbetrag" } }, [
-                      _vm._v(_vm._s(article.price * article.amount) + "€")
+                      _vm._v(_vm._s(article.total) + "€")
                     ]),
                     _vm._v(" "),
                     _c("td", { attrs: { "data-label": "Spende" } }, [
@@ -63833,19 +64047,35 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "form-inline ml-auto" }, [
               _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.search,
+                    expression: "search"
+                  }
+                ],
                 ref: "searchInput",
                 staticClass: "form-control",
                 attrs: {
                   type: "search",
-                  placeholder: "Suchen",
+                  placeholder: "Filtern",
                   "aria-label": "Search",
                   id: "search-input"
                 },
-                domProps: { value: _vm.value },
+                domProps: { value: _vm.search },
                 on: {
-                  input: function($event) {
-                    _vm.updateSearch()
-                  }
+                  input: [
+                    function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.search = $event.target.value
+                    },
+                    function($event) {
+                      _vm.updateSearch()
+                    }
+                  ]
                 }
               }),
               _vm._v(" "),
@@ -63877,7 +64107,7 @@ var render = function() {
                 [
                   _c("hr"),
                   _vm._v(" "),
-                  _vm._l(_vm.buyers, function(buyer) {
+                  _vm._l(_vm.filteredBuyers, function(buyer) {
                     return _c("div", [
                       _c("div", { staticClass: "table-responsive" }, [
                         _c(
@@ -63915,85 +64145,91 @@ var render = function() {
                             _c(
                               "tbody",
                               [
-                                _vm._l(buyer.articles, function(
-                                  article,
-                                  index
-                                ) {
-                                  return _c("tr", [
-                                    _c(
-                                      "td",
-                                      {
-                                        staticClass: "font-weight-bold",
-                                        attrs: { "data-label": "Name" }
-                                      },
-                                      [
-                                        _vm._v(
-                                          _vm._s(index == 0 ? buyer.name : "")
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { attrs: { "data-label": "Artikel" } },
-                                      [
-                                        _vm._v(
-                                          "#" +
-                                            _vm._s(article.id) +
-                                            " – " +
+                                _vm._l(
+                                  _vm.sortArticles(buyer.articles),
+                                  function(article, index) {
+                                    return _c("tr", [
+                                      _c(
+                                        "td",
+                                        {
+                                          staticClass: "font-weight-bold",
+                                          attrs: { "data-label": "Name" },
+                                          domProps: {
+                                            innerHTML: _vm._s(
+                                              index == 0
+                                                ? _vm.highlight(buyer.name)
+                                                : ""
+                                            )
+                                          }
+                                        },
+                                        [_vm._v('"')]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "td",
+                                        { attrs: { "data-label": "Artikel" } },
+                                        [
+                                          _vm._v(
+                                            "#" +
+                                              _vm._s(article.id) +
+                                              " – " +
+                                              _vm._s(
+                                                _vm.getArticleById(article.id)
+                                                  .name
+                                              )
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "td",
+                                        {
+                                          attrs: { "data-label": "Stückpreis" }
+                                        },
+                                        [
+                                          _vm._v(
                                             _vm._s(
                                               _vm.getArticleById(article.id)
-                                                .name
-                                            )
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { attrs: { "data-label": "Stückpreis" } },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.getArticleById(article.id).price
-                                          ) + "€"
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { attrs: { "data-label": "Anzahl" } },
-                                      [_vm._v(_vm._s(article.amount))]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { attrs: { "data-label": "Erlös" } },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.getArticleById(article.id)
-                                              .returns * article.amount
-                                          ) + "€"
-                                        )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "td",
-                                      { attrs: { "data-label": "Summe" } },
-                                      [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.getArticleById(article.id)
-                                              .price * article.amount
-                                          ) + "€"
-                                        )
-                                      ]
-                                    )
-                                  ])
-                                }),
+                                                .price
+                                            ) + "€"
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "td",
+                                        { attrs: { "data-label": "Anzahl" } },
+                                        [_vm._v(_vm._s(article.amount))]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "td",
+                                        { attrs: { "data-label": "Erlös" } },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.getArticleById(article.id)
+                                                .returns * article.amount
+                                            ) + "€"
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "td",
+                                        { attrs: { "data-label": "Summe" } },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.getArticleById(article.id)
+                                                .price * article.amount
+                                            ) + "€"
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  }
+                                ),
                                 _vm._v(" "),
                                 _c("tr", [
                                   _c("td", { attrs: { colspan: "4" } }),
@@ -64029,7 +64265,7 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _vm._m(3, false, false),
+    _vm._m(2, false, false),
     _vm._v(" "),
     _c(
       "a",
@@ -64086,24 +64322,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "navbar pl-0 pr-0" }, [
       _c("span", { staticClass: "navbar-brand" }, [_vm._v("Zusammenfassung")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: "thead-light" }, [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Artikel")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Menge")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Kaufpreis pro Box")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Rechnungsbetrag")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Spende")])
-      ])
     ])
   },
   function() {
