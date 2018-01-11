@@ -11,7 +11,6 @@
     </section>
     <section class="orders">
       <div class="container">
-        <a href="#" class="btn btn-outline-success btn-block btn-lg d-md-none mt-2 mb-2">Zur Übersicht</a>
         <div v-for="(buyer, index) in filteredBuyer">
           <div v-if="buyer.state == 'active'">
             <buyer :buyer-id="buyer.id" :filterkey="search" v-on:delete-buyer="onBuyerDeleted" v-on:save-buyer="onBuyerSaved" v-on:editing-buyer="handleEditing"></buyer>

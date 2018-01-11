@@ -3,7 +3,7 @@
   <v-waypoint @waypoint-in="inHandler" @waypoint-out="outHandler"></v-waypoint>
   <div class="container sticky-container" v-bind:class="{ 'fixed-top': isFixed }">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <nav class="navbar navbar-expand navbar-light bg-white">
 
       <a class="navbar-brand" href="#">Bestellliste</a>
       <div class="form-inline">
@@ -13,7 +13,6 @@
         </label>
         <a href="" class="mdi mdi-close-circle-outline clear-search" @click="clearSearch" :class="{hidden: (value=='')}"></a>
       </div>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav ml-auto">
           <li class="nav-item text-success save-indicator">
@@ -22,13 +21,13 @@
           <li class="nav-item">
             <a href="#" class="btn btn-outline-primary mr-2" @click.prevent="createBuyer()">
               <i class="mdi mdi-account-plus">&nbsp;</i>
-              neuer Teilnehmer
+              <span class="d-none d-md-inline">neuer Teilnehmer</span>
             </a>
           </li>
           <li class="nav-item">
             <router-link :to="{name: 'summary'}" class="btn btn-outline-primary">
               <i class="mdi mdi-grid">&nbsp;</i>
-              Zusammenfassung
+              <span class="d-none d-md-inline">Zusammenfassung</span>
             </router-link>
           </li>
         </ul>
@@ -37,7 +36,7 @@
             Deine Liste wird automatisch gespeichert sobald du daran Änderungen vornimmst.
           </popover>
         </transition>
-      </div>
+
     </nav>
     <div class="d-none d-lg-block field-titles bg-white ">
       <div class="row">
