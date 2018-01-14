@@ -57,7 +57,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <a href="#" class="btn btn-light btn-block btn-sm" :class="{disabled: !buyer.name || articleList.length == buyer.articles.length}" @click.prevent="addArticle"><i class="mdi mdi-plus"></i> Artikel hinzufügen</a>
+        <a href="#" class="btn btn-light btn-block btn-sm" :class="{disabled: !buyer.name}" @click.prevent="addArticle"><i class="mdi mdi-plus"></i> Artikel hinzufügen</a>
       </div>
       <div class="article-blocker" v-if="editing"></div>
     </div>

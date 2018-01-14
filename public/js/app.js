@@ -61796,11 +61796,7 @@ var render = function() {
                 "a",
                 {
                   staticClass: "btn btn-light btn-block btn-sm",
-                  class: {
-                    disabled:
-                      !_vm.buyer.name ||
-                      _vm.articleList.length == _vm.buyer.articles.length
-                  },
+                  class: { disabled: !_vm.buyer.name },
                   attrs: { href: "#" },
                   on: {
                     click: function($event) {
