@@ -62254,12 +62254,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       // going: in, out
       // direction: top, right, bottom, left
       if (going === this.$waypointMap.GOING_IN) {
-        console.log('waypoint going in!', direction, going);
         this.isFixed = false;
       }
 
       if (direction === this.$waypointMap.DIRECTION_TOP && going === this.$waypointMap.GOING_OUT) {
-        console.log('waypoint going top!', direction, going);
         this.isFixed = true;
       }
     },
