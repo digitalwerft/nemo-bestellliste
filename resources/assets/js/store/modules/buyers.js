@@ -138,6 +138,7 @@ const mutations = {
       buyer.articles.forEach(article => {
         article.uid = _.uniqueId()
       })
+      buyer.state = 'saved'
     })
     state.all = buyers;
     state.requestComplete = true;
@@ -146,6 +147,7 @@ const mutations = {
     var buyer = state.all.find(buyer => {
       return parseInt(buyer.id) === parseInt(payload.buyerId)
     });
+    buyer.state = 'changed'
     var article = buyer.articles.find(article => article.uid === payload.index)
     if(article.length > 1) {
       return false
@@ -156,6 +158,7 @@ const mutations = {
     var buyer = state.all.find(buyer => {
       return parseInt(buyer.id) === parseInt(payload.buyerId)
     });
+    buyer.state = 'changed'
     var article = buyer.articles.find(article => article.uid === payload.oldId)
     article.id = parseInt(payload.newId)
   },
@@ -173,12 +176,14 @@ const mutations = {
     var buyer = state.all.find(buyer => {
       return parseInt(buyer.id) === parseInt(payload.buyerId)
     });
+    buyer.state = 'changed'
     buyer.articles.splice(payload.articleIndex, 1);
   },
   resetArticle(state, payload) {
     var buyer = state.all.find(buyer => {
       return parseInt(buyer.id) === parseInt(payload.buyerId)
     });
+    buyer.state = 'changed'
     if (buyer.articles.length < 2) {
       buyer.articles[0].id = 0;
       buyer.articles[0].amount = 1;
@@ -186,18 +191,36 @@ const mutations = {
   },
   updateBuyerName(state, payload) {
     payload.buyer.name = payload.newName
+    payload.buyer.state = 'changed'
   },
   'delete-buyer'(state, payload) {
     state.all = state.all.filter(buyer => {
       return buyer.id != payload.buyer.id
     });
+    // perform immediate server request
+  },
+  saveBuyer(state, id) {
+    // perform Buyer Update
+    var buyer = state.all.find(buyer => {
+      return parseInt(buyer.id) === parseInt(id)
+    });
+    // check if buyer does already exist on server
+    if(buyer.state == 'new') {
+      // add new buyer to the Database
+    } else if(buyer.state == 'changed') {
+      // update Buyer on Database
+    }
+  },
+  saveAllBuyers(state) {
+
   },
   newBuyer(state) {
     state.all.push({
       articles: [],
       name: '',
       state: 'active',
-      id: _.uniqueId()
+      id: _.uniqueId(),
+      state: 'new'
     })
   }
 }

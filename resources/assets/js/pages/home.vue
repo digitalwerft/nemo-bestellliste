@@ -12,9 +12,8 @@
     <section class="orders">
       <div class="container">
         <div v-for="(buyer, index) in filteredBuyer">
-          <div v-if="buyer.state == 'active'">
+
             <buyer :buyer-id="buyer.id" :filterkey="search" v-on:delete-buyer="onBuyerDeleted" v-on:save-buyer="onBuyerSaved" v-on:editing-buyer="handleEditing"></buyer>
-          </div>
         </div>
         <div class="alert alert-no-buyers mt-3 text-muted text-center" v-if="filteredBuyer && filteredBuyer.length < 1">
           Deine Suche nach <mark>{{ search }}</mark> erzielte leider keine Treffer.
