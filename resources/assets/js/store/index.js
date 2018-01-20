@@ -11,12 +11,19 @@ Vue.use(Vuex);
 const debug = process.env.NODE_ENV !== 'production'
 
 export default new Vuex.Store({
+  state: {
+    isAuthenticated: false
+  },
   modules: {
     articles,
     buyers,
     user
   },
-  mutations: {},
+  mutations: {
+    LOGIN(state) {
+      state.isAuthenticated = true
+    }
+  },
   getters: {
     hasFullyLoaded(state, getters) {
       var buyers = !_.isEmpty(state.buyers.all)
@@ -27,14 +34,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    fetchAll({
-      dispatch, commit
-    }, {
-      self
-    }) {
+    fetchAll({dispatch, commit}, {self}) {
       dispatch('fetchBuyers', {self: self})
       dispatch('fetchArticles', {self: self})
       dispatch('fetchUser', {self: self})
+    },
+    login({dispatch, commit}) {
+      commit(LOGIN)
     }
   },
   strict: debug

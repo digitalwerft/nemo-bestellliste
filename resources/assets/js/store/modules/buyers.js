@@ -35,7 +35,7 @@ const getters = {
         return parseInt(art.id) === parseInt(article.id)
       })
       if (details) {
-        sum = sum + article.amount * details.price;
+        sum = sum + article.amount * details.gross_price;
       }
     });
     return sum;
@@ -48,7 +48,7 @@ const getters = {
         return parseInt(art.id) === parseInt(article.id)
       })
       if (details) {
-        sum = sum + article.amount * details.returns;
+        sum = sum + article.amount * details.suggested_donation;
       }
     });
     return sum;

@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    //exec('php /full/path/to/artisan view:clear');
-    return view('welcome');
+Route::get('/', function (Request $request) {
+  // Pseudo login stub
+  return view('welcome', [
+    'isAuthenticated' => $request->has('code'),
+  ]);
 });

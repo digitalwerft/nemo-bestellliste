@@ -14,12 +14,12 @@
             </span>
   </div>
   <div class="col select-col">
-    <v-select v-model="details.id" :options="autocomplete" :on-change="onArticleChange" label="id" placeholder="Art.-Nr.">
+    <v-select v-model="details.id" :options="autocomplete" :on-change="onArticleChange" label="number" placeholder="Art.-Nr.">
       <span slot="no-options">Keine(n) Boxen gefunden.</span>
     </v-select>
   </div>
   <span class="input-group-addon col-lg-5 col-9 name-col">
-            {{ name ? name : '--' }}&nbsp;<small class="text-muted">{{ size ? '('+size+')' : '' }}</small>
+            {{ name ? name : '--' }}
         </span>
   <span class="input-group-addon col-lg-2 col-9 font-weight-bold sum-col">
             <small class="d-inline d-lg-none font-weight-normal text-muted">Summe:&nbsp;</small>{{ sum }}€
@@ -132,16 +132,14 @@ export default {
       // no article is specified) return default values
       return details ? details : def
     },
-    // get size value of current article, if selected
-    size() {
-      return this.details ? this.details.size : ''
-    },
     // get price of this article with speciied amount
     sum() {
-      return this.details ? this.amount * this.details.price : '';
+      return this.details ?
+        this.amount * this.details.gross_price
+        : '';
     },
     returns() {
-      var returns = parseInt(this.amount) * parseInt(this.details.returns);
+      var returns = parseInt(this.amount) * parseInt(this.details.suggested_donation);
       return returns ? returns : 0
     },
     // get array with all available articles

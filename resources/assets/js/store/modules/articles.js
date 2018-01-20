@@ -21,7 +21,7 @@ const actions = {
     self
   }) {
     self.$http
-      .get("./api/articles/list")
+      .get("./api/products")
       .then(response => {
         commit("FETCH_ARTICLES", response.data);
       })
