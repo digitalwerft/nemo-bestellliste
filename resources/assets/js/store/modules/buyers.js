@@ -34,7 +34,7 @@ const getters = {
         return art.data.number == article.number
       })
       if (details) {
-        sum = sum + article.amount * details.data.vat;
+        sum = sum + article.amount * details.gross_price;
       }
     });
     return sum;
@@ -47,7 +47,7 @@ const getters = {
         return art.data.number == article.number
       })
       if (details) {
-        sum = sum + article.amount * details.data.suggested_donation;
+        sum = sum + article.amount * details.suggested_donation;
       }
     });
     return sum;

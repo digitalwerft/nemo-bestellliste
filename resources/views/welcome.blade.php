@@ -12,6 +12,12 @@
   <!-- Fonts -->
   <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="css/app.css?v=1.06">
+
+  @if ($isAuthenticated)
+  <script>
+    window.localStorage.setItem('auth', '{{ json_encode(["token" => "hello-token"]) }}')
+  </script>
+  @endif
 </head>
 
 <body>

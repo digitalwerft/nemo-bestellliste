@@ -10,6 +10,8 @@ import './bootstrap';
 import Vue from 'vue';
 import VueRouter from 'vue-router'
 
+import routes from './routes'
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -44,26 +46,18 @@ iziToast.settings({
 
 Vue.prototype.$note = iziToast;
 
-import Home from './pages/home.vue'
-import Summary from './pages/summary.vue'
-
 const router = new VueRouter({
-  routes: [
-    {
-      path: '/',
-      component: Home,
-      name: 'home'
-    },
-    {
-      path: '/zusammenfassung',
-      component: Summary,
-      name: 'summary'
-    }
-  ]
+  routes
 })
 
-const app = new Vue({
-  router,
-}).$mount('#app');
 
-router.replace('/')
+const app = new Vue({
+  router
+})
+
+router.beforeEach(routes.guard)
+router.replace({name: 'login'})
+
+app.$mount('#app')
+
+window.router = router

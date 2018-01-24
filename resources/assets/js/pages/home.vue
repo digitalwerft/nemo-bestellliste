@@ -1,20 +1,28 @@
 <template>
   <div v-if="!isLoading">
-    <info-box :visible="displayInfo"></info-box>
-    <section class="details">
-      <user v-on:display-info="displayInfo = !displayInfo"></user>
-    </section>
-
-
-    <section class="order-navigation">
-      <navbar v-model="search" @onbuyercreate="createBuyer"></navbar>
-    </section>
-    <section class="orders">
+    <section>
       <div class="container">
-        <div v-for="(buyer, index) in filteredBuyer">
-
-            <buyer :buyer-id="buyer.id" :filterkey="search" v-on:delete-buyer="onBuyerDeleted" v-on:save-buyer="onBuyerSaved" v-on:editing-buyer="handleEditing"></buyer>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title pb-3 mb-3">Hallo {{ fundraiser.first_name }}!</h4>
+            <p>
+              Bitte wähle zunächst dasjenige Projekt aus, für welches du
+              eine Sammelbestellung aufgeben/erstellen möchtest:
+            </p>
+          </div>
         </div>
+      </div>
+    </section>
+    <section class="campaigns">
+      <div class="container">
+        <div v-for="(campaign, index) in campaigns" class="card mt-1">
+          <div class="card-body">
+            SBNr #{{ campaign.id }}: <router-link :to="{ name: 'campaign', params: {id: campaign.id}}">{{ campaign.group }}</router-link>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--
         <div class="alert alert-no-buyers mt-3 text-muted text-center" v-if="filteredBuyer && filteredBuyer.length < 1">
           Deine Suche nach <mark>{{ search }}</mark> erzielte leider keine Treffer.
         </div>
@@ -27,14 +35,13 @@
                   </a>
       </div>
     </section>
-    <footer-nav></footer-nav>
+  -->
   </div>
 </template>
 <script>
 import store from '../store'
 
 import buyer from '../components/buyer.vue'
-import footerNav from '../components/footer-nav.vue'
 import navbar from '../components/navbar.vue'
 import user from '../components/user.vue'
 import infoBox from '../components/info-box.vue'
@@ -42,23 +49,23 @@ import infoBox from '../components/info-box.vue'
 export default {
   components: {
     buyer,
-    footerNav,
     navbar,
     user,
     infoBox
   },
   created() {
-    // Fetch Data if not already happened
-    if(!this.$store.getters.hasFullyLoaded) {
-      this.$store.dispatch('fetchAll', {
-        self: this
-      }).then(() => {
-        this.finishLoading()
+    const store = this.$store
+    const self  = {self: this}
+
+    if (store.getters.hasLoaded('fundraiser')) {
+      return
+    }
+
+    store.dispatch('fetchFundraiser', self)
+      .then(() => {
+        store.dispatch('fetchCampaigns', self)
+          .then(this.hideSpinner)
       })
-    }
-    if (!this.buyers) {
-      displayInfo = true;
-    }
   },
   store,
   data() {
@@ -73,6 +80,12 @@ export default {
     };
   },
   computed: {
+    fundraiser() {
+      return this.$store.getters.getFundraiser
+    },
+    campaigns() {
+      return this.$store.getters.getCampaigns
+    },
     buyers() {
       return this.$store.getters.getAllBuyers;
     },
@@ -88,11 +101,10 @@ export default {
       }
     },
     isLoading() {
-      if(this.$store.getters.hasFullyLoaded) {
-        return false
-      } else {
-        return true
-      }
+      return !this.$store.getters.hasLoaded([
+        'fundraiser',
+        //'campaigns'
+      ])
     }
   },
   watch: {
@@ -104,31 +116,13 @@ export default {
     }
   },
   methods: {
-    handleEditing(isEditing) {
-      if (isEditing) {
-        this.hasUnsavedBuyer = true
-      } else {
-        this.hasUnsavedBuyer = false
-      }
-    },
-    onBuyerEdit(a) {
-      //console.log(a)
-    },
-    onBuyerSaved() {
-      if (this.hasUnsavedBuyer) {
-        this.hasUnsavedBuyer = false
-      }
-    },
-    onBuyerDeleted() {
-      if (this.hasUnsavedBuyer) {
-        this.hasUnsavedBuyer = false
-      }
-    },
-    finishLoading() {
+    hideSpinner() {
+      const spinner = $('.loading-overlay')
+
       setTimeout(() => {
-        $('.loading-overlay').removeClass('loading');
+        spinner.removeClass('loading');
         setTimeout(() => {
-          $('.loading-overlay').addClass('hidden');
+          spinner.addClass('hidden');
         }, 1000);
       }, 600);
     },
@@ -140,15 +134,6 @@ export default {
         icon: 'mdi mdi-check'
       };
       iziToast.show(_.merge(opt, options));
-    },
-    createBuyer(e) {
-      if (e) {
-        e.preventDefault();
-      }
-      if (!this.hasUnsavedBuyer) {
-        this.hasUnsavedBuyer = true
-        this.$store.commit('newBuyer')
-      }
     }
   }
 }
