@@ -217,6 +217,9 @@ export default {
         return
       } else {                          // close editing mode and syve changes
         this.$emit('save-buyer')
+        this.$store.commit('saveBuyer', {
+          buyer: this.buyer.id
+        })
         this.oldName = '';
         this.editing = false;
       }

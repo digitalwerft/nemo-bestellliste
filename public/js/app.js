@@ -15464,7 +15464,7 @@ module.exports = Cancel;
 
 __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
 
-var debug = "development" !== 'production';
+var debug = true;
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
   modules: {
@@ -58507,7 +58507,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -59637,6 +59636,8 @@ var mutations = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var state = {
   all: [],
   requestComplete: false
@@ -59783,6 +59784,7 @@ var mutations = {
       buyer.articles.forEach(function (article) {
         article.uid = _.uniqueId();
       });
+      buyer.state = 'saved';
     });
     state.all = buyers;
     state.requestComplete = true;
@@ -59791,6 +59793,7 @@ var mutations = {
     var buyer = state.all.find(function (buyer) {
       return parseInt(buyer.id) === parseInt(payload.buyerId);
     });
+    buyer.state = 'changed';
     var article = buyer.articles.find(function (article) {
       return article.uid === payload.index;
     });
@@ -59803,6 +59806,7 @@ var mutations = {
     var buyer = state.all.find(function (buyer) {
       return parseInt(buyer.id) === parseInt(payload.buyerId);
     });
+    buyer.state = 'changed';
     var article = buyer.articles.find(function (article) {
       return article.uid === payload.oldId;
     });
@@ -59822,12 +59826,14 @@ var mutations = {
     var buyer = state.all.find(function (buyer) {
       return parseInt(buyer.id) === parseInt(payload.buyerId);
     });
+    buyer.state = 'changed';
     buyer.articles.splice(payload.articleIndex, 1);
   },
   resetArticle: function resetArticle(state, payload) {
     var buyer = state.all.find(function (buyer) {
       return parseInt(buyer.id) === parseInt(payload.buyerId);
     });
+    buyer.state = 'changed';
     if (buyer.articles.length < 2) {
       buyer.articles[0].id = 0;
       buyer.articles[0].amount = 1;
@@ -59835,19 +59841,34 @@ var mutations = {
   },
   updateBuyerName: function updateBuyerName(state, payload) {
     payload.buyer.name = payload.newName;
+    payload.buyer.state = 'changed';
   },
   'delete-buyer': function deleteBuyer(state, payload) {
     state.all = state.all.filter(function (buyer) {
       return buyer.id != payload.buyer.id;
     });
+    // perform immediate server request
   },
+  saveBuyer: function saveBuyer(state, id) {
+    // perform Buyer Update
+    var buyer = state.all.find(function (buyer) {
+      return parseInt(buyer.id) === parseInt(id);
+    });
+    // check if buyer does already exist on server
+    if (buyer.state == 'new') {
+      // add new buyer to the Database
+    } else if (buyer.state == 'changed') {
+      // update Buyer on Database
+    }
+  },
+  saveAllBuyers: function saveAllBuyers(state) {},
   newBuyer: function newBuyer(state) {
-    state.all.push({
+    state.all.push(_defineProperty({
       articles: [],
       name: '',
       state: 'active',
       id: _.uniqueId()
-    });
+    }, "state", 'new'));
   }
 };
 
@@ -60185,6 +60206,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       } else {
         // close editing mode and syve changes
         this.$emit('save-buyer');
+        this.$store.commit('saveBuyer', {
+          buyer: this.buyer.id
+        });
         this.oldName = '';
         this.editing = false;
       }
@@ -63521,27 +63545,20 @@ var render = function() {
               { staticClass: "container" },
               [
                 _vm._l(_vm.filteredBuyer, function(buyer, index) {
-                  return _c("div", [
-                    buyer.state == "active"
-                      ? _c(
-                          "div",
-                          [
-                            _c("buyer", {
-                              attrs: {
-                                "buyer-id": buyer.id,
-                                filterkey: _vm.search
-                              },
-                              on: {
-                                "delete-buyer": _vm.onBuyerDeleted,
-                                "save-buyer": _vm.onBuyerSaved,
-                                "editing-buyer": _vm.handleEditing
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      : _vm._e()
-                  ])
+                  return _c(
+                    "div",
+                    [
+                      _c("buyer", {
+                        attrs: { "buyer-id": buyer.id, filterkey: _vm.search },
+                        on: {
+                          "delete-buyer": _vm.onBuyerDeleted,
+                          "save-buyer": _vm.onBuyerSaved,
+                          "editing-buyer": _vm.handleEditing
+                        }
+                      })
+                    ],
+                    1
+                  )
                 }),
                 _vm._v(" "),
                 _vm.filteredBuyer && _vm.filteredBuyer.length < 1

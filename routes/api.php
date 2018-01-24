@@ -22,7 +22,6 @@ Route::get('order/123/buyers', function () {
             [
                 "id" => 1,
                 'name' => 'Vorname Name',
-                'state' => 'active',
                 'articles' => [
                     [
                         "id" => 350,
@@ -36,7 +35,6 @@ Route::get('order/123/buyers', function () {
             ], [
                 "id" => 2,
                 'name' => 'Max Mustermann',
-                'state' => 'active',
                 'articles' => [
                     [
                         "id" => 350,
@@ -50,7 +48,6 @@ Route::get('order/123/buyers', function () {
             ], [
                 "id" => 3,
                 'name' => 'Marianne Musterfrau',
-                'state' => 'active',
                 'articles' => [
                     [
                         "id" => 351,
@@ -64,7 +61,6 @@ Route::get('order/123/buyers', function () {
             ], [
                 "id" => 4,
                 'name' => 'Marianne Musterfrau',
-                'state' => 'active',
                 'articles' => [
                     [
                         "id" => 352,
@@ -78,7 +74,6 @@ Route::get('order/123/buyers', function () {
             ], [
                 "id" => 5,
                 'name' => 'Marianne Musterfrau',
-                'state' => 'active',
                 'articles' => [
                     [
                         "id" => 211,
@@ -92,7 +87,6 @@ Route::get('order/123/buyers', function () {
             ], [
                 "id" => 6,
                 'name' => 'Marianne Musterfrau',
-                'state' => 'active',
                 'articles' => [
                     [
                         "id" => 212,
@@ -106,7 +100,6 @@ Route::get('order/123/buyers', function () {
             ], [
                 "id" => 7,
                 'name' => 'Marianne Musterfrau',
-                'state' => 'active',
                 'articles' => [
                     [
                         "id" => 211,
@@ -120,7 +113,6 @@ Route::get('order/123/buyers', function () {
             ], [
                 "id" => 8,
                 'name' => 'Marianne Musterfrau',
-                'state' => 'active',
                 'articles' => [
                     [
                         "id" => 212,
