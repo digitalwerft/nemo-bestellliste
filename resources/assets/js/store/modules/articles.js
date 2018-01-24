@@ -4,13 +4,20 @@ const state = {
 }
 
 const getters = {
-  getArticleById: state => id => {
+  getArticleByNumber: state => number => {
     return state.all.find(article => {
-      return parseInt(article.id) === parseInt(id)
+      return article.number == number
     });
   },
   getAllArticles: state => {
     return state.all
+  },
+  getAllArticleNumbers: state => {
+    var numbers = []
+    state.all.forEach(article => {
+      numbers.push(article.data.number)
+    })
+    return numbers
   }
 }
 
@@ -21,7 +28,7 @@ const actions = {
     self
   }) {
     self.$http
-      .get("./api/articles/list")
+      .get("./api/articles")
       .then(response => {
         commit("FETCH_ARTICLES", response.data);
       })

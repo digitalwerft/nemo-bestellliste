@@ -16,7 +16,7 @@ const actions = {
     self
   }) {
     self.$http
-      .get("./api/user/123")
+      .get("./api/campaign/xyz")
       .then(response => {
         commit("FETCH_USER", response.data);
       })

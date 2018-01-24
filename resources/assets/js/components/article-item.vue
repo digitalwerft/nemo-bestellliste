@@ -14,7 +14,7 @@
             </span>
   </div>
   <div class="col select-col">
-    <v-select v-model="details.id" :options="autocomplete" :on-change="onArticleChange" label="id" placeholder="Art.-Nr.">
+    <v-select v-model="details.id" :options="autocomplete" :on-change="onArticleChange" label="number" placeholder="Art.-Nr.">
       <span slot="no-options">Keine(n) Boxen gefunden.</span>
     </v-select>
   </div>
@@ -68,7 +68,7 @@ export default {
       type: Number,
       default: 0
     },
-    articleId: {},
+    articleNumber: {},
     uid: {},
     articleIndex: {
       type: Number
@@ -104,7 +104,7 @@ export default {
     },
     // get unique id for each element for dom-events
     id() {
-      return 'buyer-' + this.buyerId + '__article-' + this.articleId
+      return 'buyer-' + this.buyerId + '__article-' + this.articleNumber
     },
     // v-model workaround for article amount
     quantity: {
@@ -127,8 +127,8 @@ export default {
         id: 0,
         price: 0
       };
-      var details = this.$store.getters.getArticleById(this.articleId);
-      // if this.articleId is not specified (when article is newly added and
+      var details = this.$store.getters.getArticleByNumber(this.articleNumber);
+      // if this.articleNumber is not specified (when article is newly added and
       // no article is specified) return default values
       return details ? details : def
     },
@@ -138,7 +138,7 @@ export default {
     },
     // get price of this article with speciied amount
     sum() {
-      return this.details ? this.amount * this.details.price : '';
+      return this.details ? this.amount * this.details.vat : '';
     },
     returns() {
       var returns = parseInt(this.amount) * parseInt(this.details.returns);
@@ -146,7 +146,7 @@ export default {
     },
     // get array with all available articles
     autocomplete() {
-      return this.$store.state.articles.all
+      return this.$store.getters.getAllArticleNumbers
       // var articles = _.clone(this.$store.state.articles.all)
       // var buyerArticles = this.$store.getters.getArticlesByBuyerId(this.buyerId);
       // var newArticles = [];
@@ -155,7 +155,7 @@ export default {
       //     if(articles[i]) {
       //       if(
       //         parseInt(articles[i].id) == parseInt(buyerArticles[j].id)
-      //         || parseInt(articles[i].id == parseInt(this.articleId))
+      //         || parseInt(articles[i].id == parseInt(this.articleNumber))
       //       ) {
       //         //console.log('same', articles[i].id)
       //         //articles.splice(i, 1)
@@ -196,9 +196,9 @@ export default {
     },
     onArticleChange(newArticle) {
       if (typeof(newArticle) === 'object') {
-        this.$store.commit('changeArticleId', {
+        this.$store.commit('changearticleNumber', {
           buyerId: this.buyerId,
-          newId: newArticle.id,
+          newId: newarticle.number,
           oldId: this.uid
         })
       }

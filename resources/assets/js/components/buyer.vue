@@ -48,7 +48,7 @@
     <div class="card">
       <div class="card-body">
         <div v-for="(article, index) in buyer.articles">
-          <article-item :articleId="article.id" :amount="article.amount" :buyerId="buyerId" :article-index="index" :disabled="editing" v-on:selected="select" :uid="article.uid"></article-item>
+          <article-item :articleId="article.number" :amount="article.amount" :buyerId="buyerId" :article-index="index" :disabled="editing" v-on:selected="select" :uid="article.uid"></article-item>
         </div>
         <div class="no-articles text-center" v-if="buyer.articles.length<1">
           <small class="text-muted text-danger text-center" v-if="!buyer.name">Dieser Teilnehmer braucht einen Namen, bevor du ihm Artikel zuweisen kannst.</small>
@@ -159,7 +159,7 @@ export default {
   },
   methods: {
     select(article) {
-      console.log(article)
+      //console.log(article)
     },
     makeEditable(e) {
       // enter editing mode
