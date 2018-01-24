@@ -1,6 +1,7 @@
 import 'babel-polyfill';
 
 import Home from './pages/home.vue'
+import Campaign from './pages/campaign.vue'
 import Summary from './pages/summary.vue'
 import Login from './pages/login.vue'
 
@@ -12,6 +13,13 @@ routes.push({
   component: Home,
   name: 'home',
   path: '/',
+  meta: {auth: true}
+})
+
+routes.push({
+  component: Campaign,
+  name: 'campaign',
+  path: '/campaign/:id',
   meta: {auth: true}
 })
 

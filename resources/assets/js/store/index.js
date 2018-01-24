@@ -1,6 +1,10 @@
 import "babel-polyfill";
+
 import Vue from "vue";
 import Vuex from "vuex";
+
+import fundraiser from './modules/fundraiser'
+import campaigns from './modules/campaigns'
 
 import articles from './modules/articles'
 import buyers from './modules/buyers'
@@ -15,6 +19,8 @@ export default new Vuex.Store({
     isAuthenticated: false
   },
   modules: {
+    fundraiser,
+    campaigns,
     articles,
     buyers,
     user
@@ -25,6 +31,17 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    hasLoaded(state) {
+      return (modules) => {
+        if (!Array.isArray(modules)) {
+          modules = [modules]
+        }
+
+        return modules.reduce((value, module) => {
+          return value && !!(state[module] && state[module].requestComplete)
+        }, true)
+      }
+    },
     hasFullyLoaded(state, getters) {
       var buyers = !_.isEmpty(state.buyers.all)
       var articles = !_.isEmpty(state.articles.all)
