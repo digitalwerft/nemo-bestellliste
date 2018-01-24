@@ -59592,15 +59592,22 @@ var state = {
 };
 
 var getters = {
-  getArticleById: function getArticleById(state) {
-    return function (id) {
+  getArticleByNumber: function getArticleByNumber(state) {
+    return function (number) {
       return state.all.find(function (article) {
-        return parseInt(article.id) === parseInt(id);
+        return article.number == number;
       });
     };
   },
   getAllArticles: function getAllArticles(state) {
     return state.all;
+  },
+  getAllArticleNumbers: function getAllArticleNumbers(state) {
+    var numbers = [];
+    state.all.forEach(function (article) {
+      numbers.push(article.data.number);
+    });
+    return numbers;
   }
 };
 
@@ -59609,7 +59616,7 @@ var actions = {
     var commit = _ref.commit;
     var self = _ref2.self;
 
-    self.$http.get("./api/articles/list").then(function (response) {
+    self.$http.get("./api/articles").then(function (response) {
       commit("FETCH_ARTICLES", response.data);
     }).catch(function (error) {
       console.log(error);
@@ -59647,7 +59654,6 @@ var getters = {
   getBuyerById: function getBuyerById(state) {
     return function (id) {
       return state.all.find(function (buyer) {
-
         return parseInt(buyer.id) === parseInt(id);
       });
     };
@@ -59675,10 +59681,10 @@ var getters = {
       var buyer = getters.getBuyerById(id);
       _.each(buyer.articles, function (article) {
         var details = getters.getAllArticles.find(function (art) {
-          return parseInt(art.id) === parseInt(article.id);
+          return art.data.number == article.number;
         });
         if (details) {
-          sum = sum + article.amount * details.price;
+          sum = sum + article.amount * details.data.vat;
         }
       });
       return sum;
@@ -59690,10 +59696,10 @@ var getters = {
       var buyer = getters.getBuyerById(id);
       _.each(buyer.articles, function (article) {
         var details = getters.getAllArticles.find(function (art) {
-          return parseInt(art.id) === parseInt(article.id);
+          return art.data.number == article.number;
         });
         if (details) {
-          sum = sum + article.amount * details.returns;
+          sum = sum + article.amount * details.data.suggested_donation;
         }
       });
       return sum;
@@ -59720,7 +59726,7 @@ var getters = {
       var articles = getters.getArticlesByBuyerId(payload.buyerId);
       var count = articles.length;
       articles.filter(function (article) {
-        return parseInt(article.id) === parseInt(payload.articleId);
+        return article.number == payload.articleNumber;
       });
       return count != articles.length;
     };
@@ -59739,23 +59745,23 @@ var getters = {
     allBuyers.forEach(function (buyer) {
       var articles = getters.getArticlesByBuyerId(buyer.id);
       articles.forEach(function (article) {
-        if (!amounts[article.id]) {
-          amounts[article.id] = 0;
+        if (!amounts[article.number]) {
+          amounts[article.number] = 0;
         }
-        amounts[article.id] += article.amount;
+        amounts[article.number] += article.amount;
       });
     });
 
     amounts.forEach(function (amount, key) {
       allArticles.forEach(function (article) {
-        if (article.id == key) {
-          article.amount = amount;
+        if (article.data.number == key) {
+          article.data.amount = amount;
         }
       });
     });
 
     allArticles.forEach(function (article) {
-      article.total = article.price * article.amount;
+      article.data.total = article.data.vat * article.data.amount;
     });
 
     return allArticles;
@@ -59770,7 +59776,7 @@ var actions = {
     var commit = _ref.commit;
     var self = _ref2.self;
 
-    self.$http.get("./api/order/123/buyers").then(function (response) {
+    self.$http.get("./api/campaign/xyz/quote/collectors").then(function (response) {
       commit("FETCH_BUYERS", response.data);
     }).catch(function (error) {
       console.log(error);
@@ -59810,7 +59816,7 @@ var mutations = {
     var article = buyer.articles.find(function (article) {
       return article.uid === payload.oldId;
     });
-    article.id = parseInt(payload.newId);
+    article.number = parseInt(payload.newId);
   },
   newArticle: function newArticle(state, payload) {
     var buyer = state.all.find(function (buyer) {
@@ -59900,7 +59906,7 @@ var actions = {
     var commit = _ref.commit;
     var self = _ref2.self;
 
-    self.$http.get("./api/user/123").then(function (response) {
+    self.$http.get("./api/campaign/xyz").then(function (response) {
       commit("FETCH_USER", response.data);
     }).catch(function (error) {
       console.log(error);
@@ -60145,7 +60151,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     select: function select(article) {
-      console.log(article);
+      //console.log(article)
     },
     makeEditable: function makeEditable(e) {
       // enter editing mode
@@ -60464,7 +60470,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       type: Number,
       default: 0
     },
-    articleId: {},
+    articleNumber: {},
     uid: {},
     articleIndex: {
       type: Number
@@ -60502,7 +60508,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     // get unique id for each element for dom-events
     id: function id() {
-      return 'buyer-' + this.buyerId + '__article-' + this.articleId;
+      return 'buyer-' + this.buyerId + '__article-' + this.articleNumber;
     },
 
     // v-model workaround for article amount
@@ -60526,8 +60532,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         id: 0,
         price: 0
       };
-      var details = this.$store.getters.getArticleById(this.articleId);
-      // if this.articleId is not specified (when article is newly added and
+      var details = this.$store.getters.getArticleByNumber(this.articleNumber);
+      // if this.articleNumber is not specified (when article is newly added and
       // no article is specified) return default values
       return details ? details : def;
     },
@@ -60539,7 +60545,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     // get price of this article with speciied amount
     sum: function sum() {
-      return this.details ? this.amount * this.details.price : '';
+      return this.details ? this.amount * this.details.vat : '';
     },
     returns: function returns() {
       var returns = parseInt(this.amount) * parseInt(this.details.returns);
@@ -60548,7 +60554,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     // get array with all available articles
     autocomplete: function autocomplete() {
-      return this.$store.state.articles.all;
+      return this.$store.getters.getAllArticleNumbers;
       // var articles = _.clone(this.$store.state.articles.all)
       // var buyerArticles = this.$store.getters.getArticlesByBuyerId(this.buyerId);
       // var newArticles = [];
@@ -60557,7 +60563,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       //     if(articles[i]) {
       //       if(
       //         parseInt(articles[i].id) == parseInt(buyerArticles[j].id)
-      //         || parseInt(articles[i].id == parseInt(this.articleId))
+      //         || parseInt(articles[i].id == parseInt(this.articleNumber))
       //       ) {
       //         //console.log('same', articles[i].id)
       //         //articles.splice(i, 1)
@@ -60598,9 +60604,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     },
     onArticleChange: function onArticleChange(newArticle) {
       if ((typeof newArticle === 'undefined' ? 'undefined' : _typeof(newArticle)) === 'object') {
-        this.$store.commit('changeArticleId', {
+        this.$store.commit('changearticleNumber', {
           buyerId: this.buyerId,
-          newId: newArticle.id,
+          newId: newarticle.number,
           oldId: this.uid
         });
       }
@@ -61175,7 +61181,7 @@ var render = function() {
               attrs: {
                 options: _vm.autocomplete,
                 "on-change": _vm.onArticleChange,
-                label: "id",
+                label: "number",
                 placeholder: "Art.-Nr."
               },
               model: {
@@ -61747,7 +61753,7 @@ var render = function() {
                     [
                       _c("article-item", {
                         attrs: {
-                          articleId: article.id,
+                          articleId: article.number,
                           amount: article.amount,
                           buyerId: _vm.buyerId,
                           "article-index": index,
@@ -62290,7 +62296,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     outHandler: function outHandler(e) {
       $('.order-navigation').height($('.order-navigation').height());
       this.isFixed = true;
-      console.log(this.$waypointMap);
+      //  console.log(this.$waypointMap)
     },
     updateSearch: function updateSearch() {
       if (this.showSearch) {
@@ -62347,7 +62353,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     Spinner: __WEBPACK_IMPORTED_MODULE_0__spinner_vue___default.a
   },
   mounted: function mounted() {
-    console.log(this.isSaving);
+    //console.log(this.isSaving);
   },
   data: function data() {
     return {};
@@ -63936,15 +63942,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   methods: {
     sort: function sort(key) {
       if (key == this.sortBy) {
-        console.log(key, this.sortBy, this.reverseSort);
+        //console.log(key, this.sortBy, this.reverseSort)
         this.reverseSort = !this.reverseSort;
       } else {
-        console.log(key, this.sortBy, this.reverseSort);
+        //console.log(key, this.sortBy, this.reverseSort)
         this.sortBy = key;
       }
     },
-    getArticleById: function getArticleById(id) {
-      return this.$store.getters.getArticleById(id);
+    getArticleByNumber: function getArticleByNumber(number) {
+      return this.$store.getters.getArticleByNumber(number);
     },
     getPriceByBuyerId: function getPriceByBuyerId(id) {
       return this.$store.getters.getTotalOrdersPriceByBuyerId(id);
@@ -63970,12 +63976,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }
     },
     sortArticles: function sortArticles(articles) {
+      console.log(articles);
       return articles;
     }
   },
   watch: {
     showPrintList: function showPrintList(newVal, oldVal) {
-      console.log(this.$refs.container);
+      //console.log(this.$refs.container)
       if (newVal && this.$refs.container) {
         this.style.height = this.$refs.container.clientHeight + 16 + 'px';
       } else {
@@ -64181,30 +64188,34 @@ var render = function() {
                     _c("td", { attrs: { "data-label": "Artikel" } }, [
                       _vm._v(
                         "#" +
-                          _vm._s(article.id) +
+                          _vm._s(article.data.number) +
                           " – " +
-                          _vm._s(article.name) +
+                          _vm._s(article.data.name) +
                           " "
                       ),
                       _c("span", { staticClass: "text-muted" }, [
-                        _vm._v("(" + _vm._s(article.size) + ")")
+                        _vm._v("(" + _vm._s(article.term) + ")")
                       ])
                     ]),
                     _vm._v(" "),
                     _c("td", { attrs: { "data-label": "Menge" } }, [
-                      _vm._v(_vm._s(article.amount))
+                      _vm._v(_vm._s(article.data.amount))
                     ]),
                     _vm._v(" "),
                     _c("td", { attrs: { "data-label": "Kaufpreis pro Box" } }, [
-                      _vm._v(_vm._s(article.price) + "€")
+                      _vm._v(_vm._s(article.data.vat) + "€")
                     ]),
                     _vm._v(" "),
                     _c("td", { attrs: { "data-label": "Rechnungsbetrag" } }, [
-                      _vm._v(_vm._s(article.total) + "€")
+                      _vm._v(_vm._s(article.data.total) + "€")
                     ]),
                     _vm._v(" "),
                     _c("td", { attrs: { "data-label": "Spende" } }, [
-                      _vm._v(_vm._s(article.returns * article.amount) + "€")
+                      _vm._v(
+                        _vm._s(
+                          article.suggested_donation * article.data.amount
+                        ) + "€"
+                      )
                     ])
                   ])
                 }),
@@ -64518,11 +64529,12 @@ var render = function() {
                                         [
                                           _vm._v(
                                             "#" +
-                                              _vm._s(article.id) +
+                                              _vm._s(article.data.number) +
                                               " – " +
                                               _vm._s(
-                                                _vm.getArticleById(article.id)
-                                                  .name
+                                                _vm.getArticleByNumber(
+                                                  article.number
+                                                ).data.name
                                               )
                                           )
                                         ]
@@ -64536,8 +64548,9 @@ var render = function() {
                                         [
                                           _vm._v(
                                             _vm._s(
-                                              _vm.getArticleById(article.id)
-                                                .price
+                                              _vm.getArticleByNumber(
+                                                article.number
+                                              ).data.vat
                                             ) + "€"
                                           )
                                         ]
@@ -64546,7 +64559,7 @@ var render = function() {
                                       _c(
                                         "td",
                                         { attrs: { "data-label": "Anzahl" } },
-                                        [_vm._v(_vm._s(article.amount))]
+                                        [_vm._v(_vm._s(article.data.amount))]
                                       ),
                                       _vm._v(" "),
                                       _c(
@@ -64555,8 +64568,10 @@ var render = function() {
                                         [
                                           _vm._v(
                                             _vm._s(
-                                              _vm.getArticleById(article.id)
-                                                .returns * article.amount
+                                              _vm.getArticleByNumber(
+                                                article.number
+                                              ).data.suggested_donation *
+                                                article.data.amount
                                             ) + "€"
                                           )
                                         ]
@@ -64568,8 +64583,9 @@ var render = function() {
                                         [
                                           _vm._v(
                                             _vm._s(
-                                              _vm.getArticleById(article.id)
-                                                .price * article.amount
+                                              _vm.getArticleByNumber(
+                                                article.number
+                                              ).data.vat * article.data.amount
                                             ) + "€"
                                           )
                                         ]

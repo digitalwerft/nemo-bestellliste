@@ -51,11 +51,11 @@
           </thead>
           <tbody>
             <tr v-for="article in sortedArticles">
-              <td data-label="Artikel">#{{ article.id }} – {{ article.name }}&nbsp;<span class="text-muted">({{ article.size}})</span></td>
-              <td data-label="Menge">{{ article.amount }}</td>
-              <td data-label="Kaufpreis pro Box">{{ article.price }}€</td>
-              <td data-label="Rechnungsbetrag">{{ article.total }}€</td>
-              <td data-label="Spende">{{ article.returns*article.amount }}€</td>
+              <td data-label="Artikel">#{{ article.data.number }} – {{ article.data.name }}&nbsp;<span class="text-muted">({{ article.term}})</span></td>
+              <td data-label="Menge">{{ article.data.amount }}</td>
+              <td data-label="Kaufpreis pro Box">{{ article.data.vat }}€</td>
+              <td data-label="Rechnungsbetrag">{{ article.data.total }}€</td>
+              <td data-label="Spende">{{ article.suggested_donation*article.data.amount }}€</td>
             </tr>
             <tr class="tfooter">
               <td>Summe:</td>
@@ -123,11 +123,11 @@
                     <tbody>
                       <tr v-for="(article, index) in sortArticles(buyer.articles)">
                         <td data-label="Name" class="font-weight-bold" v-html="index == 0 ? highlight(buyer.name) : ''">"</td>
-                        <td data-label="Artikel">#{{ article.id }} – {{ getArticleById(article.id).name}}</td>
-                        <td data-label="Stückpreis">{{ getArticleById(article.id).price }}€</td>
-                        <td data-label="Anzahl">{{ article.amount }}</td>
-                        <td data-label="Erlös">{{ getArticleById(article.id).returns * article.amount}}€</td>
-                        <td data-label="Summe">{{ getArticleById(article.id).price * article.amount }}€</td>
+                        <td data-label="Artikel">#{{ article.data.number }} – {{ getArticleByNumber(article.number).data.name}}</td>
+                        <td data-label="Stückpreis">{{ getArticleByNumber(article.number).data.vat }}€</td>
+                        <td data-label="Anzahl">{{ article.data.amount }}</td>
+                        <td data-label="Erlös">{{ getArticleByNumber(article.number).data.suggested_donation * article.data.amount}}€</td>
+                        <td data-label="Summe">{{ getArticleByNumber(article.number).data.vat * article.data.amount }}€</td>
                       </tr>
                       <tr>
                         <td colspan="4"></td>
@@ -222,17 +222,17 @@
     methods: {
       sort(key) {
         if(key == this.sortBy) {
-          console.log(key, this.sortBy, this.reverseSort)
+          //console.log(key, this.sortBy, this.reverseSort)
           this.reverseSort = !this.reverseSort;
         }
         else {
-          console.log(key, this.sortBy, this.reverseSort)
+          //console.log(key, this.sortBy, this.reverseSort)
           this.sortBy = key;
         }
 
       },
-      getArticleById(id) {
-        return this.$store.getters.getArticleById(id)
+      getArticleByNumber(number) {
+        return this.$store.getters.getArticleByNumber(number)
       },
       getPriceByBuyerId(id) {
         return this.$store.getters.getTotalOrdersPriceByBuyerId(id)
@@ -260,12 +260,13 @@
         }
       },
       sortArticles(articles) {
+        console.log(articles)
         return articles
       }
     },
     watch: {
       showPrintList(newVal, oldVal) {
-        console.log(this.$refs.container)
+        //console.log(this.$refs.container)
         if (newVal && this.$refs.container) {
           this.style.height = `${this.$refs.container.clientHeight + 16}px`
         } else {

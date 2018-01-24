@@ -6,7 +6,6 @@ const state = {
 const getters = {
   getBuyerById: state => id => {
     return state.all.find(buyer => {
-
       return parseInt(buyer.id) === parseInt(id)
     });
   },
@@ -32,7 +31,7 @@ const getters = {
     var buyer = getters.getBuyerById(id);
     _.each(buyer.articles, (article) => {
       var details = getters.getAllArticles.find(art => {
-        return parseInt(art.id) === parseInt(article.id)
+        return art.data.number == article.number
       })
       if (details) {
         sum = sum + article.amount * details.gross_price;
@@ -45,7 +44,7 @@ const getters = {
     var buyer = getters.getBuyerById(id);
     _.each(buyer.articles, (article) => {
       var details = getters.getAllArticles.find(art => {
-        return parseInt(art.id) === parseInt(article.id)
+        return art.data.number == article.number
       })
       if (details) {
         sum = sum + article.amount * details.suggested_donation;
@@ -73,7 +72,7 @@ const getters = {
     var articles = getters.getArticlesByBuyerId(payload.buyerId)
     var count = articles.length;
     articles.filter(article => {
-      return parseInt(article.id) === parseInt(payload.articleId)
+      return article.number == payload.articleNumber
     })
     return count != articles.length
   },
@@ -89,23 +88,23 @@ const getters = {
     allBuyers.forEach(buyer => {
       var articles = getters.getArticlesByBuyerId(buyer.id)
       articles.forEach(article => {
-        if(!amounts[article.id]) {
-          amounts[article.id] = 0
+        if(!amounts[article.number]) {
+          amounts[article.number] = 0
         }
-        amounts[article.id] += article.amount
+        amounts[article.number] += article.amount
       })
     })
 
     amounts.forEach((amount, key) => {
       allArticles.forEach(article => {
-        if(article.id == key) {
-          article.amount = amount
+        if(article.data.number == key) {
+          article.data.amount = amount
         }
       })
     })
 
     allArticles.forEach(article => {
-      article.total = article.price*article.amount
+      article.data.total = article.data.vat*article.data.amount
     })
 
     return allArticles
@@ -122,7 +121,7 @@ const actions = {
     self
   }) {
     self.$http
-      .get("./api/order/123/buyers")
+      .get("./api/campaign/xyz/quote/collectors")
       .then(response => {
         commit("FETCH_BUYERS", response.data);
       })
@@ -160,7 +159,7 @@ const mutations = {
     });
     buyer.state = 'changed'
     var article = buyer.articles.find(article => article.uid === payload.oldId)
-    article.id = parseInt(payload.newId)
+    article.number = parseInt(payload.newId)
   },
   newArticle(state, payload) {
     var buyer = state.all.find(buyer => {

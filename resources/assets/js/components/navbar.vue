@@ -129,7 +129,7 @@ export default {
     outHandler(e) {
       $('.order-navigation').height($('.order-navigation').height());
       this.isFixed = true;
-      console.log(this.$waypointMap)
+    //  console.log(this.$waypointMap)
     },
     updateSearch() {
       if(this.showSearch) {
