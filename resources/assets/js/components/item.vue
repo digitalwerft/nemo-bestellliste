@@ -1,28 +1,30 @@
 <template>
-<div class="input-group row no-gutters item-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected}"  ref="item">
-  <div class="input-group col-4 col-lg-3 no-gutters spinner-col">
-    <span class="input-group-btn col">
-                <input-spinner
-                  :min="1"
-                  :max="1000"
-                  :step="1"
-                  :integerOnly="true"
-                  v-model="quantity"
-                  @onInputNumberChange="onQuantityChange"
-                  ></input-spinner>
-            </span>
-  </div>
+<div class="input-group row no-gutters single-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected}"  ref="item">
   <div class="col select-col">
     <v-select v-model="item.number" :options="autocomplete" :on-change="onItemChange" label="number" placeholder="Art.-Nr.">
       <span slot="no-options">Keine(n) Boxen gefunden.</span>
     </v-select>
   </div>
   <span class="input-group-addon col-lg-8 col-9 name-col">
-            {{ name ? name : '--' }}
-        </span>
-  <span class="input-group-addon col-lg-2 col-9 font-weight-bold sum-col">
-            <small class="d-inline d-lg-none font-weight-normal text-muted">Summe:&nbsp;</small>{{ sum }}€
-        </span>
+    <small>{{ name ? name : '--' }}</small>
+  </span>
+  <div class="input-group col-4 col-lg-3 no-gutters spinner-col">
+    <span class="input-group-btn col">
+      <input-spinner
+        :min="1"
+        :max="1000"
+        :step="1"
+        :integerOnly="true"
+        v-model="quantity"
+        @onInputNumberChange="onQuantityChange"
+        ></input-spinner>
+    </span>
+  </div>
+
+  <span class="input-group-addon col-lg-3 col-9 font-weight-bold sum-col">
+    <small>{{ parseFloat(item.gross_price) + parseFloat(item.suggested_donation) }}€/</small>
+    <small class="d-inline d-lg-none font-weight-normal text-muted">Gesamtbetrag:&nbsp;</small>{{ sum }}€
+  </span>
   <span class="input-group-btn col-3 col-lg-2 delete-col">
             <a href="#" class="btn btn-outline-danger btn-block" v-on:click.prevent="showModal = true">
                 <i class="mdi mdi-delete"></i>

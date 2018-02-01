@@ -50,22 +50,22 @@
     </nav>
     <div class="d-none d-lg-block field-titles bg-white ">
       <div class="row">
-        <div class="col-7">
+        <div class="col-md-5">
           <h6 class="ml-3">Name</h6>
         </div>
-        <div class="col-11">
+        <div class="col-md-13">
           <div class="row no-gutters ml-4 mr-4">
-            <div class="col-3">
-              <h6 class="">Anzahl</h6>
+            <div class="col">
+              <h6 class="">Art.-Nr.</h6>
             </div>
-            <div class="col-5">
-              <h6 class="">Artikelnummer</h6>
-            </div>
-            <div class="col-6">
+            <div class="col-lg-8">
               <h6 class="">Produktname</h6>
             </div>
-            <div class="col-4">
-              <h6 class="">Summe</h6>
+            <div class="col-lg-3">
+              <h6 class="">Menge</h6>
+            </div>
+            <div class="col-lg-5">
+              <h6 class=""><small>Preis p. Box/</small>Gesamt</h6>
             </div>
           </div>
         </div>

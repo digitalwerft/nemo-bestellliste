@@ -86,7 +86,7 @@ section.orders {
 
   .collector-name {
     position: relative;
-    padding-bottom: 42px;
+    padding-bottom: 54px;
 
     @include media-breakpoint-down(xs) {
       padding-bottom: 80px;
@@ -150,7 +150,7 @@ section.orders {
       padding-bottom: 0.75rem;
       padding-left: 0.75rem;
       position: absolute;
-      bottom: 0;
+      top: 42px;
     }
   }
 
@@ -247,8 +247,9 @@ section.orders {
     }
   }
 
-  .item-item {
+  .single-item {
     border-top: 1px solid $gray-400;
+    border-left: 1px solid $gray-400;
     border-bottom: 1px solid $gray-400;
     position: relative;
     background-color: $white;
@@ -264,6 +265,10 @@ section.orders {
       }
     }
 
+    .select-col {
+      min-width: 60px;
+    }
+
     .name-col {
       @include media-breakpoint-down(md) {
         order: -2;
@@ -275,6 +280,8 @@ section.orders {
     }
 
     .sum-col {
+      text-align: center;
+      justify-content: center;
       @include media-breakpoint-down(md) {
         order: -1;
         border-right: 1px solid $gray-400 !important;

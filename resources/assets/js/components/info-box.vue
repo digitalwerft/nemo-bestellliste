@@ -7,7 +7,7 @@
           <h4 class="card-title">Infos zum Bestellablauf</h4>
 
           <div class="alert alert-info">
-            <i class="mdi mdi-information-outline mdi-18px">&nbsp;</i>Du brauchst Hilfe beim Bestellen? Du kannsz uns jederzeit unter <a href="tel:076170788833">0761 / 707 888 33</a> erreichen!
+            <i class="mdi mdi-information-outline mdi-18px">&nbsp;</i>Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns gerne jederzeit von Mo-Fr 9-18 Uhr unter <a href="tel:076170788833">0761 / 707 888 33</a> an oder schreibt uns eine E-Mail an <a href="mailto:bestellung@neuemasche.com">bestellung@neuemasche.com</a>.
           </div>
         </div>
       </div>

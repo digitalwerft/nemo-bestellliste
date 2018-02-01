@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="collector-details mt-3">
-          <small class="text-muted">Boxen: {{ itemCount }} | Summe: {{ totalPrice }}€ | <span class="d-none d-sm-inline">davon</span> Spenden: {{ totalEarnings }}€</small>
+          <small class="text-muted">Boxen: {{ itemCount }} | Gesamtbetrag: {{ totalPrice }}€ | <span class="d-none d-sm-inline">davon</span> Spenden: {{ totalEarnings }}€</small>
         </div>
       </div>
       <div class="card-footer" :class="{collapsed: collapsed}">
@@ -52,8 +52,7 @@
         </div>
         <div class="no-items text-center" v-if="collector.items.length<1">
           <small class="text-muted text-danger text-center" v-if="!collector.name">Dieser Teilnehmer braucht einen Namen, bevor du ihm Artikel zuweisen kannst.</small>
-          <small class="text-muted text-center" v-if="collector.name">{{ collector.name }} hat noch keine Artikel gekauft.</small>
-            <a href="#" class="btn btn-light btn-block btn-sm" @click.prevent="addItem" v-if="collector.name"><i class="mdi mdi-plus"></i> Artikel Hinzufügen?</a>
+          <small class="text-muted text-center" v-if="collector.name">Der Teilnehmer <mark>{{ collector.name }}</mark> hat noch keine Bestellung abgegeben..</small>
         </div>
       </div>
       <div class="card-footer">

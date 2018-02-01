@@ -12,20 +12,9 @@
             <i class="mdi mdi-library-books">&nbsp;</i>Bestellte Boxen: {{ totalOrders }}&nbsp;|&nbsp;
           </li>
           <li class="nav-item">
-            <i class="mdi mdi-currency-eur">&nbsp;</i>Rechnungsbetrag: {{ winnings }}€&nbsp;|&nbsp;
-          </li>
-          <li class="nav-item">
-            <i class="mdi mdi-currency-eur">&nbsp;</i>Spendensumme: {{ earnings }}€
+            Gesamtbetrag: {{ winnings }}€
           </li>
         </ul>
-        <!-- <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <router-link :to="{name: 'summary'}" class="btn btn-outline-danger my-2 my-sm-0 order-now">
-              <i class="mdi mdi-grid">&nbsp;</i>
-              Zusammenfassung
-            </router-link>
-          </li>
-        </ul> -->
       </div>
     </nav>
   </div>

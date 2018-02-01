@@ -11,7 +11,7 @@ const getters = {
       return collector.id === id
     });
   },
-  getTotalOrdersQuantity: (state, getters) => {
+  getTotalItemsQuantity: (state, getters) => {
     var totalOrders = 0;
     state.all.forEach(collector => {
       totalOrders += getters.getItemsQuantityByCollectorId(collector.id)

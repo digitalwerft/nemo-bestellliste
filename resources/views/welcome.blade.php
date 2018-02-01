@@ -11,7 +11,7 @@
 
   <!-- Fonts -->
   <link rel="stylesheet" href="//cdn.materialdesignicons.com/2.0.46/css/materialdesignicons.min.css">
-  <link rel="stylesheet" href="css/app.css?v=1.06">
+  <link rel="stylesheet" href="css/app.css?v=1.07">
 
   @if ($isAuthenticated)
   <script>
@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <script src="js/app.js?v=1.10" charset="utf-8"></script>
+  <script src="js/app.js?v=1.11" charset="utf-8"></script>
 </body>
 
 </html>

@@ -25,47 +25,48 @@
               </th>
               <th scope="col">
                 <a href="#" @click.prevent="sort('quantity')">
-                  Menge
+                  Anzahl Boxen
                   <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='quantity'"></i>
                 </a>
               </th>
               <th scope="col">
                 <a href="#" @click.prevent="sort('price')">
-                  Kaufpreis pro Box
+                  Rechnungsbetrag
                   <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='price'"></i>
                 </a>
               </th>
               <th scope="col">
-                <a href="#" @click.prevent="sort('total')">
-                  Rechnungsbetrag
-                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='total'"></i>
+                <a href="#" @click.prevent="sort('returns')">
+                  Spendensumme
+                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='returns'"></i>
                 </a>
               </th>
               <th scope="col">
-                <a href="#" @click.prevent="sort('returns')">
-                  Spende
-                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='returns'"></i>
+                <a href="#" @click.prevent="sort('total')">
+                  Gesamtbetrag
+                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='total'"></i>
                 </a>
               </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="item in sortedItems">
-              <td data-label="Artikel">#{{ item.number }} – {{ item.name }}&nbsp;<span class="text-muted">({{ item.term}})</span></td>
-              <td data-label="Menge">{{ item.quantity }}</td>
-              <td data-label="Kaufpreis pro Box">{{ getSingleItemPrice(item) }}€</td>
-              <td data-label="Rechnungsbetrag">{{ item.quantity*item.gross_price }}€</td>
+              <td data-label="Artikel">{{ item.number }} – {{ item.name }}</td>
+              <td data-label="Anzahl Boxen">{{ item.quantity }}</td>
+              <td data-label="Rechnungsbetrag">{{ getSingleItemPrice(item) }}€</td>
               <td data-label="Spende">{{ item.suggested_donation*item.quantity }}€</td>
+              <td data-label="Gesamntbetrag">{{ item.quantity*item.gross_price }}€</td>
             </tr>
             <tr class="tfooter">
               <td>Summe:</td>
               <td colspan="2" data-label="Anzahl der bestellten Boxen">{{ totalOrdersQuantity }}</td>
               <td data-label="Rechnungsbetrag">{{ allItemsSum }}€</td>
-              <td data-label="Spendensumme">{{ allItemsEarnings }}</td>
+              <td data-label="Spendensumme">{{ allItemsEarnings }}€</td>
             </tr>
           </tbody>
         </table>
         <p>
+          Rabattaktionen und Versandkosten (bei unter 100 bestellten Boxen) sind im o.g. Rechnungsbetrag noch nicht enthalten. <br>
           Voraussichtliche Versandkosten: {{ shippingCost }}€ <br>
           Rechnungsbetrag inkl. Versandkosten: {{ allItemsSum+shippingCost }}€
         </p>
@@ -114,20 +115,22 @@
                       <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Artikel</th>
-                        <th scope="col">Stückpreis</th>
                         <th scope="col">Anzahl</th>
-                        <th scope="col">Erlös</th>
-                        <th scope="col">Summe</th>
+                        <th scope="col">Gesamtbetrag</th>
+                        <th scope="col">Spende</th>
+                        <th scope="col"><small>Boxen verteilt?</small></th>
+                        <th scope="col"><small>Geld erhalten?</small></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item, index) in collector.items">
+                      <tr v-for="(item, index) in sortByNumber(collector.items)">
                         <td data-label="Name" class="font-weight-bold" v-html="index == 0 ? highlight(collector.name) : ''">"</td>
                         <td data-label="Artikel">{{ item.number }} – {{ item.name}}</td>
-                        <td data-label="Stückpreis">{{ getSingleItemPrice(item) }}€</td>
                         <td data-label="Anzahl">{{ item.quantity }}</td>
-                        <td data-label="Erlös">{{ item.suggested_donation * item.quantity}}€</td>
-                        <td data-label="Summe">{{ getSingleItemPrice(item) * item.quantity }}€</td>
+                        <td data-label="Gesamtbetrag">{{ getSingleItemPrice(item) * item.quantity }}€</td>
+                        <td data-label="davon Spende">{{ item.suggested_donation * item.quantity}}€</td>
+                        <td></td>
+                        <td></td>
                       </tr>
                       <tr>
                         <td colspan="4"></td>
@@ -145,7 +148,7 @@
     </div>
     <div class="card bg-danger-light mt-2 mb-2">
       <div class="card-body">
-        Wenn ihr eure Bestellung abschickt, wird sie umgehend von uns gepackt und kann nicht mehr geändert werden. Nehmt euch daher bitte genügend Zeit, sie nochmals zu überprüfen. Nachbestellungen sind natürlich jederzeit möglich.
+        Wenn ihr eure Bestellung abschickt, wird sie von uns gepackt und kann nicht mehr geändert werden. Nehmt euch daher bitte genügend Zeit, sie nochmals zu überprüfen. Nachbestellungen sind natürlich jederzeit möglich.
       </div>
     </div>
     <a href="#" @click.prevent="" class="btn btn-secondary btn-block btn-lg"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
@@ -169,6 +172,8 @@
       if (store.getters.hasLoaded(['campaign', 'collectors'])) {
         return
       }
+
+      this.showSpinner()
 
       store.dispatch('fetchCampaign', self)
         .then(() => {
@@ -215,16 +220,16 @@
         return this.$store.getters.getSummarizedItems
       },
       allItemsSum() {
-        return this.$store.getters.getTotalOrdersWinnings
+        return this.$store.getters.getTotalItemsWinnings
       },
       allItemsEarnings() {
-        return this.$store.getters.getTotalOrdersEarnings
+        return this.$store.getters.getTotalItemsEarnings
       },
       totalOrdersQuantity() {
-        return this.$store.getters.getTotalOrdersQuantity
+        return this.$store.getters.getTotalItemsQuantity
       },
       shippingCost() {
-        var totalOrders = this.$store.getters.getTotalOrdersQuantity
+        var totalOrders = this.$store.getters.getTotalItemsQuantity
         if(totalOrders < 21 ) {
           return 4
         } else if(totalOrders) {
@@ -243,6 +248,9 @@
           this.sortBy = key
         }
       },
+      sortByNumber(items) {
+        return _.sortBy(this.items, 'number')
+      },
       hideSpinner() {
         const spinner = $('.loading-overlay')
         setTimeout(() => {
@@ -251,6 +259,13 @@
             spinner.addClass('hidden')
           }, 1000);
         }, 600);
+      },
+      showSpinner() {
+        const spinner = $('.loading-overlay')
+        spinner.removeClass('hidden')
+        setTimeout(()=> {
+          spinner.addClass('loading')
+        }, 150)
       },
       getSingleItemPrice(item) {
         return parseFloat(item.gross_price)+parseFloat(item.suggested_donation)

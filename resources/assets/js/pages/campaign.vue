@@ -49,11 +49,12 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
-
-    if (store.getters.hasLoaded('campaign')) {
+    
+    if (store.getters.hasLoaded(['campaign', 'items', 'collectors'])) {
       return
     }
 
+    this.showSpinner()
     // Fetch Data if not already happened
     store.dispatch('fetchCampaign', self)
       .then(() => {
@@ -112,11 +113,18 @@ export default {
       const spinner = $('.loading-overlay')
 
       setTimeout(() => {
-        spinner.removeClass('loading');
+        spinner.removeClass('loading')
         setTimeout(() => {
-          spinner.addClass('hidden');
-        }, 1000);
+          spinner.addClass('hidden')
+        }, 1200);
       }, 600);
+    },
+    showSpinner() {
+      const spinner = $('.loading-overlay')
+      spinner.removeClass('hidden')
+      setTimeout(()=> {
+        spinner.addClass('loading')
+      }, 150)
     },
     handleEditing(isEditing) {
       if (isEditing) {
