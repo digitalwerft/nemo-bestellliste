@@ -26,7 +26,7 @@
             <save-indicator :is-saving="isSaving" @saving="saving"></save-indicator>
           </li>
           <li class="nav-item d-none d-sm-list-item">
-            <a href="#" class="btn btn-outline-primary mr-2" @click.prevent="createBuyer()">
+            <a href="#" class="btn btn-outline-primary mr-2" @click.prevent="createCollector()">
               <i class="mdi mdi-account-plus">&nbsp;</i>
               <span class="d-none d-lg-inline">neuer Teilnehmer</span>
             </a>
@@ -73,7 +73,7 @@
     </div>
   </div>
 
-  <a href="#" class="btn btn-lg btn-primary floating-button d-inline-block d-sm-none" @click.prevent="createBuyer()">
+  <a href="#" class="btn btn-lg btn-primary floating-button d-inline-block d-sm-none" @click.prevent="createCollector()">
     <i class="mdi mdi-account-plus"></i>
   </a>
 
@@ -120,8 +120,8 @@ export default {
         this.isFixed = true
       }
     },
-    createBuyer() {
-      this.$emit('onbuyercreate');
+    createCollector() {
+      this.$emit('oncollectorcreate');
     },
     inHandler() {
       this.isFixed = false;

@@ -26,7 +26,7 @@ routes.push({
 routes.push({
   component: Summary,
   name: 'summary',
-  path: '/zusammenfassung',
+  path: '/campaign/:id/zusammenfassung',
   meta: {auth: true}
 })
 

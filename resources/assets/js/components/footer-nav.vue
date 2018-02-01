@@ -6,7 +6,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <i class="mdi mdi-account">&nbsp;</i>Teilnehmer: {{ buyers.length }}&nbsp;|&nbsp;
+            <i class="mdi mdi-account">&nbsp;</i>Teilnehmer: {{ collectors.length }}&nbsp;|&nbsp;
           </li>
           <li class="nav-item">
             <i class="mdi mdi-library-books">&nbsp;</i>Bestellte Boxen: {{ totalOrders }}&nbsp;|&nbsp;
@@ -43,20 +43,20 @@ export default {
 
     },
     computed: {
-      buyers() {
-        return this.$store.state.buyers.all;
+      collectors() {
+        return this.$store.state.collectors.all;
       },
-      totalBuyers() {
-        return this.buyers.length;
+      totalCollectors() {
+        return this.collectors.length;
       },
       totalOrders() {
-        return this.$store.getters.getTotalOrdersAmount;
+        return this.$store.getters.getTotalItemsAmount;
       },
       winnings() {
-        return this.$store.getters.getTotalOrdersWinnings
+        return this.$store.getters.getTotalItemsWinnings
       },
       earnings() {
-        return this.$store.getters.getTotalOrdersEarnings
+        return this.$store.getters.getTotalItemsEarnings
       }
     }
 }

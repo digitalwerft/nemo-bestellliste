@@ -23,14 +23,14 @@
       </div>
     </section>
     <!--
-        <div class="alert alert-no-buyers mt-3 text-muted text-center" v-if="filteredBuyer && filteredBuyer.length < 1">
+        <div class="alert alert-no-collectors mt-3 text-muted text-center" v-if="filteredCollector && filteredCollector.length < 1">
           Deine Suche nach <mark>{{ search }}</mark> erzielte leider keine Treffer.
         </div>
-        <div class="alert alert-no-buyers mt-3 text-muted text-center" v-if="buyers.length < 1">
+        <div class="alert alert-no-collectors mt-3 text-muted text-center" v-if="collectors.length < 1">
           Noch wurden keine Teilnehmer zu dieser Bestellung hinzugefügt.
-          <a href="#" class="btn btn-lg btn-block btn-success mt-3" @click.prevent="createBuyer" >Jetzt ersten Teilnehmer hinzufügen!</a>
+          <a href="#" class="btn btn-lg btn-block btn-success mt-3" @click.prevent="createCollector" >Jetzt ersten Teilnehmer hinzufügen!</a>
         </div>
-        <a href="" class="btn btn-light btn-lg btn-block mt-3" @click.prevent="createBuyer" :class="{hidden: (search != ''), disabled: hasUnsavedBuyer}" v-if="buyers.length > 0">
+        <a href="" class="btn btn-light btn-lg btn-block mt-3" @click.prevent="createCollector" :class="{hidden: (search != ''), disabled: hasUnsavedCollector}" v-if="collectors.length > 0">
                       <i class="mdi mdi-account-plus"></i> Teilnehmer hinzufügen
                   </a>
       </div>
@@ -41,16 +41,14 @@
 <script>
 import store from '../store'
 
-import buyer from '../components/buyer.vue'
+import collector from '../components/collector.vue'
 import navbar from '../components/navbar.vue'
-import user from '../components/user.vue'
 import infoBox from '../components/info-box.vue'
 
 export default {
   components: {
-    buyer,
+    collector,
     navbar,
-    user,
     infoBox
   },
   created() {
@@ -74,7 +72,7 @@ export default {
       search: '',
       totalWinnings: 0,
       showModal: false,
-      hasUnsavedBuyer: false,
+      hasUnsavedCollector: false,
       savingComplete: false,
       displayInfo: false
     };
@@ -86,16 +84,16 @@ export default {
     campaigns() {
       return this.$store.getters.getCampaigns
     },
-    buyers() {
-      return this.$store.getters.getAllBuyers;
+    collectors() {
+      return this.$store.getters.getAllCollectors;
     },
-    articles() {
-      return this.$store.getters.getAllArticles;
+    items() {
+      return this.$store.getters.getAllItems;
     },
-    filteredBuyer() {
-      if (!_.isEmpty(this.buyers)) {
-        var v = this.buyers.filter((buyer) => {
-          return _.lowerCase(buyer.name).match(_.lowerCase(this.search));
+    filteredCollector() {
+      if (!_.isEmpty(this.collectors)) {
+        var v = this.collectors.filter((collector) => {
+          return _.lowerCase(collector.name).match(_.lowerCase(this.search));
         });
         return v;
       }

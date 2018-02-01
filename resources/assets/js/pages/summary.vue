@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <div v-if="!isLoading" class="container">
     <div class="card mb-2">
       <div class="card-body">
-        <router-link :to="{ name: 'home'}" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Bestellliste</span> bearbeiten</router-link>
+        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Bestellliste</span> bearbeiten</router-link>
         <a href="#" class="btn btn-outline-primary float-right print-button">
           <i class="mdi mdi-printer">&nbsp;</i>Drucken
         </a>
@@ -18,15 +18,15 @@
           <thead class="thead-light">
             <tr>
               <th scope="col">
-                <a href="#" @click.prevent="sort('id')">
+                <a href="#" @click.prevent="sort('number')">
                   Artikel
-                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='id'"></i>
+                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='number'"></i>
                 </a>
               </th>
               <th scope="col">
-                <a href="#" @click.prevent="sort('amount')">
+                <a href="#" @click.prevent="sort('quantity')">
                   Menge
-                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='amount'"></i>
+                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='quantity'"></i>
                 </a>
               </th>
               <th scope="col">
@@ -50,24 +50,24 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="article in sortedArticles">
-              <td data-label="Artikel">#{{ article.data.number }} – {{ article.data.name }}&nbsp;<span class="text-muted">({{ article.term}})</span></td>
-              <td data-label="Menge">{{ article.data.amount }}</td>
-              <td data-label="Kaufpreis pro Box">{{ article.data.vat }}€</td>
-              <td data-label="Rechnungsbetrag">{{ article.data.total }}€</td>
-              <td data-label="Spende">{{ article.suggested_donation*article.data.amount }}€</td>
+            <tr v-for="item in sortedItems">
+              <td data-label="Artikel">#{{ item.number }} – {{ item.name }}&nbsp;<span class="text-muted">({{ item.term}})</span></td>
+              <td data-label="Menge">{{ item.quantity }}</td>
+              <td data-label="Kaufpreis pro Box">{{ getSingleItemPrice(item) }}€</td>
+              <td data-label="Rechnungsbetrag">{{ item.quantity*item.gross_price }}€</td>
+              <td data-label="Spende">{{ item.suggested_donation*item.quantity }}€</td>
             </tr>
             <tr class="tfooter">
               <td>Summe:</td>
-              <td colspan="2" data-label="Anzahl der bestellten Boxen">{{ totalOrdersAmount }}</td>
-              <td data-label="Rechnungsbetrag">{{ allArticlesSum }}€</td>
-              <td data-label="Spendensumme">{{ allArticlesEarnings }}</td>
+              <td colspan="2" data-label="Anzahl der bestellten Boxen">{{ totalOrdersQuantity }}</td>
+              <td data-label="Rechnungsbetrag">{{ allItemsSum }}€</td>
+              <td data-label="Spendensumme">{{ allItemsEarnings }}</td>
             </tr>
           </tbody>
         </table>
         <p>
           Voraussichtliche Versandkosten: {{ shippingCost }}€ <br>
-          Rechnungsbetrag inkl. Versandkosten: {{ allArticlesSum+shippingCost }}€
+          Rechnungsbetrag inkl. Versandkosten: {{ allItemsSum+shippingCost }}€
         </p>
       </div>
     </div>
@@ -107,7 +107,7 @@
           <div :style="style" class="print-list">
             <div class="print-list-container" ref="container">
               <hr>
-              <div v-for="buyer in filteredBuyers">
+              <div v-for="collector in filteredCollectors">
                 <div class="table-responsive">
                   <table class="table table-bordered table-striped">
                     <thead class="thead-light">
@@ -121,18 +121,18 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(article, index) in sortArticles(buyer.articles)">
-                        <td data-label="Name" class="font-weight-bold" v-html="index == 0 ? highlight(buyer.name) : ''">"</td>
-                        <td data-label="Artikel">#{{ article.data.number }} – {{ getArticleByNumber(article.number).data.name}}</td>
-                        <td data-label="Stückpreis">{{ getArticleByNumber(article.number).data.vat }}€</td>
-                        <td data-label="Anzahl">{{ article.data.amount }}</td>
-                        <td data-label="Erlös">{{ getArticleByNumber(article.number).data.suggested_donation * article.data.amount}}€</td>
-                        <td data-label="Summe">{{ getArticleByNumber(article.number).data.vat * article.data.amount }}€</td>
+                      <tr v-for="(item, index) in collector.items">
+                        <td data-label="Name" class="font-weight-bold" v-html="index == 0 ? highlight(collector.name) : ''">"</td>
+                        <td data-label="Artikel">{{ item.number }} – {{ item.name}}</td>
+                        <td data-label="Stückpreis">{{ getSingleItemPrice(item) }}€</td>
+                        <td data-label="Anzahl">{{ item.quantity }}</td>
+                        <td data-label="Erlös">{{ item.suggested_donation * item.quantity}}€</td>
+                        <td data-label="Summe">{{ getSingleItemPrice(item) * item.quantity }}€</td>
                       </tr>
                       <tr>
                         <td colspan="4"></td>
                         <td class="font-weight-bold">Summe:</td>
-                        <td>{{ getPriceByBuyerId(buyer.id)}}€</td>
+                        <td>{{ getPriceByCollectorId(collector.id)}}€</td>
                       </tr>
                     </tbody>
                   </table>
@@ -162,12 +162,26 @@
       Navbar, SaveIndicator
     },
     store,
+    created() {
+      const store = this.$store
+      const self  = { self: this }
+      // If needed components are already loaded, stop execution
+      if (store.getters.hasLoaded(['campaign', 'collectors'])) {
+        return
+      }
+
+      store.dispatch('fetchCampaign', self)
+        .then(() => {
+          store.dispatch('fetchCollectors', self)
+            .then(this.hideSpinner)
+        })
+    },
     data() {
       return {
         showPrintList: false,
         search: '',
         value: '',
-        sortBy: 'id',
+        sortBy: 'number',
         reverseSort: false,
         showSearch: false,
         style: {
@@ -176,40 +190,41 @@
       }
     },
     computed: {
-      user() {
-        return this.$store.getters.getUser
+      isLoading() {
+        return !this.$store.getters.hasLoaded([
+          'campaign',
+          'collectors'
+        ])
       },
-      buyers() {
-        return this.$store.getters.getAllBuyers;
+      collectors() {
+        return this.$store.getters.getAllCollectors
       },
-      filteredBuyers() {
-        if (!_.isEmpty(this.buyers)) {
-          var v = this.buyers.filter((buyer) => {
-            return _.lowerCase(buyer.name).match(_.lowerCase(this.search));
-          });
-          return v;
-        }
+      filteredCollectors() {
+        var v = this.collectors.filter((collector) => {
+          return _.lowerCase(collector.name).match(_.lowerCase(this.search))
+        });
+        return v;
       },
-      sortedArticles() {
+      sortedItems() {
         if(this.reverseSort) {
-          return _.reverse(_.sortBy(this.articles, this.sortBy))
+          return _.reverse(_.sortBy(this.items, this.sortBy))
         }
-        return _.sortBy(this.articles, this.sortBy)
+        return _.sortBy(this.items, this.sortBy)
       },
-      articles() {
-          return this.$store.getters.getSummarizedArticles
+      items() {
+        return this.$store.getters.getSummarizedItems
       },
-      allArticlesSum() {
+      allItemsSum() {
         return this.$store.getters.getTotalOrdersWinnings
       },
-      allArticlesEarnings() {
+      allItemsEarnings() {
         return this.$store.getters.getTotalOrdersEarnings
       },
-      totalOrdersAmount() {
-        return this.$store.getters.getTotalOrdersAmount
+      totalOrdersQuantity() {
+        return this.$store.getters.getTotalOrdersQuantity
       },
       shippingCost() {
-        var totalOrders = this.$store.getters.getTotalOrdersAmount
+        var totalOrders = this.$store.getters.getTotalOrdersQuantity
         if(totalOrders < 21 ) {
           return 4
         } else if(totalOrders) {
@@ -222,26 +237,32 @@
     methods: {
       sort(key) {
         if(key == this.sortBy) {
-          //console.log(key, this.sortBy, this.reverseSort)
-          this.reverseSort = !this.reverseSort;
+          this.reverseSort = !this.reverseSort
         }
         else {
-          //console.log(key, this.sortBy, this.reverseSort)
-          this.sortBy = key;
+          this.sortBy = key
         }
-
       },
-      getArticleByNumber(number) {
-        return this.$store.getters.getArticleByNumber(number)
+      hideSpinner() {
+        const spinner = $('.loading-overlay')
+        setTimeout(() => {
+          spinner.removeClass('loading')
+          setTimeout(() => {
+            spinner.addClass('hidden')
+          }, 1000);
+        }, 600);
       },
-      getPriceByBuyerId(id) {
-        return this.$store.getters.getTotalOrdersPriceByBuyerId(id)
+      getSingleItemPrice(item) {
+        return parseFloat(item.gross_price)+parseFloat(item.suggested_donation)
       },
-      updateSearch() {
-
+      getItemByNumber(number) {
+        return this.$store.getters.getItemByNumber(number)
+      },
+      getPriceByCollectorId(id) {
+        return this.$store.getters.getTotalItemsPriceByCollectorId(id)
       },
       clearSearch() {
-        this.search = '';
+        this.search = ''
         this.showSearch = false
       },
       highlight(words) {
@@ -249,19 +270,18 @@
         if (this.search != '') {
           // match pattern for search term (i = ignore case, g = global match;
           // find all matches rather than stopping after the first match)
-          var iQuery = new RegExp(this.search, "ig");
+          var iQuery = new RegExp(this.search, "ig")
           // wrap matched term in <span class="highlight">$term</span>
           return words.toString().replace(iQuery, function(matchedTxt, a, b) {
             return ('<span class=\'highlight\'>' + matchedTxt + '</span>');
-          });
+          })
         } else {
           // don't highlight anything if nothing was searched
-          return words;
+          return words
         }
       },
-      sortArticles(articles) {
-        console.log(articles)
-        return articles
+      sortItems(items) {
+        return items
       }
     },
     watch: {

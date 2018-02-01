@@ -1,0 +1,165 @@
+<template>
+<div class="input-group row no-gutters item-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected}"  ref="item">
+  <div class="input-group col-4 col-lg-3 no-gutters spinner-col">
+    <span class="input-group-btn col">
+                <input-spinner
+                  :min="1"
+                  :max="1000"
+                  :step="1"
+                  :integerOnly="true"
+                  v-model="quantity"
+                  @onInputNumberChange="onQuantityChange"
+                  ></input-spinner>
+            </span>
+  </div>
+  <div class="col select-col">
+    <v-select v-model="item.number" :options="autocomplete" :on-change="onItemChange" label="number" placeholder="Art.-Nr.">
+      <span slot="no-options">Keine(n) Boxen gefunden.</span>
+    </v-select>
+  </div>
+  <span class="input-group-addon col-lg-8 col-9 name-col">
+            {{ name ? name : '--' }}
+        </span>
+  <span class="input-group-addon col-lg-2 col-9 font-weight-bold sum-col">
+            <small class="d-inline d-lg-none font-weight-normal text-muted">Summe:&nbsp;</small>{{ sum }}€
+        </span>
+  <span class="input-group-btn col-3 col-lg-2 delete-col">
+            <a href="#" class="btn btn-outline-danger btn-block" v-on:click.prevent="showModal = true">
+                <i class="mdi mdi-delete"></i>
+            </a>
+        </span>
+  <div class="item-modal-overlay" v-if="showModal" :class="{ active: showModal }">
+    <div class="row no-gutters">
+      <div class="col-10 confirm-message font-weight-bold"><span class="d-none d-md-inline">Artikel</span> wirklich löschen?</div>
+      <div class="col-4 cancel-item-delete">
+        <a href="#" class="btn btn-outline-danger btn-block" @click="onItemDelete" v-shortkey="['enter']" @shortkey="onItemDelete">
+          <i class="mdi mdi-check"></i>
+          <span class="d-none d-lg-inline">löschen</span></a>
+      </div>
+      <div class="col-4 delete-item">
+        <a href="#" class="btn btn-outline-primary btn-block" @click.prevent="showModal = false" v-shortkey="['esc']" @shortkey="showModal = false">
+          <i class="mdi mdi-close"></i>
+          <span class="d-none d-lg-inline">abbrechen</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <transition name="modal">
+    <div class="modal-mask" v-if="showModal" @click="showModal = false"></div>
+  </transition>
+</div>
+</template>
+
+<script>
+import vSelect from 'vue-select'
+import InputSpinner from './input-spinner.vue'
+import confirm from './confirm.vue'
+
+export default {
+  name: 'item',
+  components: {
+    vSelect,
+    InputSpinner,
+    confirm
+  },
+  props: {
+    item: {
+      type: Object
+    },
+    collectorId: {
+      default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      step: 1,
+      min: 1,
+      max: 100,
+      maxLength: 3,
+      showModal: false,
+      selected: false,
+    };
+  },
+  watch: {
+    selected(val) {
+      if(val) {
+        this.$emit('selected', this.$refs.item)
+      }
+    }
+  },
+  computed: {
+    name() {
+      return this.item.name ? this.item.name : false
+    },
+    // get unique id for each element for dom-events
+    id() {
+      return 'collector-' + this.collectorId + '__item-' + this.item.number
+    },
+    // v-model workaround for item quantity
+    quantity: {
+      get() {
+        return this.item.quantity;
+      },
+      set(value) {
+        // store new item quantityValue
+        console.log(value, this.item.id)
+        this.$store.commit('changeItemQuantity', {
+          itemId: this.item.id,
+          newQuantity: value,
+          collectorId: this.collectorId
+        });
+      }
+    },
+    // get price of this item with speciied quantity
+    sum() {
+      return this.item.quantity * this.item.gross_price;
+    },
+    returns() {
+      var returns = parseInt(this.item.quantity) * parseInt(this.item.suggested_donation);
+      return returns ? returns : 0
+    },
+    // get array with all available items
+    autocomplete() {
+      return this.$store.getters.getAllItemNumbers
+    }
+  },
+  methods: {
+    // update item quantityValue in store
+    onQuantityChange(value) {
+      this.$store.commit('changeItemQuantity', {
+        itemId: this.item.id,
+        newQuantity: value,
+        collectorId: this.collectorId
+      });
+    },
+    // Invoke item deletion
+    onItemDelete(e) {
+      e.preventDefault();
+
+        this.$store.commit('deleteItem', {
+          collectorId: this.collectorId,
+          itemIndex: this.itemIndex
+        })
+
+      this.showModal = false;
+      this.$note.info({
+        message: 'Artikel wurde gelöscht'
+      })
+    },
+    onItemChange(newItem) {
+        this.$store.commit('changeItemNumber', {
+          newNumber: newItem,
+          itemId: this.item.id,
+          collectorId: this.collectorId
+        })
+    }
+  }
+}
+</script>
+<style lang="scss">
+@import '../../sass/modules/select.scss'
+</style>

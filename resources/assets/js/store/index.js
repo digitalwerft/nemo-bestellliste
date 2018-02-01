@@ -5,10 +5,9 @@ import Vuex from "vuex";
 
 import fundraiser from './modules/fundraiser'
 import campaigns from './modules/campaigns'
-
-import articles from './modules/articles'
-import buyers from './modules/buyers'
-import user from './modules/user'
+import items from './modules/items'
+import collectors from './modules/collectors'
+import campaign from './modules/campaign'
 
 Vue.use(Vuex);
 
@@ -21,9 +20,9 @@ export default new Vuex.Store({
   modules: {
     fundraiser,
     campaigns,
-    articles,
-    buyers,
-    user
+    items,
+    collectors,
+    campaign
   },
   mutations: {
     LOGIN(state) {
@@ -43,18 +42,20 @@ export default new Vuex.Store({
       }
     },
     hasFullyLoaded(state, getters) {
-      var buyers = !_.isEmpty(state.buyers.all)
-      var articles = !_.isEmpty(state.articles.all)
-      var user = !_.isEmpty(state.user.data)
+      var collectors = !_.isEmpty(state.collectors.all)
+      var items = !_.isEmpty(state.items.all)
+      var campaign = !_.isEmpty(state.campaign.data)
 
-      return state.buyers.requestComplete == state.user.requestComplete == state.articles.requestComplete
+      return state.collectors.requestComplete == state.campaign.requestComplete == state.items.requestComplete
     }
   },
   actions: {
     fetchAll({dispatch, commit}, {self}) {
-      dispatch('fetchBuyers', {self: self})
-      dispatch('fetchArticles', {self: self})
-      dispatch('fetchUser', {self: self})
+      dispatch('fetchCollectors', {self: self})
+      dispatch('fetchItems', {self: self})
+      dispatch('fetchCampaign', {self: self})
+      dispatch('fetchFundraiser', {self: self})
+      dispatch('fetchCampaigns', {self: self})
     },
     login({dispatch, commit}) {
       commit(LOGIN)

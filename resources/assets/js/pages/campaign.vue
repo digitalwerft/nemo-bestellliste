@@ -2,28 +2,26 @@
   <div v-if="!isLoading">
     <info-box :visible="displayInfo"></info-box>
     <section class="details">
-      <user v-on:display-info="displayInfo = !displayInfo"></user>
+      <fundraiser v-on:display-info="displayInfo = !displayInfo"></fundraiser>
     </section>
 
 
     <section class="order-navigation">
-      <navbar v-model="search" @onbuyercreate="createBuyer"></navbar>
+      <navbar v-model="search" @oncollectorcreate="createCollector"></navbar>
     </section>
     <section class="orders">
       <div class="container">
-        <div v-for="(buyer, index) in filteredBuyer">
-          <div v-if="buyer.state == 'active'">
-            <buyer :buyer-id="buyer.id" :filterkey="search" v-on:delete-buyer="onBuyerDeleted" v-on:save-buyer="onBuyerSaved" v-on:editing-buyer="handleEditing"></buyer>
+        <div v-for="(collector, index) in filteredCollector">
+          <collector :collector-id="collector.id" :filterkey="search" v-on:delete-collector="onCollectorDeleted" v-on:save-collector="onCollectorSaved" v-on:editing-collector="handleEditing"></collector>
           </div>
-        </div>
-        <div class="alert alert-no-buyers mt-3 text-muted text-center" v-if="filteredBuyer && filteredBuyer.length < 1">
+        <div class="alert alert-no-collectors mt-3 text-muted text-center" v-if="filteredCollector && filteredCollector.length < 1">
           Deine Suche nach <mark>{{ search }}</mark> erzielte leider keine Treffer.
         </div>
-        <div class="alert alert-no-buyers mt-3 text-muted text-center" v-if="buyers.length < 1">
+        <div class="alert alert-no-collectors mt-3 text-muted text-center" v-if="collectors.length < 1">
           Noch wurden keine Teilnehmer zu dieser Bestellung hinzugefügt.
-          <a href="#" class="btn btn-lg btn-block btn-success mt-3" @click.prevent="createBuyer" >Jetzt ersten Teilnehmer hinzufügen!</a>
+          <a href="#" class="btn btn-lg btn-block btn-success mt-3" @click.prevent="createCollector" >Jetzt ersten Teilnehmer hinzufügen!</a>
         </div>
-        <a href="" class="btn btn-light btn-lg btn-block mt-3" @click.prevent="createBuyer" :class="{hidden: (search != ''), disabled: hasUnsavedBuyer}" v-if="buyers.length > 0">
+        <a href="" class="btn btn-light btn-lg btn-block mt-3" @click.prevent="createCollector" :class="{hidden: (search != ''), disabled: hasUnsavedCollector}" v-if="collectors.length > 0">
                       <i class="mdi mdi-account-plus"></i> Teilnehmer hinzufügen
                   </a>
       </div>
@@ -34,32 +32,37 @@
 <script>
 import store from '../store'
 
-import buyer from '../components/buyer.vue'
+import collector from '../components/collector.vue'
 import footerNav from '../components/footer-nav.vue'
 import navbar from '../components/navbar.vue'
-import user from '../components/user.vue'
+import fundraiser from '../components/fundraiser.vue'
 import infoBox from '../components/info-box.vue'
 
 export default {
   components: {
-    buyer,
+    collector,
     footerNav,
     navbar,
-    user,
+    fundraiser,
     infoBox
   },
   created() {
+    const store = this.$store
+    const self  = {self: this}
+
+    if (store.getters.hasLoaded('campaign')) {
+      return
+    }
+
     // Fetch Data if not already happened
-    if(!this.$store.getters.hasFullyLoaded) {
-      this.$store.dispatch('fetchAll', {
-        self: this
-      }).then(() => {
-        this.finishLoading()
+    store.dispatch('fetchCampaign', self)
+      .then(() => {
+        store.dispatch('fetchItems', self)
+          .then(() => {
+            store.dispatch('fetchCollectors', self)
+              .then(this.hideSpinner)
+          })
       })
-    }
-    if (!this.buyers) {
-      displayInfo = true;
-    }
   },
   store,
   data() {
@@ -68,22 +71,22 @@ export default {
       search: '',
       totalWinnings: 0,
       showModal: false,
-      hasUnsavedBuyer: false,
+      hasUnsavedCollector: false,
       savingComplete: false,
       displayInfo: false
     };
   },
   computed: {
-    buyers() {
-      return this.$store.getters.getAllBuyers;
+    collectors() {
+      return this.$store.getters.getAllCollectors;
     },
-    articles() {
-      return this.$store.getters.getAllArticles;
+    items() {
+      return this.$store.getters.getAllItems;
     },
-    filteredBuyer() {
-      if (!_.isEmpty(this.buyers)) {
-        var v = this.buyers.filter((buyer) => {
-          return _.lowerCase(buyer.name).match(_.lowerCase(this.search));
+    filteredCollector() {
+      if (!_.isEmpty(this.collectors)) {
+        var v = this.collectors.filter((collector) => {
+          return _.lowerCase(collector.name).match(_.lowerCase(this.search));
         });
         return v;
       }
@@ -105,24 +108,34 @@ export default {
     }
   },
   methods: {
+    hideSpinner() {
+      const spinner = $('.loading-overlay')
+
+      setTimeout(() => {
+        spinner.removeClass('loading');
+        setTimeout(() => {
+          spinner.addClass('hidden');
+        }, 1000);
+      }, 600);
+    },
     handleEditing(isEditing) {
       if (isEditing) {
-        this.hasUnsavedBuyer = true
+        this.hasUnsavedCollector = true
       } else {
-        this.hasUnsavedBuyer = false
+        this.hasUnsavedCollector = false
       }
     },
-    onBuyerEdit(a) {
+    onCollectorEdit(a) {
       //console.log(a)
     },
-    onBuyerSaved() {
-      if (this.hasUnsavedBuyer) {
-        this.hasUnsavedBuyer = false
+    onCollectorSaved() {
+      if (this.hasUnsavedCollector) {
+        this.hasUnsavedCollector = false
       }
     },
-    onBuyerDeleted() {
-      if (this.hasUnsavedBuyer) {
-        this.hasUnsavedBuyer = false
+    onCollectorDeleted() {
+      if (this.hasUnsavedCollector) {
+        this.hasUnsavedCollector = false
       }
     },
     finishLoading() {
@@ -142,14 +155,11 @@ export default {
       };
       iziToast.show(_.merge(opt, options));
     },
-    createBuyer(e) {
+    createCollector(e) {
       if (e) {
         e.preventDefault();
       }
-      if (!this.hasUnsavedBuyer) {
-        this.hasUnsavedBuyer = true
-        this.$store.commit('newBuyer')
-      }
+      this.$store.commit('newCollector')
     }
   }
 }
