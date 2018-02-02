@@ -39,7 +39,7 @@ export default {
         return this.collectors.length;
       },
       totalOrders() {
-        return this.$store.getters.getTotalItemsAmount;
+        return this.$store.getters.getTotalItemsQuantity;
       },
       winnings() {
         return this.$store.getters.getTotalItemsWinnings
