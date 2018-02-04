@@ -135,7 +135,7 @@ export default {
       return this.$store.getters.getTotalItemsPriceByCollectorId(this.collectorId)
     },
     totalEarnings() {
-      return this.$store.getters.getTotalItemsEarningsByCollectorId(this.collectorId)
+      return this.$store.getters.getAllItemsDonationsByCollectorId(this.collectorId)
     }
   },
   watch: {
