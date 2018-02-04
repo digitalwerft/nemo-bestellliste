@@ -46,7 +46,7 @@
             <label for="shipping-zip">PLZ, Ort</label>
             <div class="row">
               <div class="col-18 col-sm-5 mb-3">
-                <input id="shipping-zip" type="text" class="form-control form-control" v-bind:value="shippingAddress.postal" placeholder="PLZ">
+                <input id="shipping-zip" type="text" class="form-control form-control" v-bind:value="shippingAddress.zip_code" placeholder="PLZ">
               </div>
               <div class="col">
                 <input id="shipping-city" type="text" class="form-control form-control" v-bind:value="shippingAddress.city" placeholder="Ort">
@@ -54,6 +54,8 @@
             </div>
           </div>
           <h6 v-if="!editingDetails">{{ shippingAddress.postal }} {{ shippingAddress.city }}</h6>
+          <a href="#" class="btn btn-link btn-sm pl-0" @click.prevent="editingDetails = !editingDetails" v-if="!editingDetails">[
+              {{ editingDetails ? 'Abbrechen' : 'Ändern' }}]</a>
         </div>
       </div>
       <div class="row">
@@ -61,16 +63,16 @@
           <label for="fundraiser-message" class="text-muted mt-3">Kommentar zu deiner Bestellung</label>
           <textarea v-bind:value="campaign.comment" class="form-control" id="fundraiser-message" :disabled="!editingDetails"></textarea>
           <small class="form-text text-muted">
-                Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns bitte jederzeit unter <a href="tel:076170788833">0761 / 707 888 33</a> an.
+            Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns gerne jederzeit von Mo-Fr 9-18 Uhr unter <a href="tel:076170788833">0761 / 707 888 33</a> an <br>oder schreibt uns eine E-Mail an <a href="mailto:bestellung@neuemasche.com">bestellung@neuemasche.com</a>.
               </small>
         </div>
       </div>
       <div class="row mt-3">
         <div class="col">
           <div class="float-right">
-            <a href="#" class="btn ml-auto" @click="editingDetails = !editingDetails" :class="{'btn-primary': !editingDetails, 'btn-danger': editingDetails}">
+            <a href="#" class="btn ml-auto" @click.prevent="editingDetails = !editingDetails" :class="{'btn-primary': !editingDetails, 'btn-danger': editingDetails}">
                 {{ editingDetails ? 'Abbrechen' : 'Ändern' }}</a>
-            <a href="#" class="btn btn-success" @click="saveShippingDetails" v-if="editingDetails">Speichern</a>
+            <a href="#" class="btn btn-success" @click.prevent="saveShippingDetails" v-if="editingDetails">Speichern</a>
           </div>
         </div>
       </div>

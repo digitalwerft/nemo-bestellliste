@@ -11,7 +11,7 @@ const getters = {
       return collector.id === id
     });
   },
-  getTotalItemsQuantity: (state, getters) => {
+  getAllItemsQuantity: (state, getters) => {
     var totalOrders = 0;
     state.all.forEach(collector => {
       totalOrders += getters.getItemsQuantityByCollectorId(collector.id)
@@ -38,15 +38,15 @@ const getters = {
       return sum;
     }
   },
-  getTotalItemsEarningsByCollectorId: (state, getters) => id => {
+  getAllItemsDonationsByCollectorId: (state, getters) => id => {
     var sum = 0;
     var collector = getters.getCollectorById(id);
     _.each(collector.items, (item) => {
-        sum = sum + item.quantity * item.suggested_donation;
+        sum += item.quantity * item.suggested_donation;
     });
     return sum;
   },
-  getTotalItemsWinnings: (state, getters) => {
+  getAllItemsPrice: (state, getters) => {
     var collectors = getters.getAllCollectors
     var sum = 0
     collectors.forEach(collector => {
@@ -54,11 +54,19 @@ const getters = {
     })
     return sum
   },
-  getTotalItemsEarnings: (state, getters) => {
+  getAllItemsPriceWithDonations: (state, getters) => {
+    var collectors = getters.getAllCollectors
+    var price = 0
+    collectors.forEach(collector => {
+      price = price + getters.getTotalItemsPriceByCollectorId(collector.id) + getters.getAllItemsDonationsByCollectorId(collector.id)
+    })
+    return price
+  },
+  getAllItemsDonations: (state, getters) => {
     var collectors = getters.getAllCollectors
     var sum = 0
     collectors.forEach(collector => {
-      sum = sum + getters.getTotalItemsEarningsByCollectorId(collector.id)
+      sum = sum + getters.getAllItemsDonationsByCollectorId(collector.id)
     })
     return sum
   },
@@ -72,7 +80,7 @@ const getters = {
   },
   getItemsByCollectorId: (state, getters) => id => {
     var collector = getters.getCollectorById(id);
-    return collector.items
+    return _.sortBy(collector.items, 'number')
   },
   getSummarizedItems: (state, getters) => {
     var allCollectors = getters.getAllCollectors

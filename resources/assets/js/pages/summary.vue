@@ -53,22 +53,22 @@
             <tr v-for="item in sortedItems">
               <td data-label="Artikel">{{ item.number }} – {{ item.name }}</td>
               <td data-label="Anzahl Boxen">{{ item.quantity }}</td>
-              <td data-label="Rechnungsbetrag">{{ getSingleItemPrice(item) }}€</td>
+              <td data-label="Rechnungsbetrag">{{ item.quantity*item.gross_price }}€</td>
               <td data-label="Spende">{{ item.suggested_donation*item.quantity }}€</td>
-              <td data-label="Gesamntbetrag">{{ item.quantity*item.gross_price }}€</td>
+              <td data-label="Gesamtbetrag">{{ getItemTotal(item) }}€</td>
             </tr>
             <tr class="tfooter">
               <td>Summe:</td>
-              <td colspan="2" data-label="Anzahl der bestellten Boxen">{{ totalOrdersQuantity }}</td>
-              <td data-label="Rechnungsbetrag">{{ allItemsSum }}€</td>
-              <td data-label="Spendensumme">{{ allItemsEarnings }}€</td>
+              <td data-label="Anzahl der bestellten Boxen">{{ allItemsQuantity }}</td>
+              <td data-label="Rechnungsbetrag">{{ allItemsPrice }}€</td>
+              <td data-label="Gesamtsumme">{{ allItemsDonations }}€</td>
+              <td data-label="Spendensumme">{{ allItemsPriceWithDonations }}€</td>
             </tr>
           </tbody>
         </table>
         <p>
           Rabattaktionen und Versandkosten (bei unter 100 bestellten Boxen) sind im o.g. Rechnungsbetrag noch nicht enthalten. <br>
           Voraussichtliche Versandkosten: {{ shippingCost }}€ <br>
-          Rechnungsbetrag inkl. Versandkosten: {{ allItemsSum+shippingCost }}€
         </p>
       </div>
     </div>
@@ -123,19 +123,20 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item, index) in sortByNumber(collector.items)">
+                      <tr v-for="(item, index) in collector.items">
                         <td data-label="Name" class="font-weight-bold" v-html="index == 0 ? highlight(collector.name) : ''">"</td>
                         <td data-label="Artikel">{{ item.number }} – {{ item.name}}</td>
                         <td data-label="Anzahl">{{ item.quantity }}</td>
-                        <td data-label="Gesamtbetrag">{{ getSingleItemPrice(item) * item.quantity }}€</td>
+                        <td data-label="Gesamtbetrag">{{ (parseFloat(item.suggested_donation)+parseFloat(item.gross_price)) * item.quantity }}€</td>
                         <td data-label="davon Spende">{{ item.suggested_donation * item.quantity}}€</td>
                         <td></td>
                         <td></td>
                       </tr>
                       <tr>
-                        <td colspan="4"></td>
+                        <td colspan="2"></td>
                         <td class="font-weight-bold">Summe:</td>
-                        <td>{{ getPriceByCollectorId(collector.id)}}€</td>
+                        <td>{{ getPriceByCollectorId(collector.id) + getDonationsByCollectorId(collector.id)}}€</td>
+                        <td>{{ getDonationsByCollectorId(collector.id) }}€</td>
                       </tr>
                     </tbody>
                   </table>
@@ -219,14 +220,17 @@
       items() {
         return this.$store.getters.getSummarizedItems
       },
-      allItemsSum() {
-        return this.$store.getters.getTotalItemsWinnings
+      allItemsPriceWithDonations() {
+        return this.$store.getters.getAllItemsPriceWithDonations
       },
-      allItemsEarnings() {
-        return this.$store.getters.getTotalItemsEarnings
+      allItemsPrice() {
+        return this.$store.getters.getAllItemsPrice
       },
-      totalOrdersQuantity() {
-        return this.$store.getters.getTotalItemsQuantity
+      allItemsDonations() {
+        return this.$store.getters.getAllItemsDonations
+      },
+      allItemsQuantity() {
+        return this.$store.getters.getAllItemsQuantity
       },
       shippingCost() {
         var totalOrders = this.$store.getters.getTotalItemsQuantity
@@ -247,6 +251,9 @@
         else {
           this.sortBy = key
         }
+      },
+      getItemTotal(item) {
+        return item.quantity*(parseFloat(item.gross_price)+parseFloat(item.suggested_donation))
       },
       sortByNumber(items) {
         return _.sortBy(this.items, 'number')
@@ -275,6 +282,9 @@
       },
       getPriceByCollectorId(id) {
         return this.$store.getters.getTotalItemsPriceByCollectorId(id)
+      },
+      getDonationsByCollectorId(id) {
+        return this.$store.getters.getAllItemsDonationsByCollectorId(id)
       },
       clearSearch() {
         this.search = ''

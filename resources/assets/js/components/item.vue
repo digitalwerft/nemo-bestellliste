@@ -108,7 +108,6 @@ export default {
       },
       set(value) {
         // store new item quantityValue
-        console.log(value, this.item.id)
         this.$store.commit('changeItemQuantity', {
           itemId: this.item.id,
           newQuantity: value,
@@ -126,7 +125,7 @@ export default {
     },
     // get array with all available items
     autocomplete() {
-      return this.$store.getters.getAllItemNumbers
+      return _.sortBy(this.$store.getters.getAllItemNumbers, 'number')
     }
   },
   methods: {
