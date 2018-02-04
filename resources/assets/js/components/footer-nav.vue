@@ -39,13 +39,13 @@ export default {
         return this.collectors.length;
       },
       totalOrders() {
-        return this.$store.getters.getTotalItemsQuantity;
+        return this.$store.getters.getAllItemsQuantity;
       },
       winnings() {
-        return this.$store.getters.getTotalItemsWinnings
+        return this.$store.getters.getAllItemsPriceWithDonations
       },
       earnings() {
-        return this.$store.getters.getTotalItemsEarnings
+        return this.$store.getters.getAllItemsDonations
       }
     }
 }
