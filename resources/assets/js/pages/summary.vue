@@ -233,10 +233,10 @@
         return this.$store.getters.getAllItemsQuantity
       },
       shippingCost() {
-        var totalOrders = this.$store.getters.getTotalItemsQuantity
+        var totalOrders = this.$store.getters.getAlllItemsQuantity
         if(totalOrders < 21 ) {
           return 4
-        } else if(totalOrders) {
+        } else if(totalOrders < 100) {
           return 8
         } else {
           return 0;
