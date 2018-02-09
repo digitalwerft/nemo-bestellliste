@@ -82,6 +82,9 @@ export default {
       type: Number
     }
   },
+  created() {
+    this.oldId = this.itemId
+  },
   data() {
     return {
       step: 1,
@@ -91,7 +94,8 @@ export default {
       showModal: false,
       selected: false,
       isInitial: true,
-      isNewItem: false
+      isNewItem: false,
+      oldId: 0
     };
   },
   watch: {
@@ -99,6 +103,9 @@ export default {
       if(val) {
         this.$emit('selected', this.$refs.item)
       }
+    },
+    itemId(val) {
+      console.log(val)
     }
   },
   computed: {
@@ -109,6 +116,9 @@ export default {
     id() {
       return 'collector-' + this.collectorId + '__item-' + this.item.number
     },
+    itemId() {
+      return this.item.id
+    },
     // v-model workaround for item quantity
     quantity: {
       get() {
@@ -116,7 +126,9 @@ export default {
       },
       set(value) {
         // store new item quantityValue
-        this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value});
+        if(this.oldId == this.itemId) {
+          this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value});
+        }
       }
     },
     // get price of this item with speciied quantity
@@ -143,17 +155,23 @@ export default {
     // Invoke item deletion
     onItemDelete(e) {
       e.preventDefault();
-      this.$store.dispatch('deleteItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}})
+      this.$store.dispatch('deleteItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}}).then(()=> {
+        setTimeout(()=> {
+          this.oldId = this.itemId
+        }, 250)
+      })
       this.showModal = false;
     },
     onNumberChange(number) {
-      if(this.isInitial && !this.item.isNewItem) {
-        this.isInitial = false
-        return
-      } else if(this.item.isNewItem) {
-        this.isInitial = false
+      if(this.oldId == this.itemId) {
+        if(this.isInitial && !this.item.isNewItem) {
+          this.isInitial = false
+          return
+        } else if(this.item.isNewItem) {
+          this.isInitial = false
+        }
+        this.$store.dispatch('updateItemNumber', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}, number: number})
       }
-      this.$store.dispatch('updateItemNumber', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}, number: number})
     }
   }
 }

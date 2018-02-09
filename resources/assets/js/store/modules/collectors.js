@@ -212,14 +212,13 @@ const actions = {
         })
       }
     })
-
   },
   deleteItem({
     commit, state
   }, {
     itemObj, collector
   }) {
-    api.deleteItem(collector, itemObj.item)
+    return api.deleteItem(collector, itemObj.item)
       .then(response => {
         commit("DELETE_ITEM", {response: response.data, item: itemObj})
         iziToast.info({
