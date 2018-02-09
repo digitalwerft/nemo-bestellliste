@@ -47,6 +47,16 @@ Route::post('/campaign/{campaign_id}/quote/collector/{collector_id}', function()
   ];
 });
 
+Route::post('/campaign/{campaign_id}/shipping-address', function() {
+  return [
+    "message" => "Lieferadresse geändert",
+    "status" => "success",
+    "data" => [
+      //
+    ],
+  ];
+});
+
 Route::put('/campaign/{campaign_id}/quote/collector/', function() {
   return [
     "message" => "Teilnehmer erstellt",

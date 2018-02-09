@@ -1,44 +1,7 @@
 import itemsState from './items'
-import axios from 'axios'
+import api from '../../services/api'
 
 import iziToast from 'izitoast';
-
-const api = {
-  createItem(collector) {
-    return axios.put('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item', {
-        number: 110,
-        quantity: 1
-      })
-  },
-  updateItem(collector, item) {
-    return axios.post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item/'+item.id, {
-      number: item.number,
-      quantity: item.quantity
-    })
-  },
-  deleteItem(collector, item) {
-    return axios.delete('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item/'+item.id)
-  },
-  createCollector(collector) {
-    return axios.put('/api/campaign/'+collector.campaign_id+'/quote/collector/', {
-      name: collector.name
-    })
-  },
-  deleteCollector(collector) {
-    return axios.delete('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id)
-  },
-  updateCollector(collector) {
-    return axios.post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id, {
-      name: collector.name
-    })
-  },
-  updateAddress(fundraiser) {
-    //
-  },
-  placeOrder() {
-    //
-  }
-}
 
 const state = {
   all: [],
@@ -169,6 +132,13 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  updateShippingAddress({
+    commit
+  }, {campaign_id, address}) {
+    return api.updateShippingAddress(campaign_id, address).then(response => {
+      commit('UPDATE_SHIPPING_ADDRESS', address)
+    })
   },
   updateCollectorName({
     commit

@@ -29,27 +29,34 @@
             </label>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-name">Vorname, Nachname</label>
-            <input id="shipping-name" type="text" class="form-control form-control" v-bind:value="shippingAddress.first_name" placeholder="Vorname, Nachname">
+            <input id="shipping-name" type="text" class="form-control form-control" v-model="form.first_name" placeholder="Vorname, Nachname">
           </div>
           <h6 v-if="!editingDetails">{{ shippingAddress.first_name }} {{ shippingAddress.last_name }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-organisation">Name der Firma/Organisation/ Schule/Pfarrei <small>(optional)</small></label>
-            <input id="shipping-organisation" type="text" class="form-control form-control" v-bind:value="shippingAddress.organisation" placeholder="Name der Firma/Organisation/Schule/Pfarrei">
+            <input id="shipping-organisation" type="text" class="form-control form-control" v-model="form.organisation" placeholder="Name der Firma/Organisation/Schule/Pfarrei">
           </div>
           <h6 v-if="!editingDetails">{{ shippingAddress.organisation }}</h6>
           <div class="form-group" v-if="editingDetails">
-            <label for="shipping-street">Straße, Hausnummer</label>
-            <input id="shipping-street" type="text" class="form-control form-control" v-bind:value="shippingAddress.address" placeholder="Straße, Hausnummer">
+            <label for="shipping-route">Straße, Hausnummer</label>
+            <div class="row">
+              <div class="col-14">
+                <input id="shipping-route" type="text" class="form-control form-control" v-model="form.route" placeholder="Straße">
+              </div>
+              <div class="col">
+                <input id="shipping-street-number" type="text" class="form-control form-control" v-model="form.street_number" placeholder="Hausnummer">
+              </div>
+            </div>
           </div>
           <h6 v-if="!editingDetails">{{ shippingAddress.address }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-zip">PLZ, Ort</label>
             <div class="row">
               <div class="col-18 col-sm-5 mb-3">
-                <input id="shipping-zip" type="text" class="form-control form-control" v-bind:value="shippingAddress.zip_code" placeholder="PLZ">
+                <input id="shipping-zip" type="text" class="form-control form-control" v-model="form.zip_code" placeholder="PLZ">
               </div>
               <div class="col">
-                <input id="shipping-city" type="text" class="form-control form-control" v-bind:value="shippingAddress.city" placeholder="Ort">
+                <input id="shipping-city" type="text" class="form-control form-control" v-model="form.city" placeholder="Ort">
               </div>
             </div>
           </div>
@@ -70,8 +77,8 @@
       <div class="row mt-3">
         <div class="col">
           <div class="float-right">
-            <a href="#" class="btn ml-auto" @click.prevent="editingDetails = !editingDetails" :class="{'btn-primary': !editingDetails, 'btn-danger': editingDetails}">
-                {{ editingDetails ? 'Abbrechen' : 'Ändern' }}</a>
+            <a href="#" class="btn btn-danger ml-auto" @click.prevent="cancelEdit" v-if="editingDetails">Abbrechen</a>
+            <a href="#" class="btn btn-primary ml-auto" @click.prevent="editingDetails = true" v-if="!editingDetails">Ändern</a>
             <a href="#" class="btn btn-success" @click.prevent="saveShippingDetails" v-if="editingDetails">Speichern</a>
           </div>
         </div>
@@ -86,11 +93,22 @@
       const store = this.$store
       const self  = {self: this}
       // Fetch Data if not already happened
-      store.dispatch('fetchFundraiser', self)
+      store.dispatch('fetchFundraiser', self).then(()=> {
+        this.form = _.clone(this.campaign.shipping_address)
+      })
     },
     data() {
       return {
-        editingDetails: false
+        editingDetails: false,
+        form: {
+          city: '',
+          street_number: '',
+          route: '',
+          first_name: '',
+          last_name: '',
+          organisation: '',
+          zip_code: ''
+        }
       }
     },
     computed: {
@@ -107,7 +125,17 @@
     methods: {
       saveShippingDetails(e) {
         e.preventDefault()
+        this.$store.dispatch('updateShippingAddress', {address: this.form, campaign_id: this.campaign.id }).then(() => {
+          this.editingDetails = false
+          this.$note.info({
+            message: 'Lieferadresse erfolgreich geändert'
+          })
+        })
       },
+      cancelEdit() {
+        this.form = _.clone(this.shippingAddress)
+        this.editingDetails = false
+      }
     }
   }
 </script>

@@ -31,6 +31,9 @@ const mutations = {
   FETCH_CAMPAIGN(state, campaign) {
     state.data = campaign;
     state.requestComplete = true;
+  },
+  UPDATE_SHIPPING_ADDRESS(state, address) {
+    state.data.shipping_address = address
   }
 }
 
