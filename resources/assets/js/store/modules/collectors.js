@@ -160,7 +160,7 @@ const actions = {
   }, collector) {
     console.log(collector)
     api.createCollector(collector).then(response => {
-      commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.resource.id})
+      commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.data.resource.id})
       iziToast.success({
         message: response.data.message
       })
@@ -193,7 +193,7 @@ const actions = {
     commit
   }, collector ) {
     api.createItem(collector).then(response => {
-      commit("CREATE_ITEM", {collector: collector, item: response.data.resource})
+      commit("CREATE_ITEM", {collector: collector, item: response.data.data.resource})
     }).catch(error => {
       if(error.response) {
         iziToast.error({

@@ -85,11 +85,10 @@ Route::post('/campaign/{campaign_id}/quote/collector/{collector_id}/item', funct
     "message" => "neues Item angelegt",
     "status" => "success",
     "data" => [
-      //
-    ],
-    "resource" => [
-      "id" => 999,
-      "number" => $request->input('number')
+      "resource" => [
+        "id" => 999,
+        "number" => $request->input('number')
+      ],
     ],
   ];
 });
