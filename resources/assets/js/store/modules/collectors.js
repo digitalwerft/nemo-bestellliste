@@ -176,7 +176,7 @@ const actions = {
     api.createItem(collector).then(response => {
       commit("CREATE_ITEM", {collector: collector, response: response})
     }).catch(error => {
-      console.log(error)
+      console.log(error.response)
       if(error.data) {
         iziToast.info({
           message: error.data.message
