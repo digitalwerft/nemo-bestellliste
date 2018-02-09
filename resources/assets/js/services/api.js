@@ -33,7 +33,9 @@ export default {
     const form_data = _.pick(address, [
       'city', 'zip_code', 'first_name', 'last_name', 'route', 'street_number', 'organisation'
     ])
-    return axios.post('/api/campaign/'+campaign_id+'/shipping-address', form_data)
+    return axios.post('/api/campaign/'+campaign_id+'/shipping-address', {
+      address: form_data
+    })
   },
   placeOrder() {
     //
