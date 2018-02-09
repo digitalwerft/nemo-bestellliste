@@ -48,7 +48,7 @@
     <div class="card">
       <div class="card-body">
         <div v-for="(item, index) in collector.items">
-          <item :item="item" :disabled="editing" v-on:selected="select" :collectorId="collector.id"></item>
+          <item :item="item" :disabled="editing" v-on:selected="select" :collectorId="collector.id" :campaignId="collector.campaign_id" :index="index"></item>
         </div>
         <div class="no-items text-center" v-if="collector.items.length<1">
           <small class="text-muted text-danger text-center" v-if="!collector.name">Dieser Teilnehmer braucht einen Namen, bevor du ihm Artikel zuweisen kannst.</small>
@@ -255,10 +255,7 @@ export default {
       // dont add Item when in editing mode
       if(!this.editing) {
         // add new Item to Store Component
-        this.$store.commit('newItem', {
-          collectorId: this.collectorId,
-          initialId: this.$store.state.items.all[0].id
-        })
+        this.$store.dispatch('createItem', this.collector)
       }
     }
   }

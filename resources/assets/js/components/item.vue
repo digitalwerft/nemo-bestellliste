@@ -1,7 +1,7 @@
 <template>
 <div class="input-group row no-gutters single-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected}"  ref="item">
   <div class="col select-col">
-    <v-select v-model="item.number" :options="autocomplete" :on-change="onItemChange" label="number" placeholder="Art.-Nr.">
+    <v-select v-model="item.number" :options="autocomplete" :on-change="onNumberChange" label="number" placeholder="Art.-Nr.">
       <span slot="no-options">Keine(n) Boxen gefunden.</span>
     </v-select>
   </div>
@@ -74,6 +74,12 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    campaignId: {
+      default: null
+    },
+    index: {
+      type: Number
     }
   },
   data() {
@@ -84,6 +90,8 @@ export default {
       maxLength: 3,
       showModal: false,
       selected: false,
+      isInitial: true,
+      isNewItem: false
     };
   },
   watch: {
@@ -108,16 +116,15 @@ export default {
       },
       set(value) {
         // store new item quantityValue
-        this.$store.commit('changeItemQuantity', {
-          itemId: this.item.id,
-          newQuantity: value,
-          collectorId: this.collectorId
-        });
+        this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value});
       }
     },
     // get price of this item with speciied quantity
     sum() {
       return this.item.quantity * this.item.gross_price;
+    },
+    collector() {
+      return this.$store.getters.getCollectorById(this.collectorId)
     },
     returns() {
       var returns = parseInt(this.item.quantity) * parseInt(this.item.suggested_donation);
@@ -131,36 +138,27 @@ export default {
   methods: {
     // update item quantityValue in store
     onQuantityChange(value) {
-      this.$store.commit('changeItemQuantity', {
-        itemId: this.item.id,
-        newQuantity: value,
-        collectorId: this.collectorId
-      });
+      //this.$store.dispatch('updateItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}});
     },
     // Invoke item deletion
     onItemDelete(e) {
       e.preventDefault();
-
-        this.$store.commit('deleteItem', {
-          collectorId: this.collectorId,
-          itemIndex: this.itemIndex
-        })
-
+      this.$store.dispatch('deleteItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}})
       this.showModal = false;
-      this.$note.info({
-        message: 'Artikel wurde gelöscht'
-      })
     },
-    onItemChange(newItem) {
-        this.$store.commit('changeItemNumber', {
-          newNumber: newItem,
-          itemId: this.item.id,
-          collectorId: this.collectorId
-        })
+    onNumberChange(number) {
+      if(this.isInitial && !this.item.isNewItem) {
+        this.isInitial = false
+        return
+      } else if(this.item.isNewItem) {
+        this.isInitial = false
+      }
+      this.$store.dispatch('updateItemNumber', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}, number: number})
     }
   }
 }
 </script>
+
 <style lang="scss">
-@import '../../sass/modules/select.scss'
+  @import '../../sass/modules/select.scss';
 </style>

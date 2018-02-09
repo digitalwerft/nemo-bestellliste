@@ -1,4 +1,44 @@
 import itemsState from './items'
+import axios from 'axios'
+
+import iziToast from 'izitoast';
+
+const api = {
+  createItem(collector) {
+    return axios.put('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item', {
+        number: 110,
+        quantity: 1
+      })
+  },
+  updateItem(collector, item) {
+    return axios.post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item/'+item.id, {
+      number: item.number,
+      quantity: item.quantity
+    })
+  },
+  deleteItem(collector, item) {
+    return axios.delete('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item/'+item.id)
+  },
+  createCollector(campaign, collector) {
+    return axios.put('/api/campaign/'+collector.campaign_id+'/quote/collector/', {
+      name: collector.name
+    })
+  },
+  deleteCollector(collector) {
+    return axios.delete('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id)
+  },
+  updateCollector(collector) {
+    return axios.post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id, {
+      name: collector.name
+    })
+  },
+  updateAddress(fundraiser) {
+    //
+  },
+  placeOrder() {
+    //
+  }
+}
 
 const state = {
   all: [],
@@ -129,6 +169,51 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  createItem({
+    commit
+  }, collector ) {
+    api.createItem(collector).then(response => {
+      commit("CREATE_ITEM", {collector: collector, response: response})
+    }).catch(error => {
+      if(error.message) {
+        iziToast.info({
+          message: error.message
+        })
+      }
+    })
+  },
+  updateItemQuantity({
+    commit
+  }, {collector, itemObj, quantity}) {
+    api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
+      commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
+    })
+  },
+  updateItemNumber({
+    commit
+  }, {itemObj, collector, number}) {
+    api.updateItem(collector, {number: number, quantity: itemObj.item.quantity, id: itemObj.item.id}).then(response => {
+      commit('UPDATE_ITEM_NUMBER', {
+        collector: collector,
+        item: itemObj.item,
+        number: number
+      })
+    })
+
+  },
+  deleteItem({
+    commit, state
+  }, {
+    itemObj, collector
+  }) {
+    api.deleteItem(collector, itemObj.item)
+      .then(response => {
+        commit("DELETE_ITEM", {response: response.data, item: itemObj})
+        iziToast.info({
+          message: response.data.message ? response.data.message : 'Löschen erfolgreich'
+        })
+      })
   }
 }
 
@@ -140,15 +225,17 @@ const mutations = {
     state.all = collectors;
     state.requestComplete = true;
   },
-  changeItemQuantity(state, payload) {
-    var collector = this.getters.getCollectorById(payload.collectorId)
-    var item = collector.items.find(item => item.id === payload.itemId)
-
-    if(item.length > 1) {
-      return false
-    }
-
-    item.quantity = payload.newQuantity;
+  UPDATE_ITEM_ID(state, payload) {
+    payload.item.id = payload.id
+  },
+  UPDATE_ITEM_NUMBER(state, {collector, item, number}) {
+    item.number = number
+    var newItem = this.getters.getItemByNumber(number)
+    _.unset(newItem, 'id')
+    _.merge(item, newItem)
+  },
+  UPDATE_ITEM_QUANTITY(state, {collector, item, quantity}) {
+    item.quantity = quantity;
   },
   changeItemNumber(state, payload) {
     var collector = this.getters.getCollectorById(payload.collectorId)
@@ -158,23 +245,43 @@ const mutations = {
     _.unset(newItem, 'id')
     _.merge(item, newItem)
   },
-  newItem(state, payload) {
-    var collector = this.getters.getCollectorById(payload.collectorId)
-    console.log(collector)
-    collector.items.push({
-      id: 'new-id-'+_.uniqueId(),
-      quantity: 1,
-      collector_id: payload.collectorId,
-      quote_id: collector.pivot.quote_id,
-      gross_price: 0,
-      name: 'keine Auswahl',
-      suggested_donation: 0
-    });
+  UPDATE_ITEM(state, payload) {
+      var collector = this.getters.getCollectorById(payload.item.collectorId)
+      var item = collector.items.find(item => item.id === payload.item.item.id)
+      var number = payload.newItem.number
+      // If ID doesn't exist, the item to update is new
+      if(item.length < 1) {
+        return
+      }
+
+      var newItem = this.getters.getItemByNumber(number)
+      _.unset(newItem, 'id')
+      _.merge(item, newItem)
   },
-  deleteItem(state, payload) {
-    var collector = this.getters.getCollectorById(payload.collectorId)
-    collector.state = 'changed'
-    collector.items.splice(payload.itemIndex, 1);
+  CREATE_ITEM(state, {collector, response}) {
+    //var collector = this.getters.getCollectorById(collector.id)
+    var newItem = this.getters.getItemByNumber(110)
+    var item = {
+      id: response.data.resource.id,
+      quantity: 1,
+      collector_id: collector.id,
+      quote_id: collector.pivot.quote_id
+    }
+    _.unset(newItem, 'id')
+    _.merge(item, newItem)
+
+    collector.items.push(item);
+  },
+  START_DELETE(state) {
+    state.deleting = true
+    console.log(state)
+  },
+  END_DELETE(state) {
+    state.deleting = false
+  },
+  DELETE_ITEM(state, { response, item }) {
+    var collector = this.getters.getCollectorById(item.collectorId)
+    collector.items.splice(item.index, 1);
   },
   resetItem(state, payload) {
     var collector = this.getters.getCollectorById(payload.collectorId)

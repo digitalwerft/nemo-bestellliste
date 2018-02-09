@@ -35,6 +35,21 @@ const actions = {
       .catch(error => {
         //console.log(error);
       });
+  },
+  saveItem({
+    commit
+  }, {
+    self
+  }, {
+    item
+  }) {
+    self.$http.get('/api/campaign/'+item.campaignId+'/quote/collector/'+item.collectorId+'/item/'+item.identifier)
+      .then(response => {
+        commit("SAVE_ITEM", response.data, item)
+      })
+      .catch(error => {
+        //
+      })
   }
 }
 

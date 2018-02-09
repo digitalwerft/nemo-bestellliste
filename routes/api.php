@@ -17,6 +17,43 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::delete('/campaign/{campaign_id}/quote/collector/{collector_id}/item/{item_id}', function() {
+  return [
+    "message" => "Löschen erfolgreich",
+    "status" => "success",
+    "data" => [
+      //
+    ],
+  ];
+});
+
+Route::post('/campaign/{campaign_id}/quote/collector/{collector_id}/item/{item_id}', function() {
+  return [
+    "message" => "Item gespeichert",
+    "status" => "success",
+    "data" => [
+      //
+    ],
+    "resource" => [
+      "id" => 999
+    ]
+  ];
+});
+
+Route::put('/campaign/{campaign_id}/quote/collector/{collector_id}/item', function(Request $request) {
+  return [
+    "message" => "neues Item angelegt",
+    "status" => "success",
+    "data" => [
+      //
+    ],
+    "resource" => [
+      "id" => 999,
+      "number" => $request->input('number')
+    ],
+  ];
+});
+
 Route::get('fundraiser', function (Request $request) {
   return [
     "id" => 35,
