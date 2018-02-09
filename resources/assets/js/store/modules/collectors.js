@@ -193,7 +193,7 @@ const actions = {
     commit
   }, collector ) {
     api.createItem(collector).then(response => {
-      commit("CREATE_ITEM", {collector: collector, response: response.data.resource})
+      commit("CREATE_ITEM", {collector: collector, item: response.data.resource})
     }).catch(error => {
       if(error.response) {
         iziToast.error({
@@ -295,7 +295,6 @@ const mutations = {
       _.merge(item, newItem)
   },
   CREATE_ITEM(state, {collector, item}) {
-    //var collector = this.getters.getCollectorById(collector.id)
     var defaultItem = this.getters.getItemByNumber(110)
     var newItem = {
       id: item.id,
@@ -305,8 +304,8 @@ const mutations = {
     }
     _.unset(defaultItem, 'id')
     _.merge(newItem, defaultItem)
+    collector.items.push(newItem)
 
-    collector.items.push(item);
   },
   START_DELETE(state) {
     state.deleting = true
