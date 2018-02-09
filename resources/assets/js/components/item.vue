@@ -124,12 +124,13 @@ export default {
       get() {
         return this.item.quantity;
       },
-      set(value) {
+      set: _.debounce(function(value) {
+        console.log('???')
         // store new item quantityValue
         if(this.oldId == this.itemId) {
           this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value});
         }
-      }
+      }, 500)
     },
     // get price of this item with speciied quantity
     sum() {

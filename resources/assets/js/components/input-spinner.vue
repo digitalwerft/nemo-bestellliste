@@ -73,8 +73,6 @@ export default {
         this.emitChange()
         return
       }
-
-
     },
     onKeydown(e) {
       this.isKeydown = true
