@@ -160,7 +160,9 @@ export default {
       if (e) {
         e.preventDefault();
       }
-      this.$store.commit('CREATE_COLLECTOR')
+      if(!this.hasUnsavedCollector) {
+        this.$store.commit('CREATE_COLLECTOR')
+      }
     }
   }
 }

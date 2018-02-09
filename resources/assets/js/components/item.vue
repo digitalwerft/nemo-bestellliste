@@ -141,7 +141,9 @@ export default {
     },
     // get array with all available items
     autocomplete() {
-      return _.sortBy(this.$store.getters.getAllItemNumbers, 'number')
+      return _.sortBy(this.$store.getters.getAllItemNumbers, (number)=> {
+        return parseInt(number)
+      })
     }
   },
   methods: {

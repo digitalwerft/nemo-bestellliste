@@ -86,7 +86,7 @@
           <div class="float-right">
             <a href="#" class="btn btn-danger ml-auto" @click.prevent="cancelEdit" v-if="editingDetails">Abbrechen</a>
             <a href="#" class="btn btn-primary ml-auto" @click.prevent="editingDetails = true" v-if="!editingDetails">Ändern</a>
-            <a href="#" class="btn btn-success" @click.prevent="saveShippingDetails" v-if="editingDetails">Speichern</a>
+            <a href="#" class="btn btn-success" @click.prevent="saveShippingDetails" v-if="editingDetails" :class="{disabled: !hasChanged}">Speichern</a>
           </div>
         </div>
       </div>
@@ -102,11 +102,15 @@
       // Fetch Data if not already happened
       store.dispatch('fetchFundraiser', self).then(()=> {
         this.form = _.clone(this.campaign.shipping_address)
+        setTimeout(() => {
+          this.hasChanged = false
+        }, 250)
       })
     },
     data() {
       return {
         editingDetails: false,
+        hasChanged: false,
         form: {
           city: '',
           street_number: '',
@@ -115,6 +119,18 @@
           last_name: '',
           organisation: '',
           zip_code: ''
+        }
+      }
+    },
+    watch: {
+      form: {
+        deep: true,
+        handler() {
+          if(!_.isEqual(this.campaign.shipping_address, this.form)) {
+            this.hasChanged = true
+          } else {
+            this.hasChanged = false
+          }
         }
       }
     },
@@ -132,8 +148,12 @@
     methods: {
       saveShippingDetails(e) {
         e.preventDefault()
+        if(!this.hasChanged) {
+          return
+        }
         this.$store.dispatch('updateShippingAddress', {address: this.form, campaign_id: this.campaign.id }).then(() => {
           this.editingDetails = false
+          this.hasChanged = false
           this.$note.info({
             message: 'Lieferadresse erfolgreich geändert'
           })
@@ -142,6 +162,7 @@
       cancelEdit() {
         this.form = _.clone(this.shippingAddress)
         this.editingDetails = false
+        this.hasChanged = false
       }
     }
   }

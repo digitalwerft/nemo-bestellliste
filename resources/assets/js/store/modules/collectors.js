@@ -175,7 +175,10 @@ const actions = {
   deleteCollector({
     commit
   }, collector) {
-    console.log(collector)
+    if(collector.state == 'new') {
+      commit('DELETE_COLLECTOR', collector)
+      return
+    }
     api.deleteCollector(collector).then(response => {
       commit('DELETE_COLLECTOR', collector)
       iziToast.success({
@@ -328,9 +331,15 @@ const mutations = {
   },
   UPDATE_COLLECTOR_NAME(state, {collector, newName}) {
     collector.name = newName
+    if(collector.state) {
+      _.unset(collector, 'state')
+    }
   },
   UPDATE_COLLECTOR_ID(state, {collector, id}) {
     collector.id = id
+    if(collector.state) {
+      _.unset(collector, 'state')
+    }
   },
   DELETE_COLLECTOR(state, collector) {
     state.all = state.all.filter(col => {

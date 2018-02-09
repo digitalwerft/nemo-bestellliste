@@ -240,17 +240,18 @@ export default {
     delete() {
       // Tell parent component that collector was deleted
       this.$emit('delete-collector', this.collector.name)
+      this.$emit('editing-collector', false)
       // Send delete-request to Store Component
       this.$store.dispatch('deleteCollector', this.collector)
 
     },
-    addItem() {
+    addItem: _.debounce(function() {
       // dont enable adding Items when in editing mode
       if(!this.editing) {
         // add new Item to Store Component
         this.$store.dispatch('createItem', this.collector)
       }
-    }
+    }, 500)
   }
 }
 </script>
