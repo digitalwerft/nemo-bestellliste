@@ -176,10 +176,9 @@ const actions = {
     api.createItem(collector).then(response => {
       commit("CREATE_ITEM", {collector: collector, response: response})
     }).catch(error => {
-      console.log(error.response)
-      if(error.data) {
+      if(error.response) {
         iziToast.info({
-          message: error.data.message
+          message: error.response.data.message
         })
       }
     })
@@ -189,6 +188,12 @@ const actions = {
   }, {collector, itemObj, quantity}) {
     api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
       commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
+    }).catch(error => {
+      if(error.response) {
+        iziToast.info({
+          message: error.response.data.message
+        })
+      }
     })
   },
   updateItemNumber({
@@ -199,6 +204,12 @@ const actions = {
         collector: collector,
         item: itemObj.item,
         number: number
+      }).catch(error => {
+        if(error.response) {
+          iziToast.info({
+            message: error.response.data.message
+          })
+        }
       })
     })
 
@@ -214,6 +225,12 @@ const actions = {
         iziToast.info({
           message: response.data.message ? response.data.message : 'Löschen erfolgreich'
         })
+      }).catch(error => {
+        if(error.response) {
+          iziToast.info({
+            message: error.response.data.message
+          })
+        }
       })
   }
 }
