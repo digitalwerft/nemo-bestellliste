@@ -204,13 +204,13 @@ const actions = {
         collector: collector,
         item: itemObj.item,
         number: number
-      }).catch(error => {
-        if(error.response) {
-          iziToast.info({
-            message: error.response.data.message
-          })
-        }
       })
+    }).catch(error => {
+      if(error.response) {
+        iziToast.info({
+          message: error.response.data.message
+        })
+      }
     })
 
   },
