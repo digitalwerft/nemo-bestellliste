@@ -296,15 +296,15 @@ const mutations = {
   },
   CREATE_ITEM(state, {collector, item}) {
     //var collector = this.getters.getCollectorById(collector.id)
-    var newItem = this.getters.getItemByNumber(110)
-    var item = {
+    var defaultItem = this.getters.getItemByNumber(110)
+    var newItem = {
       id: item.id,
       quantity: 1,
       collector_id: collector.id,
       quote_id: collector.pivot.quote_id
     }
-    _.unset(newItem, 'id')
-    _.merge(item, newItem)
+    _.unset(defaultItem, 'id')
+    _.merge(newItem, defaultItem)
 
     collector.items.push(item);
   },
