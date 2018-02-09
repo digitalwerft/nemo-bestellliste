@@ -28,8 +28,15 @@
               Lieferadresse
             </label>
           <div class="form-group" v-if="editingDetails">
-            <label for="shipping-name">Vorname, Nachname</label>
-            <input id="shipping-name" type="text" class="form-control form-control" v-model="form.first_name" placeholder="Vorname, Nachname">
+            <label for="shipping-first-name">Vorname, Nachname</label>
+            <div class="row">
+              <div class="col">
+                <input id="shipping-first-name" type="text" class="form-control form-control" v-model="form.first_name" placeholder="Vorname">
+              </div>
+              <div class="col">
+                <input id="shipping-last-name" type="text" class="form-control form-control" v-model="form.last_name" placeholder="Nachname">
+              </div>
+            </div>
           </div>
           <h6 v-if="!editingDetails">{{ shippingAddress.first_name }} {{ shippingAddress.last_name }}</h6>
           <div class="form-group" v-if="editingDetails">
