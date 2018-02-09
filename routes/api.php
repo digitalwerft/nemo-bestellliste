@@ -57,7 +57,7 @@ Route::post('/campaign/{campaign_id}/shipping-address', function() {
   ];
 });
 
-Route::put('/campaign/{campaign_id}/quote/collector/', function() {
+Route::post('/campaign/{campaign_id}/quote/collector/', function() {
   return [
     "message" => "Teilnehmer erstellt",
     "status" => "success",
@@ -80,7 +80,7 @@ Route::post('/campaign/{campaign_id}/quote/collector/{collector_id}/item/{item_i
   ];
 });
 
-Route::put('/campaign/{campaign_id}/quote/collector/{collector_id}/item', function(Request $request) {
+Route::post('/campaign/{campaign_id}/quote/collector/{collector_id}/item', function(Request $request) {
   return [
     "message" => "neues Item angelegt",
     "status" => "success",

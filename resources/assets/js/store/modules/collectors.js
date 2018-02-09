@@ -160,7 +160,7 @@ const actions = {
   }, collector) {
     console.log(collector)
     api.createCollector(collector).then(response => {
-      commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.resources.id})
+      commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.resource.id})
       iziToast.success({
         message: response.data.message
       })
@@ -193,7 +193,7 @@ const actions = {
     commit
   }, collector ) {
     api.createItem(collector).then(response => {
-      commit("CREATE_ITEM", {collector: collector, response: response})
+      commit("CREATE_ITEM", {collector: collector, response: response.data.resource})
     }).catch(error => {
       if(error.response) {
         iziToast.error({
@@ -294,11 +294,11 @@ const mutations = {
       _.unset(newItem, 'id')
       _.merge(item, newItem)
   },
-  CREATE_ITEM(state, {collector, response}) {
+  CREATE_ITEM(state, {collector, item}) {
     //var collector = this.getters.getCollectorById(collector.id)
     var newItem = this.getters.getItemByNumber(110)
     var item = {
-      id: response.data.resource.id,
+      id: item.id,
       quantity: 1,
       collector_id: collector.id,
       quote_id: collector.pivot.quote_id
