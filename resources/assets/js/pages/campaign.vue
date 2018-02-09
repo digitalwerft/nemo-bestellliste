@@ -12,7 +12,7 @@
     <section class="orders">
       <div class="container">
         <div v-for="(collector, index) in filteredCollector">
-          <collector :collector-id="collector.id" :filterkey="search" v-on:delete-collector="onCollectorDeleted" v-on:save-collector="onCollectorSaved" v-on:editing-collector="handleEditing"></collector>
+          <collector :collector-id="collector.id" :filterkey="search" v-on:delete-collector="onCollectorDelete(collector)" v-on:save-collector="onCollectorSave(collector)" v-on:editing-collector="handleEditing"></collector>
           </div>
         <div class="alert alert-no-collectors mt-3 text-muted text-center" v-if="filteredCollector && filteredCollector.length < 1">
           Deine Suche nach <mark>{{ search }}</mark> erzielte leider keine Treffer.
@@ -49,7 +49,7 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
-    
+
     if (store.getters.hasLoaded(['campaign', 'items', 'collectors'])) {
       return
     }
@@ -133,18 +133,11 @@ export default {
         this.hasUnsavedCollector = false
       }
     },
-    onCollectorEdit(a) {
-      //console.log(a)
+    onCollectorSave(collector) {
+      //this.$store.dispatch('updateCollectorName', collector)
     },
-    onCollectorSaved() {
-      if (this.hasUnsavedCollector) {
-        this.hasUnsavedCollector = false
-      }
-    },
-    onCollectorDeleted() {
-      if (this.hasUnsavedCollector) {
-        this.hasUnsavedCollector = false
-      }
+    onCollectorDelete(collector) {
+      //this.$store.dispatch('deleteCollector', collector)
     },
     finishLoading() {
       setTimeout(() => {
@@ -167,7 +160,7 @@ export default {
       if (e) {
         e.preventDefault();
       }
-      this.$store.commit('newCollector')
+      this.$store.commit('CREATE_COLLECTOR')
     }
   }
 }

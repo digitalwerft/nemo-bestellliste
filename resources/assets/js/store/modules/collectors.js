@@ -19,7 +19,7 @@ const api = {
   deleteItem(collector, item) {
     return axios.delete('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item/'+item.id)
   },
-  createCollector(campaign, collector) {
+  createCollector(collector) {
     return axios.put('/api/campaign/'+collector.campaign_id+'/quote/collector/', {
       name: collector.name
     })
@@ -170,6 +170,55 @@ const actions = {
         console.log(error);
       });
   },
+  updateCollectorName({
+    commit
+  }, collector) {
+    api.updateCollector(collector).then(response => {
+      iziToast.success({
+        message: response.data.message
+      })
+    }).catch(error => {
+      if(error.response) {
+        iziToast.error({
+          message: error.response.data.message
+        })
+      }
+    })
+  },
+  createCollector({
+    commit
+  }, collector) {
+    console.log(collector)
+    api.createCollector(collector).then(response => {
+      commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.resources.id})
+      iziToast.success({
+        message: response.data.message
+      })
+    }).catch(error => {
+      if(error.response) {
+        iziToast.error({
+          message: error.response.data.message
+        })
+      }
+    })
+  },
+  deleteCollector({
+    commit
+  }, collector) {
+    console.log(collector)
+    api.deleteCollector(collector).then(response => {
+      commit('DELETE_COLLECTOR', collector)
+      iziToast.success({
+        message: response.data.message ? response.data.message : 'Löschen erfolgreich'
+      })
+    }).catch(error => {
+      if(error.response) {
+        iziToast.error({
+          message: error.response.data.message
+        })
+      }
+    })
+  },
   createItem({
     commit
   }, collector ) {
@@ -177,7 +226,7 @@ const actions = {
       commit("CREATE_ITEM", {collector: collector, response: response})
     }).catch(error => {
       if(error.response) {
-        iziToast.info({
+        iziToast.error({
           message: error.response.data.message
         })
       }
@@ -190,7 +239,7 @@ const actions = {
       commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
     }).catch(error => {
       if(error.response) {
-        iziToast.info({
+        iziToast.error({
           message: error.response.data.message
         })
       }
@@ -207,7 +256,7 @@ const actions = {
       })
     }).catch(error => {
       if(error.response) {
-        iziToast.info({
+        iziToast.error({
           message: error.response.data.message
         })
       }
@@ -221,12 +270,12 @@ const actions = {
     return api.deleteItem(collector, itemObj.item)
       .then(response => {
         commit("DELETE_ITEM", {response: response.data, item: itemObj})
-        iziToast.info({
+        iziToast.success({
           message: response.data.message ? response.data.message : 'Löschen erfolgreich'
         })
       }).catch(error => {
         if(error.response) {
-          iziToast.info({
+          iziToast.error({
             message: error.response.data.message
           })
         }
@@ -308,15 +357,16 @@ const mutations = {
       collector.items[0].quantity = 1;
     }
   },
-  updateCollectorName(state, payload) {
-    payload.collector.name = payload.newName
-    payload.collector.state = 'changed'
+  UPDATE_COLLECTOR_NAME(state, {collector, newName}) {
+    collector.name = newName
   },
-  'delete-collector'(state, payload) {
-    state.all = state.all.filter(collector => {
-      return collector.id != payload.collector.id
-    });
-    // perform immediate server request
+  UPDATE_COLLECTOR_ID(state, {collector, id}) {
+    collector.id = id
+  },
+  DELETE_COLLECTOR(state, collector) {
+    state.all = state.all.filter(col => {
+      return col.id != collector.id
+    })
   },
   saveCollector(state, id) {
     // perform Collector Update
@@ -327,12 +377,13 @@ const mutations = {
   saveAllCollectors(state) {
     //
   },
-  newCollector(state) {
+  CREATE_COLLECTOR(state) {
     state.all.push({
       items: [],
       name: '',
       id: 'new-collector-'+_.uniqueId(),
       state: 'new',
+      campaign_id: state.all[0].campaign_id,
       pivot: {
         quote_id: state.all[0].pivot.quote_id
       }

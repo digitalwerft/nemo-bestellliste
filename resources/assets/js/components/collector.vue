@@ -113,7 +113,7 @@ export default {
         return this.collector.name
       },
       set(value) {
-        this.$store.commit('updateCollectorName', {
+        this.$store.commit('UPDATE_COLLECTOR_NAME', {
           collector: this.collector,
           newName: value
         })
@@ -170,7 +170,7 @@ export default {
       // Cancel Edit and revert Name Changes
       if(this.editing) {
         this.editing = false
-        this.$store.commit('updateCollectorName', {
+        this.$store.commit('UPDATE_COLLECTOR_NAME', {
           collector: this.collector,
           newName: this.oldName
         })
@@ -215,17 +215,19 @@ export default {
         return
       } else {                          // close editing mode and syve changes
         this.$emit('save-collector')
-        this.$store.commit('saveCollector', {
-          collector: this.collector.id
-        })
+        if(this.collector.state != 'new') {
+          this.$store.dispatch('updateCollectorName', this.collector)
+        } else {
+          this.$store.dispatch('createCollector', this.collector)
+        }
         this.oldName = '';
         this.editing = false;
       }
     },
     handleShortkeys(e) {
-      if(e.srcKey == 'delete') {
+      /*if(e.srcKey == 'delete') {
         this.archive()
-      }
+      }*/
       if(e.srcKey == 'cancel') {
         this.showModal = false
       }
@@ -238,21 +240,12 @@ export default {
     delete() {
       // Tell parent component that collector was deleted
       this.$emit('delete-collector', this.collector.name)
-      // Only notify when item was saved before
-      if(this.collector.items.length) {
-        this.$note.info({
-          message: 'Teilnehmer wurde gelöscht.'
-        })
-      }
       // Send delete-request to Store Component
-      this.$store.commit('delete-collector', {
-        collector: this.collector,
-        collectorId: this.collectorId
-      })
+      this.$store.dispatch('deleteCollector', this.collector)
 
     },
     addItem() {
-      // dont add Item when in editing mode
+      // dont enable adding Items when in editing mode
       if(!this.editing) {
         // add new Item to Store Component
         this.$store.dispatch('createItem', this.collector)

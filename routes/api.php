@@ -27,6 +27,36 @@ Route::delete('/campaign/{campaign_id}/quote/collector/{collector_id}/item/{item
   ];
 });
 
+Route::delete('/campaign/{campaign_id}/quote/collector/{collector_id}', function() {
+  return [
+    "message" => "Teilnehmer gelöscht",
+    "status" => "success",
+    "data" => [
+      //
+    ],
+  ];
+});
+
+Route::post('/campaign/{campaign_id}/quote/collector/{collector_id}', function() {
+  return [
+    "message" => "Teilnehmer gespeichert",
+    "status" => "success",
+    "data" => [
+      //
+    ],
+  ];
+});
+
+Route::put('/campaign/{campaign_id}/quote/collector/', function() {
+  return [
+    "message" => "Teilnehmer erstellt",
+    "status" => "success",
+    "resources" => [
+      "id" => 9999
+    ],
+  ];
+});
+
 Route::post('/campaign/{campaign_id}/quote/collector/{collector_id}/item/{item_id}', function() {
   return [
     "message" => "Item gespeichert",
