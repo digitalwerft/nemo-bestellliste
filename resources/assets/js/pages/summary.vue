@@ -117,7 +117,7 @@
                         <th scope="col">Artikel</th>
                         <th scope="col">Anzahl</th>
                         <th scope="col">Gesamtbetrag</th>
-                        <th scope="col">Spende</th>
+                        <th scope="col">davon Spende</th>
                         <th scope="col"><small>Boxen verteilt?</small></th>
                         <th scope="col"><small>Geld erhalten?</small></th>
                       </tr>
