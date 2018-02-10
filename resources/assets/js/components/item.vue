@@ -130,7 +130,7 @@ export default {
     },
     // get price of this item with speciied quantity
     sum() {
-      return this.item.quantity * this.item.gross_price;
+      return this.item.quantity * (parseInt(this.item.gross_price) + parseInt(this.item.suggested_donation));
     },
     collector() {
       return this.$store.getters.getCollectorById(this.collectorId)
