@@ -23,7 +23,7 @@
 
         <ul class="navbar-nav ml-auto">
           <li class="nav-item text-success save-indicator">
-            <save-indicator :is-saving="isSaving" @saving="saving"></save-indicator>
+            <save-indicator :is-saving="isSaving" :is-editing="isEditing"></save-indicator>
           </li>
           <li class="nav-item d-none d-sm-list-item">
             <a href="#" class="btn btn-outline-primary mr-2" @click.prevent="createCollector()">
@@ -99,13 +99,20 @@ export default {
   data() {
     return {
       isFixed: false,
-      isSaving: false,
       showSearch: false,
       intersectionOptions: {
         root: null,
         rootMargin: '0px 0px 0px 0px',
         thresholds: [0]
       }
+    }
+  },
+  computed: {
+    isSaving() {
+      return this.$store.state.isLoading
+    },
+    isEditing() {
+      return this.$store.state.editing
     }
   },
   methods: {

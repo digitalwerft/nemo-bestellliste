@@ -150,6 +150,7 @@ export default {
     // update item quantityValue in store
     onQuantityChange(value) {
       //this.$store.dispatch('updateItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}});
+      this.$store.commit('START_EDITING')
     },
     // Invoke item deletion
     onItemDelete(e) {

@@ -123,6 +123,13 @@
       }
     },
     watch: {
+      editingDetails(val) {
+        if(val) {
+          this.$store.commit('START_EDITING')
+        } else {
+          this.$store.commit('STOP_EDITING')
+        }
+      },
       form: {
         deep: true,
         handler() {

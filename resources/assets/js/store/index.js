@@ -15,7 +15,9 @@ const debug = true
 
 export default new Vuex.Store({
   state: {
-    isAuthenticated: false
+    isAuthenticated: false,
+    isLoading: false,
+    editing: false
   },
   modules: {
     fundraiser,
@@ -27,6 +29,19 @@ export default new Vuex.Store({
   mutations: {
     LOGIN(state) {
       state.isAuthenticated = true
+    },
+    START_LOADING(state) {
+      state.isLoading = true
+    },
+    STOP_LOADING(state) {
+      state.isLoading = false
+      state.editing = false
+    },
+    START_EDITING(state) {
+      state.editing = true
+    },
+    STOP_EDITING(state) {
+      state.editing = false
     }
   },
   getters: {

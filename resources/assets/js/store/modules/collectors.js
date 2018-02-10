@@ -8,6 +8,12 @@ const state = {
   requestComplete: false
 }
 
+function stopLoading(commit, timeout = 500) {
+  setTimeout(()=> {
+    commit('STOP_LOADING')
+  }, timeout)
+}
+
 const getters = {
   getCollectorById: state => id => {
     return state.all.find(collector => {
@@ -124,30 +130,45 @@ const actions = {
   }, {
     self
   }) {
+    commit('START_LOADING')
     self.$http
       .get("./api/campaign/"+self.$route.params.id+"/quote/collectors")
       .then(response => {
         commit("FETCH_COLLECTORS", response.data);
+        stopLoading(commit)
       })
       .catch(error => {
         console.log(error);
+        stopLoading(commit)
       });
   },
   updateShippingAddress({
     commit
   }, {campaign_id, address}) {
+    commit('START_LOADING')
     return api.updateShippingAddress(campaign_id, address).then(response => {
       commit('UPDATE_SHIPPING_ADDRESS', address)
+      stopLoading(commit)
+    }).catch(error => {
+      commit('STOP_LOADING')
+      if(error.response) {
+        iziToast.error({
+          message: error.response.data.message
+        })
+      }
     })
   },
   updateCollectorName({
-    commit
+    commit, rootState
   }, collector) {
-    api.updateCollector(collector).then(response => {
+    commit('START_LOADING')
+    return api.updateCollector(collector).then(response => {
+      stopLoading(commit)
       iziToast.success({
         message: response.data.message
       })
     }).catch(error => {
+      commit('STOP_LOADING')
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -158,13 +179,15 @@ const actions = {
   createCollector({
     commit
   }, collector) {
-    console.log(collector)
-    api.createCollector(collector).then(response => {
+    commit('START_LOADING')
+    return api.createCollector(collector).then(response => {
       commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.data.resource.id})
+      stopLoading(commit)
       iziToast.success({
         message: response.data.message
       })
     }).catch(error => {
+      stopLoading(commit)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -177,14 +200,18 @@ const actions = {
   }, collector) {
     if(collector.state == 'new') {
       commit('DELETE_COLLECTOR', collector)
+      stopLoading(commit)
       return
     }
-    api.deleteCollector(collector).then(response => {
+    commit('START_LOADING')
+    return api.deleteCollector(collector).then(response => {
       commit('DELETE_COLLECTOR', collector)
+      stopLoading(commit)
       iziToast.success({
         message: response.data.message ? response.data.message : 'Löschen erfolgreich'
       })
     }).catch(error => {
+      stopLoading(commit)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -195,9 +222,12 @@ const actions = {
   createItem({
     commit
   }, collector ) {
-    api.createItem(collector).then(response => {
+    commit('START_LOADING')
+    return api.createItem(collector).then(response => {
       commit("CREATE_ITEM", {collector: collector, item: response.data.data.resource})
+      stopLoading(commit)
     }).catch(error => {
+      stopLoading(commit)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -208,9 +238,12 @@ const actions = {
   updateItemQuantity({
     commit
   }, {collector, itemObj, quantity}) {
-    api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
+    commit('START_LOADING')
+    return api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
       commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
+      stopLoading(commit)
     }).catch(error => {
+      stopLoading(commit)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -221,13 +254,16 @@ const actions = {
   updateItemNumber({
     commit
   }, {itemObj, collector, number}) {
-    api.updateItem(collector, {number: number, quantity: itemObj.item.quantity, id: itemObj.item.id}).then(response => {
+    commit('START_LOADING')
+    return api.updateItem(collector, {number: number, quantity: itemObj.item.quantity, id: itemObj.item.id}).then(response => {
       commit('UPDATE_ITEM_NUMBER', {
         collector: collector,
         item: itemObj.item,
         number: number
       })
+      stopLoading(commit)
     }).catch(error => {
+      stopLoading(commit)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -240,13 +276,16 @@ const actions = {
   }, {
     itemObj, collector
   }) {
+    commit('START_LOADING')
     return api.deleteItem(collector, itemObj.item)
       .then(response => {
         commit("DELETE_ITEM", {response: response.data, item: itemObj})
         iziToast.success({
           message: response.data.message ? response.data.message : 'Löschen erfolgreich'
         })
+        stopLoading(commit)
       }).catch(error => {
+        stopLoading(commit)
         if(error.response) {
           iziToast.error({
             message: error.response.data.message

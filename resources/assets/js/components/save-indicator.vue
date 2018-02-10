@@ -1,8 +1,8 @@
 <template>
-  <div class="text-success save-indicator"  @click="emitSave">
+  <div class="text-success save-indicator">
 
     <transition name="fade">
-      <i class="mdi mdi-check-circle-outline mdi-24px" v-if="!isSaving"></i>
+      <i class="mdi mdi-check-circle-outline mdi-24px" v-if="(!isEditing && !isSaving)"></i>
     </transition>
 
     <transition name="fade">
@@ -17,17 +17,18 @@
       </spinner>
 
     </transition>
+
+    <transition name="fade">
+      <i class="mdi mdi-adjust text-danger mdi-24px" v-if="(isEditing && !isSaving)"></i>
+    </transition>
   </div>
 </template>
 <script>
   import Spinner from './spinner.vue'
   export default {
-    props: ['isSaving'],
+    props: ['isSaving', 'isEditing'],
     components: {
       Spinner
-    },
-    mounted() {
-      //console.log(this.isSaving);
     },
     data() {
       return {}

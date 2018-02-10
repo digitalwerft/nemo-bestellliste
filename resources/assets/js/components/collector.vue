@@ -153,6 +153,11 @@ export default {
         // tell parent
         this.$emit('editing-collector', false)
       }
+    },
+    collectorName(name) {
+      if(name != this.oldName || name == '') {
+        this.$store.commit('START_EDITING')
+      }
     }
   },
   methods: {
@@ -168,6 +173,7 @@ export default {
     },
     cancelEdit() {
       // Cancel Edit and revert Name Changes
+      this.$store.commit('STOP_EDITING')
       if(this.editing) {
         this.editing = false
         this.$store.commit('UPDATE_COLLECTOR_NAME', {
@@ -235,6 +241,7 @@ export default {
     // Wrapper for this.delete() for optional undo feature
     archive() {
       this.showModal = false
+      this.$store.commit('STOP_EDITING')
       this.delete()
     },
     delete() {
