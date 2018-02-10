@@ -30,9 +30,9 @@
                 </a>
               </th>
               <th scope="col">
-                <a href="#" @click.prevent="sort('price')">
+                <a href="#" @click.prevent="sort('invoice')">
                   Rechnungsbetrag
-                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='price'"></i>
+                  <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='invoice'"></i>
                 </a>
               </th>
               <th scope="col">
@@ -212,10 +212,21 @@
         return v;
       },
       sortedItems() {
+        const sortedList = _.sortBy(this.items, (obj)=> {
+          var sortTerm = obj[this.sortBy]
+          if(this.sortBy == 'invoice') {
+            sortTerm = parseInt(obj.quantity) * parseInt(obj.gross_price)
+          } else if(this.sortBy == 'total') {
+            sortTerm = this.getItemTotal(obj)
+          } else if(this.sortBy == 'returns') {
+            sortTerm = obj.suggested_donation*obj.quantity
+          }
+          return sortTerm
+        })
         if(this.reverseSort) {
-          return _.reverse(_.sortBy(this.items, this.sortBy))
+          return _.reverse(sortedList)
         }
-        return _.sortBy(this.items, this.sortBy)
+        return sortedList
       },
       items() {
         return this.$store.getters.getSummarizedItems
