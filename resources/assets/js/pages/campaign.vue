@@ -27,10 +27,50 @@
       </div>
     </section>
     <footer-nav></footer-nav>
+    <transition name="fade">
+      <div class="offline-container" v-if="!isOnline">
+        <div class="offline-ui">
+          <div class="offline-ui-content">
+            Keine Verbindung zum Internet möglich. Bitte verbinde dich erneut mit dem Internet und lade die Seite neu.
+            <a href="#" @click.prevent="reload" class="btn btn-block btn-primary text-white"><i class="mdi mdi-reload"></i>Neu Laden</a>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
+<style lang="scss">
+  .offline-container {
+    background: rgba(black, .2);
+    z-index: 2000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    right: 0;
+  }
+  .offline-ui {
+    position: fixed;
+    z-index: 2001;
+    margin: auto;
+    top: 1em;
+    left: 0;
+    right: 0;
+    border-radius: 4px;
+    font-family: "Helvetica Neue", sans-serif;
+    padding: 1em;
+    top: 1em;
+    width: 38em;
+    max-width: 100%;
+    overflow: hidden;
+    background: #f8ecad;
+    color: #7c6d1f;
+  }
+</style>
 <script>
 import store from '../store'
+
+import { OfflineIndicator, VueOnline } from 'vue-online'
 
 import collector from '../components/collector.vue'
 import footerNav from '../components/footer-nav.vue'
@@ -44,7 +84,8 @@ export default {
     footerNav,
     navbar,
     fundraiser,
-    infoBox
+    infoBox,
+    OfflineIndicator
   },
   created() {
     const store = this.$store
@@ -78,6 +119,9 @@ export default {
     };
   },
   computed: {
+    isOnline() {
+      return VueOnline.isOnline
+    },
     collectors() {
       return this.$store.getters.getAllCollectors;
     },
@@ -109,6 +153,9 @@ export default {
     }
   },
   methods: {
+    reload() {
+      location.reload()
+    },
     hideSpinner() {
       const spinner = $('.loading-overlay')
 
