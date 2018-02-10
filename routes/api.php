@@ -61,9 +61,11 @@ Route::post('/campaign/{campaign_id}/quote/collector/', function() {
   return [
     "message" => "Teilnehmer erstellt",
     "status" => "success",
-    "resources" => [
-      "id" => 9999
-    ],
+    "data" => [
+      "resource" => [
+        "id" => 9999
+      ],
+    ]
   ];
 });
 

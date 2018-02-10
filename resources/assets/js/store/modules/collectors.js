@@ -331,9 +331,6 @@ const mutations = {
   },
   UPDATE_COLLECTOR_NAME(state, {collector, newName}) {
     collector.name = newName
-    if(collector.state) {
-      _.unset(collector, 'state')
-    }
   },
   UPDATE_COLLECTOR_ID(state, {collector, id}) {
     collector.id = id
