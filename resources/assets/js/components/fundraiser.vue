@@ -123,20 +123,15 @@
       }
     },
     watch: {
-      editingDetails(val) {
-        if(val) {
-          this.$store.commit('START_EDITING')
-        } else {
-          this.$store.commit('STOP_EDITING')
-        }
-      },
       form: {
         deep: true,
         handler() {
           if(!_.isEqual(this.campaign.shipping_address, this.form)) {
             this.hasChanged = true
+            this.$store.commit('START_EDITING')
           } else {
             this.hasChanged = false
+            this.$store.commit('STOP_EDITING')
           }
         }
       }
