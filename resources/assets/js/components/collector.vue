@@ -17,7 +17,7 @@
             <h6 v-html="highlight(collector.name)" @click.prevent="makeEditable"></h6>
           </div>
         </div>
-        <div class="collector-details mt-3">
+        <div class="collector-details mt-1">
           <small class="text-muted">Boxen: {{ itemCount }} | Gesamtbetrag: {{ totalPrice }}€ | <span class="d-none d-sm-inline">davon</span> Spenden: {{ totalEarnings }}€</small>
         </div>
       </div>

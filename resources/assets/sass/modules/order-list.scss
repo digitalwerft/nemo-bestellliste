@@ -89,7 +89,7 @@ section.orders {
     padding-bottom: 54px;
 
     @include media-breakpoint-down(xs) {
-      padding-bottom: 80px;
+      padding-bottom: 20px;
     }
     .input-group{
 
@@ -149,8 +149,13 @@ section.orders {
     .collector-details {
       padding-bottom: 0.75rem;
       padding-left: 0.75rem;
-      position: absolute;
-      top: 42px;
+      //position: absolute;
+      //top: 42px;
+
+      @include media-breakpoint-down(xs) {
+        //top: auto;
+        //bottom: 4px;
+      }
     }
   }
 
