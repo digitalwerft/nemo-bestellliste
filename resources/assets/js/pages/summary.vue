@@ -62,7 +62,7 @@
               <td data-label="Anzahl der bestellten Boxen">{{ allItemsQuantity }}</td>
               <td data-label="Rechnungsbetrag">{{ allItemsPrice }}€</td>
               <td data-label="Spendensumme">{{ allItemsDonations }}€</td>
-              <td data-label="Gesamtsumme">{{ allItemsPriceWithDonations }}€</td>
+              <td data-label="Gesamtbetrag">{{ allItemsPriceWithDonations }}€</td>
             </tr>
           </tbody>
         </table>
