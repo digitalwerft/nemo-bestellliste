@@ -2,24 +2,32 @@
   <div class="text-success save-indicator">
 
     <transition name="fade">
-      <i class="mdi mdi-check-circle-outline mdi-24px" v-if="(!isEditing && !isSaving)"></i>
+      <div class="indicator-wrapper" v-if="(!isEditing && !isSaving)">
+        <small class="status-text text-success">Änderungen gespeichert</small>
+        <i class="mdi mdi-check-circle-outline mdi-24px"></i>
+      </div>
     </transition>
 
     <transition name="fade">
-      <spinner
-        :status="true"
-        :color="'#627794'"
-        :size="20"
-        :depth="3"
-        :rotation="true"
-        :speed="0.8"
-        v-if="isSaving">
-      </spinner>
+      <div class="indicator-wrapper" v-if="isSaving">
+        <small class="status-text text-danger">Daten geändert</small>
+        <spinner
+          :status="true"
+          :color="'#627794'"
+          :size="20"
+          :depth="3"
+          :rotation="true"
+          :speed="0.8">
+        </spinner>
+      </div>
 
     </transition>
 
     <transition name="fade">
-      <i class="mdi mdi-adjust text-danger mdi-24px" v-if="(isEditing && !isSaving)"></i>
+      <div class="indicator-wrapper" v-if="(isEditing && !isSaving)">
+        <small class="status-text text-warning">speichere...</small>
+        <i class="mdi mdi-adjust text-danger mdi-24px"></i>
+      </div>
     </transition>
   </div>
 </template>
