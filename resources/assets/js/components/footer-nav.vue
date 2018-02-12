@@ -42,13 +42,13 @@ export default {
         return this.$store.getters.getAllItemsQuantity
       },
       winnings() {
-        return this.$store.getters.getAllItemsPriceWithDonations
+        return String(this.$store.getters.getAllItemsPriceWithDonations).replace(/(.)(?=(\d{3})+$)/g,'$1.')
       },
       earnings() {
-        return this.$store.getters.getAllItemsDonations
+        return String(this.$store.getters.getAllItemsDonations).replace(/(.)(?=(\d{3})+$)/g,'$1.')
       },
       price() {
-        return this.$store.getters.getAllItemsPrice
+        return String(this.$store.getters.getAllItemsPrice).replace(/(.)(?=(\d{3})+$)/g,'$1.')
       }
     }
 }
