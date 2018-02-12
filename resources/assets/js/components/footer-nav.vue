@@ -12,7 +12,7 @@
             <i class="mdi mdi-library-books">&nbsp;</i>Bestellte Boxen: {{ totalOrders }}&nbsp;|&nbsp;
           </li>
           <li class="nav-item">
-            Gesamtbetrag: {{ winnings }}€
+            Gesamtbetrag: {{ winnings }}€ = Rechnungsbetrag {{ price }}€ + Spende {{ earnings }}€
           </li>
         </ul>
       </div>
@@ -33,19 +33,22 @@ export default {
     },
     computed: {
       collectors() {
-        return this.$store.state.collectors.all;
+        return this.$store.state.collectors.all
       },
       totalCollectors() {
-        return this.collectors.length;
+        return this.collectors.length
       },
       totalOrders() {
-        return this.$store.getters.getAllItemsQuantity;
+        return this.$store.getters.getAllItemsQuantity
       },
       winnings() {
         return this.$store.getters.getAllItemsPriceWithDonations
       },
       earnings() {
         return this.$store.getters.getAllItemsDonations
+      },
+      price() {
+        return this.$store.getters.getAllItemsPrice
       }
     }
 }
