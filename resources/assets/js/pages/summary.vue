@@ -110,7 +110,7 @@
               <hr>
               <div v-for="collector in filteredCollectors">
                 <div class="table-responsive">
-                  <table class="table table-bordered table-striped">
+                  <table class="table table-bordered table-striped table-mobile">
                     <thead class="thead-light">
                       <tr>
                         <th scope="col">Name</th>
@@ -118,25 +118,25 @@
                         <th scope="col">Anzahl</th>
                         <th scope="col">Gesamtbetrag</th>
                         <th scope="col">davon Spende</th>
-                        <th scope="col"><small>Boxen verteilt?</small></th>
-                        <th scope="col"><small>Geld erhalten?</small></th>
+                        <th scope="col" class="d-none d-md-table-cell"><small>Boxen verteilt?</small></th>
+                        <th scope="col" class="d-none d-md-table-cell"><small>Geld erhalten?</small></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item, index) in collector.items">
-                        <td data-label="Name" class="font-weight-bold" v-html="index == 0 ? highlight(collector.name) : ''">"</td>
+                      <tr v-for="(item, index) in collector.items" class="mb-0">
+                        <td data-label="Name" class="font-weight-bold" v-if="index == 0" v-html="index == 0 ? highlight(collector.name) : ''">"</td>
                         <td data-label="Artikel">{{ item.number }}<span class="d-none d-md-inline"> – {{ item.name}}</span></td>
                         <td data-label="Anzahl">{{ item.quantity }}</td>
                         <td data-label="Gesamtbetrag">{{ (parseFloat(item.suggested_donation)+parseFloat(item.gross_price)) * item.quantity }}€</td>
                         <td data-label="davon Spende">{{ item.suggested_donation * item.quantity}}€</td>
-                        <td></td>
-                        <td></td>
+                        <td class="d-none d-md-table-cell"></td>
+                        <td class="d-none d-md-table-cell"></td>
                       </tr>
                       <tr>
-                        <td colspan="2"></td>
-                        <td class="font-weight-bold">Summe:</td>
-                        <td>{{ getPriceByCollectorId(collector.id) + getDonationsByCollectorId(collector.id)}}€</td>
-                        <td>{{ getDonationsByCollectorId(collector.id) }}€</td>
+                        <td colspan="2" class="d-none d-md-table-cell"></td>
+                        <td class="font-weight-bold d-none d-md-table-cell">Summe:</td>
+                        <td data-label="Summe">{{ getPriceByCollectorId(collector.id) + getDonationsByCollectorId(collector.id)}}€</td>
+                        <td data-label="davon Spenden">{{ getDonationsByCollectorId(collector.id) }}€</td>
                       </tr>
                     </tbody>
                   </table>

@@ -3,14 +3,14 @@
 
     <transition name="fade">
       <div class="indicator-wrapper" v-if="(!isEditing && !isSaving)">
-        <small class="status-text text-success d-none d-sm-inline-block">gespeichert</small>
+        <small class="status-text text-success">gespeichert</small>
         <i class="mdi mdi-check-circle-outline mdi-24px text-success"></i>
       </div>
     </transition>
 
     <transition name="fade">
       <div class="indicator-wrapper saving" v-if="isSaving">
-        <small class="status-text d-none d-sm-inline-block">speichere...</small>
+        <small class="status-text">speichere...</small>
         <span class="spinner-wrapper">
           <spinner
             :status="true"
@@ -27,7 +27,7 @@
 
     <transition name="fade">
       <div class="indicator-wrapper" v-if="(isEditing && !isSaving)">
-        <small class="status-text text-danger d-none d-sm-inline-block">Daten geändert</small>
+        <small class="status-text text-danger">Daten geändert</small>
         <i class="mdi mdi-adjust text-danger mdi-24px text-danger"></i>
       </div>
     </transition>
