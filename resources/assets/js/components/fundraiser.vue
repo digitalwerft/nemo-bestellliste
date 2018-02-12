@@ -38,12 +38,12 @@
               </div>
             </div>
           </div>
-          <h6 v-if="!editingDetails">{{ shippingAddress.first_name }} {{ shippingAddress.last_name }}</h6>
+          <h6 v-if="!editingDetails">{{ form.first_name }} {{ form.last_name }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-organisation">Name der Firma/Organisation/ Schule/Pfarrei <small>(optional)</small></label>
             <input id="shipping-organisation" type="text" class="form-control form-control" v-model="form.organisation" placeholder="Name der Firma/Organisation/Schule/Pfarrei">
           </div>
-          <h6 v-if="!editingDetails">{{ shippingAddress.organisation }}</h6>
+          <h6 v-if="!editingDetails">{{ form.organisation }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-route">Straße, Hausnummer</label>
             <div class="row">
@@ -55,7 +55,7 @@
               </div>
             </div>
           </div>
-          <h6 v-if="!editingDetails">{{ shippingAddress.address }}</h6>
+          <h6 v-if="!editingDetails">{{ form.address }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-zip">PLZ, Ort</label>
             <div class="row">
@@ -67,7 +67,7 @@
               </div>
             </div>
           </div>
-          <h6 v-if="!editingDetails">{{ shippingAddress.postal }} {{ shippingAddress.city }}</h6>
+          <h6 v-if="!editingDetails">{{ form.zip_code }} {{ form.city }}</h6>
           <a href="#" class="btn btn-link btn-sm pl-0" @click.prevent="editingDetails = !editingDetails" v-if="!editingDetails">[
               {{ editingDetails ? 'Abbrechen' : 'Ändern' }}]</a>
         </div>
