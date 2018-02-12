@@ -55,7 +55,7 @@
               </div>
             </div>
           </div>
-          <h6 v-if="!editingDetails">{{ form.address }}</h6>
+          <h6 v-if="!editingDetails">{{ form.route }} {{ form.street_number }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-zip">PLZ, Ort</label>
             <div class="row">

@@ -61,8 +61,8 @@
               <td>Summe:</td>
               <td data-label="Anzahl der bestellten Boxen">{{ allItemsQuantity }}</td>
               <td data-label="Rechnungsbetrag">{{ allItemsPrice }}€</td>
-              <td data-label="Gesamtsumme">{{ allItemsDonations }}€</td>
-              <td data-label="Spendensumme">{{ allItemsPriceWithDonations }}€</td>
+              <td data-label="Spendensumme">{{ allItemsDonations }}€</td>
+              <td data-label="Gesamtsumme">{{ allItemsPriceWithDonations }}€</td>
             </tr>
           </tbody>
         </table>
@@ -125,7 +125,7 @@
                     <tbody>
                       <tr v-for="(item, index) in collector.items">
                         <td data-label="Name" class="font-weight-bold" v-html="index == 0 ? highlight(collector.name) : ''">"</td>
-                        <td data-label="Artikel">{{ item.number }} – {{ item.name}}</td>
+                        <td data-label="Artikel">{{ item.number }}<span class="d-none d-md-inline"> – {{ item.name}}</span></td>
                         <td data-label="Anzahl">{{ item.quantity }}</td>
                         <td data-label="Gesamtbetrag">{{ (parseFloat(item.suggested_donation)+parseFloat(item.gross_price)) * item.quantity }}€</td>
                         <td data-label="davon Spende">{{ item.suggested_donation * item.quantity}}€</td>
