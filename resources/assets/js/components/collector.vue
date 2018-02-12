@@ -173,7 +173,9 @@ export default {
     },
     cancelEdit() {
       // Cancel Edit and revert Name Changes
-      this.$store.commit('STOP_EDITING')
+      if(!this.$store.getters.hasUnsavedItems) {
+        this.$store.commit('STOP_EDITING')
+      }
       if(this.editing) {
         this.editing = false
         this.$store.commit('UPDATE_COLLECTOR_NAME', {
@@ -241,7 +243,6 @@ export default {
     // Wrapper for this.delete() for optional undo feature
     archive() {
       this.showModal = false
-      this.$store.commit('STOP_EDITING')
       this.delete()
     },
     delete() {
@@ -251,12 +252,18 @@ export default {
       // Send delete-request to Store Component
       this.$store.dispatch('deleteCollector', this.collector)
 
+      if(!this.$store.getters.hasUnsavedItems) {
+        this.$store.commit('STOP_EDITING')
+      }
+
     },
     addItem: _.debounce(function() {
       // dont enable adding Items when in editing mode
       if(!this.editing) {
         // add new Item to Store Component
-        this.$store.dispatch('createItem', this.collector)
+        //this.$store.dispatch('createItem', this.collector)
+        this.$store.commit('START_EDITING')
+        this.$store.commit('CREATE_ITEM', this.collector)
       }
     }, 500)
   }

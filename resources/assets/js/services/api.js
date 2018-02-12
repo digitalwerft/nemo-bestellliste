@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 export default {
-  createItem(collector) {
+  createItem(collector, number, quantity) {
     return axios.post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item', {
-        number: 110,
-        quantity: 1
+        number: number,
+        quantity: quantity
       })
   },
   updateItem(collector, item) {

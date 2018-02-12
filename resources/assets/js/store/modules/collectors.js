@@ -20,6 +20,15 @@ const getters = {
       return collector.id === id
     });
   },
+  hasUnsavedItems: state => {
+    var unsaved = state.all.find(collector => {
+      return collector.items.find(item => {
+        return _.startsWith(item.id, 'new-item')
+      })
+    })
+
+    return unsaved ? true : false
+  },
   getAllItemsQuantity: (state, getters) => {
     var totalOrders = 0;
     state.all.forEach(collector => {
@@ -221,12 +230,16 @@ const actions = {
   },
   createItem({
     commit
-  }, collector ) {
+  }, {collector, item, newNumber, quantity} ) {
     commit('START_LOADING')
-    return api.createItem(collector).then(response => {
-      commit("CREATE_ITEM", {collector: collector, item: response.data.data.resource})
+    return api.createItem(collector, newNumber, 1).then(response => {
+      console.log(response.data.data.resource.id, item)
+      commit("UPDATE_ITEM_ID", {item: item, newId: response.data.data.resource.id})
+      commit('UPDATE_ITEM_NUMBER', {collector: collector, item: item, number:response.data.data.resource.number})
+      commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: item, quantity: quantity})
       stopLoading(commit)
     }).catch(error => {
+      console.log(error)
       stopLoading(commit)
       if(error.response) {
         iziToast.error({
@@ -279,7 +292,7 @@ const actions = {
     commit('START_LOADING')
     return api.deleteItem(collector, itemObj.item)
       .then(response => {
-        commit("DELETE_ITEM", {response: response.data, item: itemObj})
+        commit("DELETE_ITEM", itemObj)
         iziToast.success({
           message: response.data.message ? response.data.message : 'Löschen erfolgreich'
         })
@@ -303,8 +316,8 @@ const mutations = {
     state.all = collectors;
     state.requestComplete = true;
   },
-  UPDATE_ITEM_ID(state, payload) {
-    payload.item.id = payload.id
+  UPDATE_ITEM_ID(state, {item, newId}) {
+    item.id = newId
   },
   UPDATE_ITEM_NUMBER(state, {collector, item, number}) {
     item.number = number
@@ -323,7 +336,7 @@ const mutations = {
     _.unset(newItem, 'id')
     _.merge(item, newItem)
   },
-  UPDATE_ITEM(state, payload) {
+  UPDATE_ITEM(state, {payload}) {
       var collector = this.getters.getCollectorById(payload.item.collectorId)
       var item = collector.items.find(item => item.id === payload.item.item.id)
       var number = payload.newItem.number
@@ -336,13 +349,33 @@ const mutations = {
       _.unset(newItem, 'id')
       _.merge(item, newItem)
   },
-  CREATE_ITEM(state, {collector, item}) {
+  CREATE_ITEM(state, collector) {
+    //var defaultItem = this.getters.getItemByNumber(110)
+    var newItem = {
+      id: 'new-item-'+_.uniqueId(),
+      quantity: 1,
+      collector_id: collector.id,
+      quote_id: collector.pivot.quote_id,
+      number: 0,
+      name: 'keine Auswahl',
+      gross_price: 0,
+      suggested_donation: 0
+    }
+  //  _.unset(defaultItem, 'id')
+    //_.merge(newItem, defaultItem)
+    collector.items.push(newItem)
+  },
+  CREATE_EMPTY_ITEM(state, {collector, item}) {
     var defaultItem = this.getters.getItemByNumber(110)
     var newItem = {
       id: item.id,
       quantity: 1,
       collector_id: collector.id,
-      quote_id: collector.pivot.quote_id
+      quote_id: collector.pivot.quote_id,
+      number: 0,
+      name: 'keine Auswahl',
+      gross_price: 0,
+      suggested_donation: 0
     }
     _.unset(defaultItem, 'id')
     _.merge(newItem, defaultItem)
@@ -356,7 +389,7 @@ const mutations = {
   END_DELETE(state) {
     state.deleting = false
   },
-  DELETE_ITEM(state, { response, item }) {
+  DELETE_ITEM(state, item) {
     var collector = this.getters.getCollectorById(item.collectorId)
     collector.items.splice(item.index, 1);
   },

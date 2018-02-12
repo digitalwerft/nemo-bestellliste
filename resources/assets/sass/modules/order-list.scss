@@ -277,7 +277,7 @@ section.orders {
     .name-col {
       @include media-breakpoint-down(md) {
         order: -2;
-        border-left: 1px solid $gray-400 !important;
+        //border-left: 1px solid $gray-400 !important;
         border-bottom: 1px solid $gray-400 !important;
         padding-left: 15px;
         background-color: $gray-100 !important;
@@ -297,6 +297,11 @@ section.orders {
 
     .delete-col {
       min-width: 45px;
+      @include media-breakpoint-down(md) {
+        .btn {
+          border-left: none;
+        }
+      }
     }
 
     &.disabled {

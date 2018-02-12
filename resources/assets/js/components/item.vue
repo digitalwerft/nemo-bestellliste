@@ -16,6 +16,7 @@
         :step="1"
         :integerOnly="true"
         v-model="quantity"
+        :disabled="hasNoNumber"
         @onInputNumberChange="onQuantityChange"
         ></input-spinner>
     </span>
@@ -116,6 +117,9 @@ export default {
     itemId() {
       return this.item.id
     },
+    hasNoNumber() {
+      return _.startsWith(this.item.id, 'new-item')
+    },
     // v-model workaround for item quantity
     quantity: {
       get() {
@@ -124,7 +128,9 @@ export default {
       set: _.debounce(function(value) {
         // store new item quantityValue
         if(this.oldId == this.itemId) {
-          this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value});
+          if(!_.startsWith(this.item.id, 'new-item')) {
+            this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value})
+          }
         }
       }, 700)
     },
@@ -155,11 +161,19 @@ export default {
     // Invoke item deletion
     onItemDelete(e) {
       e.preventDefault();
-      this.$store.dispatch('deleteItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}}).then(()=> {
-        setTimeout(()=> {
-          this.oldId = this.itemId
-        }, 250)
-      })
+      if(!this.hasNoNumber) {
+        this.$store.dispatch('deleteItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}}).then(()=> {
+          setTimeout(()=> {
+            this.oldId = this.itemId
+          }, 250)
+        })
+      } else {
+        this.$store.commit('DELETE_ITEM', this)
+        if(!this.$store.getters.hasUnsavedItems) {
+          this.$store.commit('STOP_EDITING')
+        }
+
+      }
       this.showModal = false;
     },
     onNumberChange(number) {
@@ -170,7 +184,14 @@ export default {
         } else if(this.item.isNewItem) {
           this.isInitial = false
         }
-        this.$store.dispatch('updateItemNumber', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}, number: number})
+        if(!_.startsWith(this.item.id, 'new-item')) {
+          this.$store.dispatch('updateItemNumber', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}, number: number})
+        } else {
+          this.$store.dispatch('createItem', { collector: this.collector, item: this.item, newNumber: number, quantity: this.item.quantity })
+            .then(response => {
+              this.oldId = this.item.id
+            })
+        }
       }
     }
   }

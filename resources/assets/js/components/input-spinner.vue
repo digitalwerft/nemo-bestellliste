@@ -6,7 +6,7 @@
   </div> -->
 
   <div class="number-input-spinner-decrease">
-    <a class="btn btn-light number-input-spinner-decrease-button" href="#" @click.prevent="decreaseNumber" @mousedown="onMousedown($event, 'down')" @mouseup="onMouseup">
+    <a class="btn btn-light number-input-spinner-decrease-button" :class="{disabled: disabled}" href="#" @click.prevent="decreaseNumber" @mousedown="onMousedown($event, 'down')" @mouseup="onMouseup">
       <i class="mdi mdi-minus"></i>
     </a>
   </div>
@@ -16,7 +16,7 @@
   </div>
 
   <div class="number-input-spinner-increase">
-    <a class="btn btn-light number-input-spinner-increase-button" href="#" @click.prevent="increaseNumber" @mousedown="onMousedown($event, 'up')" @mouseup="onMouseup">
+    <a class="btn btn-light number-input-spinner-increase-button" :class="{disabled: disabled}" href="#" @click.prevent="increaseNumber" @mousedown="onMousedown($event, 'up')" @mouseup="onMouseup">
       <i class="mdi mdi-plus"></i>
     </a>
   </div>
@@ -35,6 +35,10 @@ export default {
     };
   },
   props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     value: {
       type: Number,
       default: 0
