@@ -1,36 +1,41 @@
 <template>
-  <div class="text-success save-indicator">
+  <div class="save-indicator">
 
     <transition name="fade">
       <div class="indicator-wrapper" v-if="(!isEditing && !isSaving)">
-        <small class="status-text text-success">Änderungen gespeichert</small>
-        <i class="mdi mdi-check-circle-outline mdi-24px"></i>
+        <small class="status-text text-success d-none d-sm-inline-block">gespeichert</small>
+        <i class="mdi mdi-check-circle-outline mdi-24px text-success"></i>
       </div>
     </transition>
 
     <transition name="fade">
-      <div class="indicator-wrapper" v-if="isSaving">
-        <small class="status-text text-danger">Daten geändert</small>
-        <spinner
-          :status="true"
-          :color="'#627794'"
-          :size="20"
-          :depth="3"
-          :rotation="true"
-          :speed="0.8">
-        </spinner>
+      <div class="indicator-wrapper saving" v-if="isSaving">
+        <small class="status-text d-none d-sm-inline-block">speichere...</small>
+        <span class="spinner-wrapper">
+          <spinner
+            :status="true"
+            :color="'#627794'"
+            :size="20"
+            :depth="3"
+            :rotation="true"
+            :speed="0.8">
+          </spinner>
+        </span>
       </div>
 
     </transition>
 
     <transition name="fade">
       <div class="indicator-wrapper" v-if="(isEditing && !isSaving)">
-        <small class="status-text text-warning">speichere...</small>
-        <i class="mdi mdi-adjust text-danger mdi-24px"></i>
+        <small class="status-text text-danger d-none d-sm-inline-block">Daten geändert</small>
+        <i class="mdi mdi-adjust text-danger mdi-24px text-danger"></i>
       </div>
     </transition>
   </div>
 </template>
+<style lang="scss">
+
+</style>
 <script>
   import Spinner from './spinner.vue'
   export default {

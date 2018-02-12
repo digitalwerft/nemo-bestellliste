@@ -56,21 +56,51 @@ section.order-navigation {
       margin-left: -34px;
       color: $gray-500;
   }
-
-  .save-indicator {
-    cursor: pointer;
+  .save-indicator-element {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
     position: relative;
-    margin-right: 8px;
-    width: 40px;
+  }
+  .indicator-wrapper {
+    position: absolute;
+    width: 130px;
+    right: 0;
+    text-align: right;
+    padding-right: 6px;
+    .status-text {
+      //position: absolute;
+      display: inline-block;
+      //left: 0;
+      height: 28px;
+      vertical-align: middle;
+    }
 
-    i {
+    &.saving {
+      .status-text {
+        position: absolute;
+        top: 8px;
+        right: 40px;
+      }
+    }
+
+    .spinner-wrapper {
       position: absolute;
-      right: 6px;
+      top: 8px;
+      right: 8px;
+    }
+  }
+  .save-indicator {
+    //position: relative;
+    //width: 120px;
+    i {
+      //position: absolute;
+      //right: 6px;
     }
     .sl-spinner {
-      margin-top: 8px;
-      position: absolute;
-      right: 8px;
+      //margin-top: 8px;
+
+      //right: 8px;
     }
   }
 }

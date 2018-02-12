@@ -22,7 +22,7 @@
       </div>
 
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item text-success save-indicator">
+          <li class="nav-item save-indicator-element">
             <save-indicator :is-saving="isSaving" :is-editing="isEditing"></save-indicator>
           </li>
           <li class="nav-item d-none d-sm-list-item">
