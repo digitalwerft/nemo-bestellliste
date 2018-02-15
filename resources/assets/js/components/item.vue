@@ -5,8 +5,9 @@
       <span slot="no-options">Keine(n) Boxen gefunden.</span>
     </v-select>
   </div>
-  <span class="input-group-addon col-lg-8 col-9 name-col">
-    <small>{{ name ? name : '--' }}</small>
+  <span class="input-group-addon col-lg-8 col-9 name-col pl-2">
+    <small class="d-none d-md-inline">{{ name ? name : '--' }}</small>
+    <small class="d-inline d-md-none">Artikel-Nr.</small>
   </span>
   <div class="input-group col-4 col-lg-3 no-gutters spinner-col">
     <span class="input-group-btn col">

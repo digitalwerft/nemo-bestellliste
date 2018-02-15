@@ -2,7 +2,7 @@
   <div v-if="!isLoading" class="container">
     <div class="card mb-2">
       <div class="card-body">
-        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Bestellliste</span> bearbeiten</router-link>
+        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Bestellung</span> bearbeiten</router-link>
         <a href="#" class="btn btn-outline-primary float-right print-button">
           <i class="mdi mdi-printer">&nbsp;</i>Drucken
         </a>
@@ -51,7 +51,7 @@
           </thead>
           <tbody>
             <tr v-for="item in sortedItems">
-              <td data-label="Artikel">{{ item.number }} – {{ item.name }}</td>
+              <td data-label="Artikel-Nr.">{{ item.number }}<span class="d-none d-md-inline"> – {{ item.name }}</span></td>
               <td data-label="Anzahl Boxen">{{ item.quantity }}</td>
               <td data-label="Rechnungsbetrag">{{ item.quantity*item.gross_price }}€</td>
               <td data-label="Spende">{{ item.suggested_donation*item.quantity }}€</td>
@@ -113,9 +113,11 @@
                   <table class="table table-bordered table-striped table-mobile">
                     <thead class="thead-light">
                       <tr>
-                        <th scope="col">Name</th>
+                        <td scope="col" v-html="highlight(collector.name)" colspan="7" class="font-weight-bold"></td>
+                      </tr>
+                      <tr>
                         <th scope="col">Artikel</th>
-                        <th scope="col">Anzahl</th>
+                        <th scope="col">Anzahl Boxen</th>
                         <th scope="col">Gesamtbetrag</th>
                         <th scope="col">davon Spende</th>
                         <th scope="col" class="d-none d-md-table-cell"><small>Boxen verteilt?</small></th>
@@ -124,8 +126,8 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in collector.items" class="mb-0">
-                        <td data-label="Name" class="font-weight-bold" v-if="index == 0" v-html="index == 0 ? highlight(collector.name) : ''">"</td>
-                        <td data-label="Artikel">{{ item.number }}<span class="d-none d-md-inline"> – {{ item.name}}</span></td>
+                        <td data-label="Name" class="font-weight-bold d-md-none" v-if="index == 0" v-html="index == 0 ? highlight(collector.name) : ''"></td>
+                        <td data-label="Artikel-Nr.">{{ item.number }}<span class="d-none d-md-inline"> – {{ item.name}}</span></td>
                         <td data-label="Anzahl">{{ item.quantity }}</td>
                         <td data-label="Gesamtbetrag">{{ (parseFloat(item.suggested_donation)+parseFloat(item.gross_price)) * item.quantity }}€</td>
                         <td data-label="davon Spende">{{ item.suggested_donation * item.quantity}}€</td>
@@ -133,10 +135,11 @@
                         <td class="d-none d-md-table-cell"></td>
                       </tr>
                       <tr>
-                        <td colspan="2" class="d-none d-md-table-cell"></td>
                         <td class="font-weight-bold d-none d-md-table-cell">Summe:</td>
+                        <td data-label="Summe Boxen">{{ getItemsQuantityByCollectorId(collector.id)}}</td>
                         <td data-label="Summe">{{ getPriceByCollectorId(collector.id) + getDonationsByCollectorId(collector.id)}}€</td>
                         <td data-label="davon Spenden">{{ getDonationsByCollectorId(collector.id) }}€</td>
+                        <td class="d-none d-md-table-cell" colspan="2"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -153,6 +156,7 @@
       </div>
     </div>
     <a href="#" @click.prevent="" class="btn btn-secondary btn-block btn-lg"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
+    <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg"><i class="mdi mdi-lead-pencil">&nbsp;</i>Bestellung ändern</router-link>
     <a href="#" @click.prevent="" class="btn btn-danger btn-block btn-lg">Bestellung jetzt aufgeben</a>
   </div>
 </template>
@@ -245,7 +249,6 @@
       },
       shippingCost() {
         var totalOrders = this.$store.getters.getAllItemsQuantity
-        console.log(totalOrders)
         if(totalOrders < 21 ) {
           return 4
         } else if(totalOrders < 100) {
@@ -297,6 +300,9 @@
       },
       getDonationsByCollectorId(id) {
         return this.$store.getters.getAllItemsDonationsByCollectorId(id)
+      },
+      getItemsQuantityByCollectorId(id) {
+        return this.$store.getters.getItemsQuantityByCollectorId(id)
       },
       clearSearch() {
         this.search = ''
