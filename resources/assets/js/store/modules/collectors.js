@@ -140,16 +140,18 @@ const actions = {
     self
   }) {
     commit('START_LOADING')
-    self.$http
-      .get("./api/campaign/"+self.$route.params.id+"/quote/collectors")
-      .then(response => {
-        commit("FETCH_COLLECTORS", response.data);
-        stopLoading(commit)
-      })
-      .catch(error => {
-        console.log(error);
-        stopLoading(commit)
-      });
+    api.checkQuote(self.$route.params.id).then(() => {
+      api.fetchCollectors(self.$route.params.id)
+        .then(response => {
+          commit("FETCH_COLLECTORS", response.data);
+          stopLoading(commit)
+        })
+        .catch(error => {
+          console.log(error);
+          stopLoading(commit)
+        })
+      }
+    )
   },
   updateShippingAddress({
     commit

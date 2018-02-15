@@ -27,6 +27,10 @@ Route::delete('/campaign/{campaign_id}/quote/collector/{collector_id}/item/{item
   ];
 });
 
+Route::get('/campaign/{campaign_id}/quote/', function() {
+  return [];
+});
+
 Route::delete('/campaign/{campaign_id}/quote/collector/{collector_id}', function() {
   return [
     "message" => "Teilnehmer gelöscht",

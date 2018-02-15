@@ -37,6 +37,12 @@ export default {
       address: form_data
     })
   },
+  checkQuote(campaign_id) {
+    return axios.get('/api/campaign/'+campaign_id+'/quote/')
+  },
+  fetchCollectors(campaign_id) {
+    return axios.get('/api/campaign/'+campaign_id+'/quote/collectors/')
+  },
   placeOrder() {
     //
   }
