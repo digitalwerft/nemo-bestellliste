@@ -169,7 +169,7 @@
         if(!this.hasChanged) {
           return
         }
-        this.$store.dispatch('updateShippingAddress', {address: _.clone(this.form), campaign_id: this.campaign.id }).then(() => {
+        this.$store.dispatch('updateShippingAddress', {address: _.clone(this.form.address), campaign_id: this.campaign.id }).then(() => {
           this.editingDetails = false
           this.hasChanged = false
           this.$note.info({
