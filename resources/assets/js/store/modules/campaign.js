@@ -46,6 +46,7 @@ const actions = {
         message: 'Kommentar erfolgreich gespeichert.'
       })
     }).catch(error => {
+      commit('STOP_LOADING')
       iziToast.error({
         message: error.response.data.message
       })
