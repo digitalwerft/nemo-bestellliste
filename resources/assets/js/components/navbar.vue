@@ -23,7 +23,7 @@
 
         <ul class="navbar-nav ml-auto">
           <li class="nav-item save-indicator-element">
-            <save-indicator :is-saving="isSaving" :is-editing="isEditing"></save-indicator>
+            <save-indicator :is-saving="isSaving" :is-editing="isEditing" :hasError="errorSaving"></save-indicator>
           </li>
           <li class="nav-item d-none d-sm-list-item">
             <a href="#" class="btn btn-outline-primary mr-2" @click.prevent="createCollector()">
@@ -113,6 +113,9 @@ export default {
     },
     isEditing() {
       return this.$store.state.editing
+    },
+    errorSaving() {
+      return this.$store.state.error
     }
   },
   methods: {

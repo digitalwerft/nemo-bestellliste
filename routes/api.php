@@ -17,9 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/campaign/{campaign_id}/quote', function() {
+/*Route::post('/campaign/{campaign_id}/quote', function() {
   return [];
-});
+});*/
 
 
 Route::get('/campaign/{campaign_id}/orders', function() {

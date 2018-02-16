@@ -162,6 +162,8 @@
         }).then(() => {
           this.editingDetails = false
           this.hasChanged = false
+        }).catch(error => {
+          //
         })
       }, 1000),
       saveShippingDetails(e) {

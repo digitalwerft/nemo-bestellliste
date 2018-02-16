@@ -39,16 +39,20 @@ const actions = {
     quote, newComment
   }) {
     commit('START_LOADING')
-    return api.saveComment(quote, newComment).then(response => {
-      commit('SAVE_COMMENT', newComment)
-      commit('STOP_LOADING')
-      iziToast.success({
-        message: 'Kommentar erfolgreich gespeichert.'
-      })
-    }).catch(error => {
-      commit('STOP_LOADING')
-      iziToast.error({
-        message: error.response.data.message
+    return new Promise((resolve, reject) => {
+      api.saveComment(quote, newComment).then(response => {
+        commit('SAVE_COMMENT', newComment)
+        commit('STOP_LOADING')
+        iziToast.success({
+          message: 'Kommentar erfolgreich gespeichert.'
+        })
+        resolve(response)
+      }).catch(error => {
+        commit('ERROR_SAVING')
+        iziToast.error({
+          message: error.response.data.message
+        })
+        reject(error)
       })
     })
   }

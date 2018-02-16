@@ -17,7 +17,8 @@ export default new Vuex.Store({
   state: {
     isAuthenticated: false,
     isLoading: false,
-    editing: false
+    editing: false,
+    error: false
   },
   modules: {
     fundraiser,
@@ -32,13 +33,20 @@ export default new Vuex.Store({
     },
     START_LOADING(state) {
       state.isLoading = true
+      state.error = false
     },
     STOP_LOADING(state) {
       state.isLoading = false
       state.editing = false
+      state.error = false
     },
     START_EDITING(state) {
       state.editing = true
+    },
+    ERROR_SAVING(state) {
+      state.isLoading = false
+      state.editing = true
+      state.error = true
     },
     STOP_EDITING(state) {
       state.editing = false
