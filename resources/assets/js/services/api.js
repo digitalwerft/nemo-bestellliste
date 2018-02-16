@@ -37,11 +37,19 @@ export default {
       address: form_data
     })
   },
-  checkQuote(campaign_id) {
+  fetchQuote(campaign_id) {
     return axios.get('/api/campaign/'+campaign_id+'/quote/')
   },
   fetchCollectors(campaign_id) {
     return axios.get('/api/campaign/'+campaign_id+'/quote/collectors/')
+  },
+  fetchCampaign(campaign_id) {
+    return axios.get('/api/campaign/'+campaign_id)
+  },
+  saveComment(quote, newComment) {
+    return axios.post('/api/campaign/'+quote.campaign_id+'/quote', {
+      comment: newComment
+    })
   },
   placeOrder() {
     //

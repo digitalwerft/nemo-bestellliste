@@ -31,63 +31,62 @@
             <label for="shipping-first-name">Vorname, Nachname</label>
             <div class="row">
               <div class="col">
-                <input id="shipping-first-name" type="text" class="form-control form-control" v-model="form.first_name" placeholder="Vorname">
+                <input id="shipping-first-name" type="text" class="form-control form-control" v-model="form.address.first_name" placeholder="Vorname">
               </div>
               <div class="col">
-                <input id="shipping-last-name" type="text" class="form-control form-control" v-model="form.last_name" placeholder="Nachname">
+                <input id="shipping-last-name" type="text" class="form-control form-control" v-model="form.address.last_name" placeholder="Nachname">
               </div>
             </div>
           </div>
-          <h6 v-if="!editingDetails">{{ form.first_name }} {{ form.last_name }}</h6>
+          <h6 v-if="!editingDetails">{{ form.address.first_name }} {{ form.address.last_name }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-organisation">Name der Firma/Organisation/ Schule/Pfarrei <small>(optional)</small></label>
-            <input id="shipping-organisation" type="text" class="form-control form-control" v-model="form.organisation" placeholder="Name der Firma/Organisation/Schule/Pfarrei">
+            <input id="shipping-organisation" type="text" class="form-control form-control" v-model="form.address.organisation" placeholder="Name der Firma/Organisation/Schule/Pfarrei">
           </div>
-          <h6 v-if="!editingDetails">{{ form.organisation }}</h6>
+          <h6 v-if="!editingDetails">{{ form.address.organisation }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-route">Straße, Hausnummer</label>
             <div class="row">
               <div class="col-14">
-                <input id="shipping-route" type="text" class="form-control form-control" v-model="form.route" placeholder="Straße">
+                <input id="shipping-route" type="text" class="form-control form-control" v-model="form.address.route" placeholder="Straße">
               </div>
               <div class="col">
-                <input id="shipping-street-number" type="text" class="form-control form-control" v-model="form.street_number" placeholder="Hausnummer">
+                <input id="shipping-street-number" type="text" class="form-control form-control" v-model="form.address.street_number" placeholder="Hausnummer">
               </div>
             </div>
           </div>
-          <h6 v-if="!editingDetails">{{ form.route }} {{ form.street_number }}</h6>
+          <h6 v-if="!editingDetails">{{ form.address.route }} {{ form.address.street_number }}</h6>
           <div class="form-group" v-if="editingDetails">
             <label for="shipping-zip">PLZ, Ort</label>
             <div class="row">
               <div class="col-18 col-sm-5 mb-3">
-                <input id="shipping-zip" type="text" class="form-control form-control" v-model="form.zip_code" placeholder="PLZ">
+                <input id="shipping-zip" type="text" class="form-control form-control" v-model="form.address.zip_code" placeholder="PLZ">
               </div>
               <div class="col">
-                <input id="shipping-city" type="text" class="form-control form-control" v-model="form.city" placeholder="Ort">
+                <input id="shipping-city" type="text" class="form-control form-control" v-model="form.address.city" placeholder="Ort">
               </div>
             </div>
           </div>
-          <h6 v-if="!editingDetails">{{ form.zip_code }} {{ form.city }}</h6>
+          <h6 v-if="!editingDetails">{{ form.address.zip_code }} {{ form.address.city }}</h6>
           <a href="#" class="btn btn-link btn-sm pl-0" @click.prevent="editingDetails = !editingDetails" v-if="!editingDetails">[
               {{ editingDetails ? 'Abbrechen' : 'Ändern' }}]</a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <label for="fundraiser-message" class="text-muted mt-3">Kommentar zu deiner Bestellung</label>
-          <textarea v-bind:value="campaign.comment" class="form-control" id="fundraiser-message" :disabled="!editingDetails"></textarea>
-          <small class="form-text text-muted">
-            Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns gerne jederzeit von Mo-Fr 9-18 Uhr unter <a href="tel:076170788833">0761 / 707 888 33</a> an <br>oder schreibt uns eine E-Mail an <a href="mailto:bestellung@neuemasche.com">bestellung@neuemasche.com</a>.
-              </small>
         </div>
       </div>
       <div class="row mt-3">
         <div class="col">
           <div class="float-right">
             <a href="#" class="btn btn-danger ml-auto" @click.prevent="cancelEdit" v-if="editingDetails">Abbrechen</a>
-            <a href="#" class="btn btn-primary ml-auto" @click.prevent="editingDetails = true" v-if="!editingDetails">Ändern</a>
             <a href="#" class="btn btn-success" @click.prevent="saveShippingDetails" v-if="editingDetails" :class="{disabled: !hasChanged}">Speichern</a>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="fundraiser-message" class="text-muted mt-3">Kommentar zu deiner Bestellung</label>
+          <textarea v-model="form.comment" class="form-control" id="fundraiser-message" @keyup="saveComment"></textarea>
+          <small class="form-text text-muted">
+            Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns gerne jederzeit von Mo-Fr 9-18 Uhr unter <a href="tel:076170788833">0761 / 707 888 33</a> an <br>oder schreibt uns eine E-Mail an <a href="mailto:bestellung@neuemasche.com">bestellung@neuemasche.com</a>.
+              </small>
         </div>
       </div>
     </div>
@@ -101,7 +100,8 @@
       const self  = {self: this}
       // Fetch Data if not already happened
       store.dispatch('fetchFundraiser', self).then(()=> {
-        this.form = _.clone(this.campaign.shipping_address)
+        this.form.address = _.clone(this.campaign.shipping_address)
+        this.form.comment = _.clone(this.quote.comment)
         setTimeout(() => {
           this.hasChanged = false
         }, 250)
@@ -110,15 +110,19 @@
     data() {
       return {
         editingDetails: false,
+        editingComment: false,
         hasChanged: false,
         form: {
-          city: '',
-          street_number: '',
-          route: '',
-          first_name: '',
-          last_name: '',
-          organisation: '',
-          zip_code: ''
+          address: {
+            city: '',
+            street_number: '',
+            route: '',
+            first_name: '',
+            last_name: '',
+            organisation: '',
+            zip_code: ''
+          },
+          comment: ''
         }
       }
     },
@@ -126,7 +130,7 @@
       form: {
         deep: true,
         handler() {
-          if(!_.isEqual(this.campaign.shipping_address, this.form)) {
+          if(!_.isEqual(this.campaign.shipping_address, this.form.address) || !_.isEqual(this.quote.comment, this.form.comment)) {
             this.hasChanged = true
             this.$store.commit('START_EDITING')
           } else {
@@ -145,9 +149,21 @@
       },
       shippingAddress() {
         return this.campaign.shipping_address
+      },
+      quote() {
+        return this.$store.state.campaign.quote
       }
     },
     methods: {
+      saveComment: _.debounce(function() {
+        this.$store.dispatch('saveComment', {
+          quote: this.quote,
+          newComment: this.form.comment
+        }).then(() => {
+          this.editingDetails = false
+          this.hasChanged = false
+        })
+      }, 1000),
       saveShippingDetails(e) {
         e.preventDefault()
         if(!this.hasChanged) {
@@ -162,7 +178,7 @@
         })
       },
       cancelEdit() {
-        this.form = _.clone(this.shippingAddress)
+        this.form.address = _.clone(this.shippingAddress)
         this.editingDetails = false
         this.hasChanged = false
       }

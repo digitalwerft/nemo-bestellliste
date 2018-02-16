@@ -17,6 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/campaign/{campaign_id}/quote', function() {
+  return [];
+});
+
+
+Route::get('/campaign/{campaign_id}/orders', function() {
+  return json_decode('[{"id":2939,"campaign_id":2431,"batch_shipment_id":null,"type":2,"members":null,"weight":null,"carrier_reference":null,"miscellaneous":null,"comment":null,"created_at":"2018-02-05 16:09:22","updated_at":null,"deleted_at":null,"url":{"identifier":"order\/2939","create":"http:\/\/dev-fundraiser.neuemasche.com\/order","read":"http:\/\/dev-fundraiser.neuemasche.com\/order\/2939","update":"http:\/\/dev-fundraiser.neuemasche.com\/order\/2939","delete":"http:\/\/dev-fundraiser.neuemasche.com\/order\/2939"},"identifier":"2939","quantity":[],"quote":{"id":6,"campaign_id":2431,"order_id":2939,"comment":null,"created_at":"2018-01-25 10:34:17","updated_at":"2018-01-25 10:34:17","deleted_at":null,"url":{"identifier":"quote\/6","create":"http:\/\/dev-fundraiser.neuemasche.com\/quote","read":"http:\/\/dev-fundraiser.neuemasche.com\/quote\/6","update":"http:\/\/dev-fundraiser.neuemasche.com\/quote\/6","delete":"http:\/\/dev-fundraiser.neuemasche.com\/quote\/6"},"identifier":"0006","collectors":[{"id":1195,"user_id":3636,"campaign_id":2431,"name":"Reimund Kr\u00f6gersdfasdflskdfhasdf","nick":null,"created_at":"2018-01-29 14:12:56","updated_at":"2018-02-12 17:33:24","deleted_at":null,"identifier":"1195","url":{"identifier":"collector\/1195","create":"http:\/\/dev-fundraiser.neuemasche.com\/collector","read":"http:\/\/dev-fundraiser.neuemasche.com\/collector\/1195","update":"http:\/\/dev-fundraiser.neuemasche.com\/collector\/1195","delete":"http:\/\/dev-fundraiser.neuemasche.com\/collector\/1195"},"pivot":{"quote_id":6,"collector_id":1195,"created_at":"2018-02-13 00:48:22","updated_at":"2018-02-13 00:48:22"},"items":[]},{"id":1196,"user_id":3637,"campaign_id":2431,"name":"Frau Wanda Langer","nick":null,"created_at":"2018-01-29 14:12:56","updated_at":"2018-02-12 11:10:16","deleted_at":null,"identifier":"1196","url":{"identifier":"collector\/1196","create":"http:\/\/dev-fundraiser.neuemasche.com\/collector","read":"http:\/\/dev-fundraiser.neuemasche.com\/collector\/1196","update":"http:\/\/dev-fundraiser.neuemasche.com\/collector\/1196","delete":"http:\/\/dev-fundraiser.neuemasche.com\/collector\/1196"},"pivot":{"quote_id":6,"collector_id":1196,"created_at":"2018-02-13 00:48:22","updated_at":"2018-02-13 00:48:22"},"items":[]},{"id":1197,"user_id":3638,"campaign_id":2431,"name":"Piotr Hecht-Lindner","nick":null,"created_at":"2018-01-29 14:12:56","updated_at":"2018-01-29 14:12:56","deleted_at":null,"identifier":"1197","url":{"identifier":"collector\/1197","create":"http:\/\/dev-fundraiser.neuemasche.com\/collector","read":"http:\/\/dev-fundraiser.neuemasche.com\/collector\/1197","update":"http:\/\/dev-fundraiser.neuemasche.com\/collector\/1197","delete":"http:\/\/dev-fundraiser.neuemasche.com\/collector\/1197"},"pivot":{"quote_id":6,"collector_id":1197,"created_at":"2018-02-13 00:48:22","updated_at":null},"items":[]}]},"items":[]}]');
+});
 Route::delete('/campaign/{campaign_id}/quote/collector/{collector_id}/item/{item_id}', function() {
   return [
     "message" => "Löschen erfolgreich",
@@ -28,7 +36,155 @@ Route::delete('/campaign/{campaign_id}/quote/collector/{collector_id}/item/{item
 });
 
 Route::get('/campaign/{campaign_id}/quote/', function() {
-  return [];
+  return [
+    "id" => 12,
+    "campaign_id" => 2431,
+    "order_id" => null,
+    "comment" => "Hallo, das ist ein Kommentar",
+    "created_at" => "2018-01-29 14:26:39",
+    "updated_at" => "2018-02-15 12:08:09",
+    "deleted_at" => null,
+    "url" => [
+      "identifier" => "quote\/12",
+      "create" => "http:\/\/dev-fundraiser.neuemasche.com\/quote",
+      "read" => "http:\/\/dev-fundraiser.neuemasche.com\/quote\/12",
+      "update" => "http:\/\/dev-fundraiser.neuemasche.com\/quote\/12",
+      "delete" => "http:\/\/dev-fundraiser.neuemasche.com\/quote\/12"
+    ],
+    "identifier" => "0012",
+    "collectors" => [
+      [
+        "id" => 1200,
+        "user_id" => 3641,
+        "campaign_id" => 2431,
+        "name" => "Wulf Heine",
+        "nick" => null,
+        "created_at" => "2018-01-29 14:12:56",
+        "updated_at" => "2018-01-29 14:12:56",
+        "deleted_at" => null,
+        "identifier" => "1200",
+        "url" => [
+          "identifier" => "collector\/1200",
+          "create" => "http:\/\/dev-fundraiser.neuemasche.com\/collector",
+          "read" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1200",
+          "update" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1200",
+          "delete" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1200"
+        ],
+        "pivot" => [
+          "quote_id" => 12,
+          "collector_id" => 1200,
+          "created_at" => "2018-01-29 14:33:13",
+          "updated_at" => "2018-01-29 14:33:13"
+        ]
+      ], [
+        "id" => 1201,
+        "user_id" => 3642,
+        "campaign_id" => 2431,
+        "name" => "Bianca Urban",
+        "nick" => null,
+        "created_at" => "2018-01-29 14:12:56",
+        "updated_at" => "2018-01-29 14:12:56",
+        "deleted_at" => null,
+        "identifier" => "1201",
+        "url" => [
+          "identifier" => "collector\/1201",
+          "create" => "http:\/\/dev-fundraiser.neuemasche.com\/collector",
+          "read" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1201",
+          "update" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1201",
+          "delete" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1201"],
+          "pivot" => [
+            "quote_id" => 12,
+            "collector_id" => 1201,
+            "created_at" => "2018-01-29 14:33:13",
+            "updated_at" => "2018-01-29 14:33:13"
+          ]
+        ], [
+          "id" => 1202,
+        "user_id" => 3643,
+        "campaign_id" => 2431,
+        "name" => "Herr Raphael Renner",
+        "nick" => null,
+        "created_at" => "2018-01-29 14:12:56",
+        "updated_at" => "2018-01-29 14:12:56",
+        "deleted_at" => null,
+        "identifier" => "1202",
+        "url" => ["identifier" => "collector\/1202",
+        "create" => "http:\/\/dev-fundraiser.neuemasche.com\/collector",
+        "read" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1202",
+        "update" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1202",
+        "delete" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1202"],
+        "pivot" => ["quote_id" => 12,
+        "collector_id" => 1202,
+        "created_at" => "2018-01-29 14:33:13",
+        "updated_at" => "2018-01-29 14:33:13"]],["id" => 1203,
+    "user_id" => 3644,
+    "campaign_id" => 2431,
+    "name" => "Emilia Nagel-Runge",
+    "nick" => null,
+    "created_at" => "2018-01-29 14:12:57",
+    "updated_at" => "2018-01-29 14:12:57",
+    "deleted_at" => null,
+    "identifier" => "1203",
+    "url" => ["identifier" => "collector\/1203",
+    "create" => "http:\/\/dev-fundraiser.neuemasche.com\/collector",
+    "read" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1203",
+    "update" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1203",
+    "delete" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1203"],
+    "pivot" => ["quote_id" => 12,
+    "collector_id" => 1203,
+    "created_at" => "2018-01-29 14:33:13",
+    "updated_at" => "2018-01-29 14:33:13"]],["id" => 1204,
+    "user_id" => 3645,
+    "campaign_id" => 2431,
+    "name" => "Eckhard Gerber",
+    "nick" => null,
+    "created_at" => "2018-01-29 14:12:57",
+    "updated_at" => "2018-01-29 14:12:57",
+    "deleted_at" => null,
+    "identifier" => "1204",
+    "url" => ["identifier" => "collector\/1204",
+    "create" => "http:\/\/dev-fundraiser.neuemasche.com\/collector",
+    "read" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1204",
+    "update" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1204",
+    "delete" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1204"],
+    "pivot" => ["quote_id" => 12,
+    "collector_id" => 1204,
+    "created_at" => "2018-01-29 14:33:13",
+    "updated_at" => "2018-01-29 14:33:13"]],["id" => 1205,
+    "user_id" => 3646,
+    "campaign_id" => 2431,
+    "name" => "Michaela Fleischmann",
+    "nick" => null,
+    "created_at" => "2018-01-29 14:12:57",
+    "updated_at" => "2018-01-29 14:12:57",
+    "deleted_at" => null,
+    "identifier" => "1205",
+    "url" => ["identifier" => "collector\/1205",
+    "create" => "http:\/\/dev-fundraiser.neuemasche.com\/collector",
+    "read" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1205",
+    "update" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1205",
+    "delete" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1205"],
+    "pivot" => ["quote_id" => 12,
+    "collector_id" => 1205,
+    "created_at" => "2018-01-29 14:33:13",
+    "updated_at" => "2018-01-29 14:33:13"]],["id" => 1247,
+    "user_id" => 3694,
+    "campaign_id" => 2431,
+    "name" => "Blabla",
+    "nick" => null,
+    "created_at" => "2018-02-12 17:24:58",
+    "updated_at" => "2018-02-12 17:24:58",
+    "deleted_at" => null,
+    "identifier" => "1247",
+    "url" => ["identifier" => "collector\/1247",
+    "create" => "http:\/\/dev-fundraiser.neuemasche.com\/collector",
+    "read" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1247",
+    "update" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1247",
+    "delete" => "http:\/\/dev-fundraiser.neuemasche.com\/collector\/1247"],
+    "pivot" => ["quote_id" => 12,
+    "collector_id" => 1247,
+    "created_at" => "2018-02-12 17:24:58",
+    "updated_at" => "2018-02-12 17:24:58"]]]];
 });
 
 Route::delete('/campaign/{campaign_id}/quote/collector/{collector_id}', function() {

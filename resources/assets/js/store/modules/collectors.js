@@ -1,7 +1,7 @@
 import itemsState from './items'
 import api from '../../services/api'
 
-import iziToast from 'izitoast';
+import iziToast from 'izitoast'
 
 const state = {
   all: [],
@@ -140,18 +140,15 @@ const actions = {
     self
   }) {
     commit('START_LOADING')
-    api.checkQuote(self.$route.params.id).then(() => {
-      api.fetchCollectors(self.$route.params.id)
-        .then(response => {
-          commit("FETCH_COLLECTORS", response.data);
-          stopLoading(commit)
-        })
-        .catch(error => {
-          console.log(error);
-          stopLoading(commit)
-        })
-      }
-    )
+    api.fetchCollectors(self.$route.params.id)
+      .then(response => {
+        commit("FETCH_COLLECTORS", response.data);
+        stopLoading(commit)
+      })
+      .catch(error => {
+        console.log(error);
+        stopLoading(commit)
+      })
   },
   updateShippingAddress({
     commit
@@ -235,13 +232,11 @@ const actions = {
   }, {collector, item, newNumber, quantity} ) {
     commit('START_LOADING')
     return api.createItem(collector, newNumber, 1).then(response => {
-      console.log(response.data.data.resource.id, item)
       commit("UPDATE_ITEM_ID", {item: item, newId: response.data.data.resource.id})
       commit('UPDATE_ITEM_NUMBER', {collector: collector, item: item, number:response.data.data.resource.number})
       commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: item, quantity: quantity})
       stopLoading(commit)
     }).catch(error => {
-      console.log(error)
       stopLoading(commit)
       if(error.response) {
         iziToast.error({
@@ -312,11 +307,11 @@ const actions = {
 
 const mutations = {
   FETCH_COLLECTORS(state, collectors) {
-    collectors.forEach(collector => {
+    /*collectors.forEach(collector => {
       collector.state = 'saved'
-    })
-    state.all = collectors;
-    state.requestComplete = true;
+    })*/
+    state.all = collectors
+    state.requestComplete = true
   },
   UPDATE_ITEM_ID(state, {item, newId}) {
     item.id = newId
