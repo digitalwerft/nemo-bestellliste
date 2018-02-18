@@ -18,8 +18,11 @@ const getters = {
   getCampaignId(state) {
     return state.data.id
   },
-  getComment(data) {
+  getComment(state) {
     return state.quote.comment
+  },
+  hasOrders(state) {
+    return !_.isEmpty(state.orders)
   }
 }
 

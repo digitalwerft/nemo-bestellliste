@@ -52,6 +52,10 @@
       const self  = { self: this }
       // If needed components are already loaded, stop execution
       if (store.getters.hasLoaded(['campaign', 'collectors'])) {
+        if(!store.getters.hasOrders) {
+          store.dispatch('fetchOrders', self)
+            .then(this.hideSpinner)
+        }
         return
       }
 
@@ -61,8 +65,8 @@
         .then(() => {
           store.dispatch('fetchCollectors', self)
             .then(() => {
-              store.dispatch('fetchOrders', self)
-                .then(this.hideSpinner)
+                store.dispatch('fetchOrders', self)
+                  .then(this.hideSpinner)
             })
         })
     },
