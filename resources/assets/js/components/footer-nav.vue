@@ -29,7 +29,9 @@ export default {
         return {}
     },
     methods: {
-
+      formatNumber(number) {
+        return String(number).replace(/(.)(?=(\d{3})+$)/g,'$1.')
+      }
     },
     computed: {
       collectors() {
@@ -39,16 +41,16 @@ export default {
         return this.collectors.length
       },
       totalOrders() {
-        return this.$store.getters.getAllItemsQuantity
+        return this.$store.getters.getAllItemsQuantity()
       },
       winnings() {
-        return String(this.$store.getters.getAllItemsPriceWithDonations).replace(/(.)(?=(\d{3})+$)/g,'$1.')
+        return this.formatNumber(this.$store.getters.getAllItemsPriceWithDonations())
       },
       earnings() {
-        return String(this.$store.getters.getAllItemsDonations).replace(/(.)(?=(\d{3})+$)/g,'$1.')
+        return this.formatNumber(this.$store.getters.getAllItemsDonations())
       },
       price() {
-        return String(this.$store.getters.getAllItemsPrice).replace(/(.)(?=(\d{3})+$)/g,'$1.')
+        return this.formatNumber(this.$store.getters.getAllItemsPrice())
       }
     }
 }

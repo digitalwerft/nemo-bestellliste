@@ -4,6 +4,7 @@ import iziToast from 'izitoast'
 const state = {
   data: {},
   quote: {},
+  orders: [],
   requestComplete: false
 }
 
@@ -13,10 +14,27 @@ const getters = {
   },
   getQuote(state) {
     return state.quote
+  },
+  getCampaignId(state) {
+    return state.data.id
+  },
+  getComment(data) {
+    return state.quote.comment
   }
 }
 
 const actions = {
+  fetchOrders({
+    commit
+  }, {
+    self
+  }) {
+    return api.fetchOrders(self.$route.params.id).then(response => {
+      commit('FETCH_ORDERS', response.data)
+    }).catch(error => {
+      //
+    })
+  },
   fetchCampaign({
     commit
   }, {
@@ -65,6 +83,9 @@ const mutations = {
   },
   FETCH_QUOTE(state, quote) {
     state.quote = quote
+  },
+  FETCH_ORDERS(state, orders) {
+    state.orders = orders
   },
   SAVE_COMMENT(state, newComment) {
     state.quote.comment = newComment

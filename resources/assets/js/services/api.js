@@ -51,6 +51,9 @@ export default {
       comment: newComment
     })
   },
+  fetchOrders(campaign_id) {
+    return axios.get('/api/campaign/'+campaign_id+'/orders')
+  },
   placeOrder() {
     //
   }

@@ -29,9 +29,12 @@ const getters = {
 
     return unsaved ? true : false
   },
-  getAllItemsQuantity: (state, getters) => {
+  getAllItemsQuantity: (state, getters) => (collectors = false) => {
+    if(!collectors) {
+      collectors = getters.getAllCollectors
+    }
     var totalOrders = 0;
-    state.all.forEach(collector => {
+    collectors.forEach(collector => {
       totalOrders += getters.getItemsQuantityByCollectorId(collector.id)
     })
     return totalOrders
@@ -64,24 +67,30 @@ const getters = {
     });
     return sum;
   },
-  getAllItemsPrice: (state, getters) => {
-    var collectors = getters.getAllCollectors
+  getAllItemsPrice: (state, getters) => (collectors = false) => {
+    if(!collectors) {
+      collectors = getters.getAllCollectors
+    }
     var sum = 0
     collectors.forEach(collector => {
       sum = sum + getters.getTotalItemsPriceByCollectorId(collector.id)
     })
     return sum
   },
-  getAllItemsPriceWithDonations: (state, getters) => {
-    var collectors = getters.getAllCollectors
+  getAllItemsPriceWithDonations: (state, getters) => (collectors = false) => {
+    if(!collectors) {
+      collectors = getters.getAllCollectors
+    }
     var price = 0
     collectors.forEach(collector => {
       price = price + getters.getTotalItemsPriceByCollectorId(collector.id) + getters.getAllItemsDonationsByCollectorId(collector.id)
     })
     return price
   },
-  getAllItemsDonations: (state, getters) => {
-    var collectors = getters.getAllCollectors
+  getAllItemsDonations: (state, getters) => (collectors = false) => {
+    if(!collectors) {
+      collectors = getters.getAllCollectors
+    }
     var sum = 0
     collectors.forEach(collector => {
       sum = sum + getters.getAllItemsDonationsByCollectorId(collector.id)
