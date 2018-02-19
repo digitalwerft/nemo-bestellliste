@@ -16,7 +16,7 @@
         </div>
         <div class="orders-list" v-for="(order, index) in orders">
           <div class="order">
-            <h6 class="mt-2">Bestellung Nr. {{ index+1 }}</h6>
+            <h6 class="mt-2">Bestellnr. #{{ order.identifier }}</h6>
             <summary-table :collectors="order.quote.collectors" :comment="order.comment"></summary-table>
             <hr v-if="(index+1 != orders.length)">
           </div>

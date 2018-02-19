@@ -12,6 +12,8 @@
   .dropdown-toggle {
     .selected-tag {
       position:  absolute;
+      top: 0;
+      left: 0;
     }
     .form-control {
       width: 100% !important;
