@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="card">
-      <div class="card-body pt-1">
+      <div class="card-body pt-1 pb-1">
         <div class="navbar pl-0 pr-0">
           <span class="navbar-brand">Zusammenfassung</span>
           <ul class="navbar-nav ml-auto">
