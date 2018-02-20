@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-body pt-1 pb-1">
         <div class="navbar pl-0 pr-0">
-          <span class="navbar-brand">Zusammenfassung</span>
+          <span class="navbar-brand">Zusammenfassung <span v-if="isCurrent">der aktuellen Bestelliste</span></span>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a href="#" class="btn btn-sm" @click.prevent="showSummary = !showSummary" :class="{'btn-success': showSummary, 'btn-light': !showSummary}">
@@ -84,7 +84,7 @@
     <div class="card mt-2 print-view">
       <div class="card-body pt-1 pb-0">
         <div class="navbar navbar-expand pl-0 pr-0">
-          <span class="navbar-brand">Teilnehmer</span>
+          <span class="navbar-brand">Teilnehmer  <span v-if="isCurrent">der aktuellen Bestelliste</span></span>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a href="#" class="btn btn-sm float-right" @click.prevent="showPrintList = !showPrintList" :class="{'btn-success': showPrintList, 'btn-light': !showPrintList}">
@@ -163,7 +163,7 @@
 </template>
 <script>
   export default {
-    props: ['collectors', 'comment'],
+    props: ['collectors', 'comment', 'isCurrent'],
     data() {
       return {
         showPrintList: false,

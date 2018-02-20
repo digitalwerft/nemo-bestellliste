@@ -12,7 +12,7 @@
     <div class="card mb-2 orders" v-if="orders">
       <div class="card-body pt-1">
         <div class="navbar pl-0 pr-0">
-          <span class="navbar-brand">Vorherige Bestellungen</span>
+          <span class="navbar-brand">Bereits abgeschlossene Bestellungen</span>
         </div>
         <div class="orders-list" v-for="(order, index) in orders">
           <div class="order">
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="quote">
-      <summary-table :collectors="collectors" :comment="comment"></summary-table>
+      <summary-table :collectors="collectors" :comment="comment" :isCurrent="true"></summary-table>
     </div>
     <div class="card bg-danger-light mt-2 mb-2">
       <div class="card-body">
