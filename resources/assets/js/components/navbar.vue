@@ -94,8 +94,6 @@ export default {
   components: {
     SaveIndicator
   },
-  mounted() {
-  },
   data() {
     return {
       isFixed: false,

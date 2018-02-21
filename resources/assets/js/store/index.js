@@ -9,6 +9,8 @@ import items from './modules/items'
 import collectors from './modules/collectors'
 import campaign from './modules/campaign'
 
+import api from '../services/api'
+
 Vue.use(Vuex);
 
 const debug = true
@@ -18,7 +20,8 @@ export default new Vuex.Store({
     isAuthenticated: false,
     isLoading: false,
     editing: false,
-    error: false
+    error: false,
+    action: 'IDLE'
   },
   modules: {
     fundraiser,
@@ -31,17 +34,23 @@ export default new Vuex.Store({
     LOGIN(state) {
       state.isAuthenticated = true
     },
-    START_LOADING(state) {
+    LOGOUT(state) {
+      state.isAuthenticated = false
+    },
+    START_LOADING(state, action = 'SAVING') {
       state.isLoading = true
       state.error = false
+      state.action = action
     },
     STOP_LOADING(state) {
       state.isLoading = false
       state.editing = false
       state.error = false
+      state.action = 'IDLE'
     },
-    START_EDITING(state) {
+    START_EDITING(state, action = 'EDITING') {
       state.editing = true
+      state.action = action
     },
     ERROR_SAVING(state) {
       state.isLoading = false
@@ -50,6 +59,31 @@ export default new Vuex.Store({
     },
     STOP_EDITING(state) {
       state.editing = false
+      state.action = 'IDLE'
+    },
+    SAVING_COLLECTOR(state) {
+      state.action = 'SAVING COLLECTOR'
+    },
+    DELETING_COLLECTOR(state) {
+      state.action = 'DELETING COLLECTOR'
+    },
+    CREATING_COLLECTOR(state) {
+      state.action = 'CREATING COLLECTOR'
+    },
+    SAVING_ITEM(state) {
+      state.action = 'SAVING ITEM'
+    },
+    DELETING_ITEM(state) {
+      state.action = 'DELETING ITEM'
+    },
+    CREATING_ITEM(state) {
+      state.action = 'CREATING ITEM'
+    },
+    SEARCHING(state) {
+      state.action = 'SEARCHING'
+    },
+    RESET_ACTIONS(state) {
+      state.action = 'IDLE'
     }
   },
   getters: {
@@ -81,7 +115,12 @@ export default new Vuex.Store({
       dispatch('fetchCampaigns', {self: self})
     },
     login({dispatch, commit}) {
-      commit(LOGIN)
+      commit('LOGIN')
+    },
+    logout({dispatch, commit}) {
+      api.logout().then(() => {
+        commit('LOGOUT')
+      })
     }
   },
   strict: debug

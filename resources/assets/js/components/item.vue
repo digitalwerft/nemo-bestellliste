@@ -89,9 +89,11 @@ const item = {
     // Declare debounce function wehn component is created
     // otherwise the same debounce function will be called for every item
     this.debouncer = _.debounce(function(value) {
-      if(this.oldId == this.itemId) {
-        if(!_.startsWith(this.item.id, 'new-item')) {
-          this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value})
+      if(this.$store.state.action != 'SEARCHING') {
+        if(this.oldId == this.itemId) {
+          if(!_.startsWith(this.item.id, 'new-item')) {
+            this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value})
+          }
         }
       }
     }, 700)
@@ -156,12 +158,14 @@ const item = {
   methods: {
     // update item quantityValue in store
     onQuantityChange(value) {
-      //this.$store.dispatch('updateItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}});
-      this.$store.commit('START_EDITING')
+      if(this.$store.state.action != 'SEARCHING') {
+        this.$store.commit('START_EDITING', 'EDITING_ITEM')
+      }
     },
     // Invoke item deletion
     onItemDelete(e) {
-      e.preventDefault();
+      e.preventDefault()
+      // If item has no number it exists only in the data store
       if(!this.hasNoNumber) {
         this.$store.dispatch('deleteItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}}).then(()=> {
           setTimeout(()=> {
@@ -178,20 +182,22 @@ const item = {
       this.showModal = false;
     },
     onNumberChange(number) {
-      if(this.oldId == this.itemId) {
-        if(this.isInitial && !this.item.isNewItem) {
-          this.isInitial = false
-          return
-        } else if(this.item.isNewItem) {
-          this.isInitial = false
-        }
-        if(!_.startsWith(this.item.id, 'new-item')) {
-          this.$store.dispatch('updateItemNumber', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}, number: number})
-        } else {
-          this.$store.dispatch('createItem', { collector: this.collector, item: this.item, newNumber: number, quantity: this.item.quantity })
-            .then(response => {
-              this.oldId = this.item.id
-            })
+      if(this.$store.state.action != 'SEARCHING') {
+        if(this.oldId == this.itemId) {
+          if(this.isInitial && !this.item.isNewItem) {
+            this.isInitial = false
+            return
+          } else if(this.item.isNewItem) {
+            this.isInitial = false
+          }
+          if(!_.startsWith(this.item.id, 'new-item')) {
+            this.$store.dispatch('updateItemNumber', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}, number: number})
+          } else {
+            this.$store.dispatch('createItem', { collector: this.collector, item: this.item, newNumber: number, quantity: this.item.quantity })
+              .then(response => {
+                this.oldId = this.item.id
+              })
+          }
         }
       }
     }

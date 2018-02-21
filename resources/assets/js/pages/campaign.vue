@@ -2,7 +2,7 @@
   <div v-if="!isLoading">
     <info-box :visible="displayInfo"></info-box>
     <section class="details">
-      <fundraiser v-on:display-info="displayInfo = !displayInfo"></fundraiser>
+      <fundraiser v-on:display-info="displayInfo = !displayInfo" @logout="logout"></fundraiser>
     </section>
 
 
@@ -146,7 +146,11 @@ export default {
   },
   watch: {
     search(term) {
-      //$list = $('.orders')
+      if(term != '') {
+        this.$store.commit('SEARCHING')
+      } else {
+        this.$store.commit('RESET_ACTIONS')
+      }
     },
     data(obj) {
       //console.log(obj);
@@ -202,6 +206,12 @@ export default {
         icon: 'mdi mdi-check'
       };
       iziToast.show(_.merge(opt, options));
+    },
+    logout() {
+      console.log('logout')
+      this.$store.dispatch('logout').then(() => {
+        this.$router.push('home')
+      })
     },
     createCollector(e) {
       if (e) {

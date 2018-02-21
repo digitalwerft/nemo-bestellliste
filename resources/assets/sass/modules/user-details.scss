@@ -19,6 +19,9 @@ section.details {
       float: right;
       font-size: 24px;
       color: $gray-400;
+      padding-top: 0;
+      line-height: 1.3;
+      
       &:hover {
         color: $gray-600;
       }

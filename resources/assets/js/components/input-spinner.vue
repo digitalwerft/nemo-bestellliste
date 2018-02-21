@@ -73,7 +73,7 @@ export default {
       this.isKeydown = false
 
       if ([48, 49, 50, 51, 52, 53, 54, 55, 56, 57].indexOf(e.keyCode) >= 0) {
-        this.numericValue = parseInt(this.$refs.number.value)
+        this.setValue(parseInt(this.$refs.number.value))
         this.emitChange()
         return
       }
@@ -119,21 +119,29 @@ export default {
     onBlur() {
       //console.log('blur')
     },
-    changeInput(value) {
+    setValue(value, emitChange = true) {
+      this.numericValue = value
+      if(emitChange && this.$store.state.action != 'SEARCHING') {
+        this.emitChange()
+      }
+    },
+    changeInput(value, emitChange = true) {
       if (value > this.max) {
-        this.numericValue = this.max;
-        return;
+        this.setValue(this.max, emitChange)
+        return
       } else if (value < this.min) {
-        this.numericValue = this.min;
+        this.setValue(this.min, emitChange)
+        return
       } else {
-        this.numericValue = value;
+        this.setValue(value, emitChange)
+        return
       }
     },
     increaseNumber() {
-      this.numericValue += this.step;
+      this.setValue(this.numericValue + this.step)
     },
     decreaseNumber() {
-      this.numericValue -= this.step;
+      this.setValue(this.numericValue -this.step)
     },
     emitChange() {
       this.$emit('onInputNumberChange', this.numericValue)
@@ -167,18 +175,18 @@ export default {
   },
   watch: {
     value(val) {
-      this.changeInput(val);
+      this.changeInput(val, false);
     },
     numericValue: function(val, oldVal) {
-      this.emitChange();
       if (val <= this.min) {
-        this.numericValue = parseInt(this.min);
-      }
-      if (val >= this.max) {
-        this.numericValue = parseInt(this.max);
+        this.setValue(parseInt(this.min))
+      } else if (val >= this.max) {
+        this.setValue(parseInt(this.max))
       }
       if (val <= this.max && val >= this.min) {
-        this.$emit('input', val, oldVal);
+        if(this.$store.state.action != 'DELETING_ITEM' && this.$store.state.action != 'SEARCHING') {
+          this.$emit('input', val, oldVal)
+         }
       }
     }
   }

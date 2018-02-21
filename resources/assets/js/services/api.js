@@ -56,5 +56,8 @@ export default {
   },
   placeOrder() {
     //
+  },
+  logout() {
+    return axios.get('/api/campaign/logout')
   }
 }

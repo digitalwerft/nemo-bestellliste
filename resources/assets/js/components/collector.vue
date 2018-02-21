@@ -151,8 +151,11 @@ export default {
       }
     },
     collectorName(name) {
+      if(this.$store.state.action == 'SEARCHING') {
+        return
+      }
       if(name != this.oldName || name == '') {
-        this.$store.commit('START_EDITING')
+        this.$store.commit('START_EDITING', 'EDITING_COLLECTOR')
       }
     }
   },
@@ -264,10 +267,10 @@ export default {
     },
     addItem: _.debounce(function() {
       // dont enable adding Items when in editing mode
-      if(!this.editing) {
+      if(!this.editing && this.$store.state.action != 'SEARCHING') {
         // add new Item to Store Component
         //this.$store.dispatch('createItem', this.collector)
-        this.$store.commit('START_EDITING')
+        this.$store.commit('START_EDITING', 'CREATING_ITEM')
         this.$store.commit('CREATE_ITEM', this.collector)
       }
     }, 500)

@@ -165,7 +165,7 @@ const actions = {
   updateShippingAddress({
     commit
   }, {campaign_id, address}) {
-    commit('START_LOADING')
+    commit('START_LOADING', 'UPDATING_SHIPPING_ADDRESS')
     return api.updateShippingAddress(campaign_id, address).then(response => {
       commit('UPDATE_SHIPPING_ADDRESS', address)
       stopLoading(commit)
@@ -181,7 +181,7 @@ const actions = {
   updateCollectorName({
     commit, rootState
   }, collector) {
-    commit('START_LOADING')
+    commit('START_LOADING', 'SAVING_COLLECTOR')
     return api.updateCollector(collector).then(response => {
       stopLoading(commit)
       iziToast.success({
@@ -199,7 +199,7 @@ const actions = {
   createCollector({
     commit
   }, collector) {
-    commit('START_LOADING')
+    commit('START_LOADING', 'CREATING_COLLECTOR')
     return api.createCollector(collector).then(response => {
       commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.data.resource.id})
       stopLoading(commit)
@@ -223,7 +223,7 @@ const actions = {
       stopLoading(commit)
       return
     }
-    commit('START_LOADING')
+    commit('START_LOADING', 'DELETING_COLLECTOR')
     return api.deleteCollector(collector).then(response => {
       commit('DELETE_COLLECTOR', collector)
       stopLoading(commit)
@@ -242,7 +242,7 @@ const actions = {
   createItem({
     commit
   }, {collector, item, newNumber, quantity} ) {
-    commit('START_LOADING')
+    commit('START_LOADING', 'CREATING_ITEM')
     return api.createItem(collector, newNumber, 1).then(response => {
       commit("UPDATE_ITEM_ID", {item: item, newId: response.data.data.resource.id})
       commit('UPDATE_ITEM_NUMBER', {collector: collector, item: item, number:response.data.data.resource.number})
@@ -260,7 +260,7 @@ const actions = {
   updateItemQuantity({
     commit
   }, {collector, itemObj, quantity}) {
-    commit('START_LOADING')
+    commit('START_LOADING', 'SAVING_ITEM')
     return api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
       commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
       stopLoading(commit)
@@ -276,7 +276,7 @@ const actions = {
   updateItemNumber({
     commit
   }, {itemObj, collector, number}) {
-    commit('START_LOADING')
+    commit('START_LOADING', 'SAVING_ITEM')
     return api.updateItem(collector, {number: number, quantity: itemObj.item.quantity, id: itemObj.item.id}).then(response => {
       commit('UPDATE_ITEM_NUMBER', {
         collector: collector,
@@ -298,7 +298,7 @@ const actions = {
   }, {
     itemObj, collector
   }) {
-    commit('START_LOADING')
+    commit('START_LOADING', 'DELETING_ITEM')
     return api.deleteItem(collector, itemObj.item)
       .then(response => {
         commit("DELETE_ITEM", itemObj)

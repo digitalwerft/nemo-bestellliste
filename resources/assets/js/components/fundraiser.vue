@@ -2,7 +2,8 @@
 <div class="container">
   <div class="card">
     <div class="card-body">
-      <a href="#" class="show-help"  @click="$emit('display-info')">
+      <a href="#" @click.prevent="$emit('logout')" class="btn btn-sm btn-outline-danger logout-button ml-3">ausloggen</a>
+      <a href="#" class="btn btn-sm btn-link show-help"  @click.prevent="$emit('display-info')">
         <i class="mdi mdi-help-box"></i>
       </a>
       <transition name="fade" mode="out-in">
@@ -187,3 +188,14 @@
     }
   }
 </script>
+
+<style land="scss">
+  .logout-button {
+    float: right;
+    opacity: .8;
+
+    &::hover {
+      opacity: 1;
+    }
+  }
+</style>
