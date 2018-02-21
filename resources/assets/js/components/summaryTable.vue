@@ -19,7 +19,7 @@
             <div class="print-list-container" ref="summary-container">
               <hr>
               <div class="summary-table-container">
-                <table class="table table-bordered table-striped table-mobile">
+                <table class="table table-bordered table-striped table-mobile" :class="{printing: printing}">
                   <thead class="thead-light">
                     <tr>
                       <th scope="col">
@@ -119,7 +119,7 @@
               <hr>
               <div v-for="collector in filteredCollectors">
                 <div class="table-responsive">
-                  <table class="table table-bordered table-striped table-mobile">
+                  <table class="table table-bordered table-striped table-mobile" :class="{printing: printing}">
                     <thead class="thead-light">
                       <tr>
                         <td scope="col" v-html="highlight(collector.name)" colspan="7" class="font-weight-bold"></td>

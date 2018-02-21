@@ -5,43 +5,46 @@ table.table-mobile {
   thead.thead-light th {
     background: rgba($black, .08)
   }
-  @include media-breakpoint-down(sm) {
-    border: none;
-    box-shadow: none;
+}
 
-    thead {
-        display: none;
+@include media-breakpoint-down(sm) {
+    table.table-mobile:not(.printing) {
+      border: none;
+      box-shadow: none;
+
+      thead {
+          display: none;
+        }
+      tr:not(.detail):not(.is-empty) {
+        margin-bottom: 1rem;
+        //border: 1px solid rgba($black, .1);
+        box-shadow: 0 2px 3px hsla(0,0%,4%,.1), 0 0 0 1px hsla(0,0%,4%,.1);
+        max-width: 100%;
+        position: relative;
+        display: block;
+        background-color: rgba($black, .02);
+
+        td {
+          display: flex;
+          width: auto;
+          justify-content: flex-end;
+          text-align: right;
+          border-color: rgba($black, .05);
+          &:before {
+            content: attr(data-label);
+            font-weight: 600;
+            margin-right: auto;
+            padding-right: .5em;
+            text-align: left;
+            color: $gray-600;
+          }
+        }
       }
-    tr:not(.detail):not(.is-empty) {
-      margin-bottom: 1rem;
-      //border: 1px solid rgba($black, .1);
-      box-shadow: 0 2px 3px hsla(0,0%,4%,.1), 0 0 0 1px hsla(0,0%,4%,.1);
-      max-width: 100%;
-      position: relative;
-      display: block;
-      background-color: rgba($black, .02);
 
-      td {
-        display: flex;
-        width: auto;
-        justify-content: flex-end;
-        text-align: right;
-        border-color: rgba($black, .05);
-        &:before {
-          content: attr(data-label);
-          font-weight: 600;
-          margin-right: auto;
-          padding-right: .5em;
-          text-align: left;
-          color: $gray-600;
+      &.table-mobile-grouped {
+        tr:not(.detail):not(.is-empty):not(.tfooter) {
+          margin-bottom: 0;
         }
       }
     }
-
-    &.table-mobile-grouped {
-      tr:not(.detail):not(.is-empty):not(.tfooter) {
-        margin-bottom: 0;
-      }
-    }
-  }
 }

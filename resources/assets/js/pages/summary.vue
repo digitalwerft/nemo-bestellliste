@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading" class="container">
+  <div v-if="!isLoading" class="container" :class="{printing: printing}">
     <div class="card mb-2 d-print-none">
       <div class="card-body">
         <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Bestellung</span> bearbeiten</router-link>
@@ -92,6 +92,9 @@
       return {}
     },
     computed: {
+      printing() {
+        return this.$store.state.action == 'PRINTING'
+      },
       orders() {
         return this.$store.state.campaign.orders
       },
