@@ -4,7 +4,7 @@
     <div class="card collector-name-card" :class="{editing: editing, deleting: showModal}">
       <div class="card-body collector-name">
         <div class="input-group">
-          <textarea type="text" class="form-control" v-if="editing" placeholder="Name" v-model="collectorName" v-focus="true" @keydown.esc="cancelEdit" ref="textarea" @input="resizeTextarea" :style="{height: textareaSize}" @keypress.enter.prevent="validateName($event)"></textarea>
+          <textarea type="text" class="form-control" v-if="editing" placeholder="Name" v-model="collectorName" v-focus="true" @keydown.esc="cancelEdit" ref="textarea" @input="resizeTextarea" :style="{height: textareaSize}" @keypress.enter.prevent="saveCollector"></textarea>
           <div class="mobile-save-modal d-flex d-md-none">
             <a href="#" class="btn btn-light save-collector text-success" @click="handleLeftButtonClick">
               <i class="mdi" :class="{'mdi-pencil': !editing, 'mdi-check': editing}"></i>
@@ -177,16 +177,21 @@ export default {
       this.oldName = this.collector.name;
     },
     cancelEdit() {
-      // Cancel Edit and revert Name Changes
-      if(!this.$store.getters.hasUnsavedItems) {
-        this.$store.commit('STOP_EDITING')
-      }
-      if(this.editing) {
-        this.editing = false
-        this.$store.commit('UPDATE_COLLECTOR_NAME', {
-          collector: this.collector,
-          newName: this.oldName
-        })
+      if (this.oldName == '' && this.collector.items.length < 1) {
+        this.archive();
+        // leave editing mode and revert changes
+      } else {
+        // Cancel Edit and revert Name Changes
+        if(!this.$store.getters.hasUnsavedItems) {
+          this.$store.commit('STOP_EDITING')
+        }
+        if(this.editing) {
+          this.editing = false
+          this.$store.commit('UPDATE_COLLECTOR_NAME', {
+            collector: this.collector,
+            newName: this.oldName
+          })
+        }
       }
     },
     // method to hilghlight words that are searched for
@@ -212,11 +217,8 @@ export default {
         this.showModal = true;
         // if collector is newly added (hence, it has no name and no items)
         // delete it when clicked an 'cancel'
-      } else if (this.oldName == '' && this.collector.items.length < 1) {
-        this.archive();
-        // leave editing mode and revert changes
       } else {
-        this.cancelEdit();
+        this.cancelEdit()
       }
     },
     handleLeftButtonClick(e) {
@@ -227,20 +229,22 @@ export default {
       } else if (!this.collector.name) {    // if in editing mode dont save collector if name is empty
         return
       } else {                          // close editing mode and syve changes
-        this.$emit('save-collector')
-        if(this.collector.state != 'new') {
-          this.$store.dispatch('updateCollectorName', this.collector)
+        this.saveCollector()
+      }
+    },
+    saveCollector() {
+      this.$emit('save-collector')
+      if(this.collector.state != 'new') {
+        this.$store.dispatch('updateCollectorName', this.collector)
+        this.oldName = ''
+        this.editing = false
+      } else {
+        this.$store.dispatch('createCollector', this.collector).then(() => {
           this.oldName = ''
           this.editing = false
-        } else {
-          this.$store.dispatch('createCollector', this.collector).then(() => {
-            this.oldName = ''
-            this.editing = false
-          }).catch(error => {
-            //
-          })
-        }
-
+        }).catch(error => {
+          //
+        })
       }
     },
     handleShortkeys(e) {
