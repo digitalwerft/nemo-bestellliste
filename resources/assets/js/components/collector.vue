@@ -227,11 +227,14 @@ export default {
         this.$emit('save-collector')
         if(this.collector.state != 'new') {
           this.$store.dispatch('updateCollectorName', this.collector)
+          this.oldName = '';
+          this.editing = false;
         } else {
-          this.$store.dispatch('createCollector', this.collector)
+          this.$store.dispatch('createCollector', this.collector).catch(error => {
+            console.log('error')
+          })
         }
-        this.oldName = '';
-        this.editing = false;
+
       }
     },
     handleShortkeys(e) {

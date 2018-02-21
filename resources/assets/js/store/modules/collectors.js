@@ -8,9 +8,12 @@ const state = {
   requestComplete: false
 }
 
-function stopLoading(commit, timeout = 500) {
+function stopLoading(commit, withError = false, timeout = 500) {
   setTimeout(()=> {
     commit('STOP_LOADING')
+    if(withError) {
+      commit('ERROR_SAVING')
+    }
   }, timeout)
 }
 
@@ -167,7 +170,7 @@ const actions = {
       commit('UPDATE_SHIPPING_ADDRESS', address)
       stopLoading(commit)
     }).catch(error => {
-      commit('STOP_LOADING')
+      stopLoading(commit, true)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -185,7 +188,7 @@ const actions = {
         message: response.data.message
       })
     }).catch(error => {
-      commit('STOP_LOADING')
+      stopLoading(commit, true)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -204,7 +207,7 @@ const actions = {
         message: response.data.message
       })
     }).catch(error => {
-      stopLoading(commit)
+      stopLoading(commit, true)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -228,7 +231,7 @@ const actions = {
         message: response.data.message ? response.data.message : 'Löschen erfolgreich'
       })
     }).catch(error => {
-      stopLoading(commit)
+      stopLoading(commit, true)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -246,7 +249,7 @@ const actions = {
       commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: item, quantity: quantity})
       stopLoading(commit)
     }).catch(error => {
-      stopLoading(commit)
+      stopLoading(commit, true)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -262,7 +265,7 @@ const actions = {
       commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
       stopLoading(commit)
     }).catch(error => {
-      stopLoading(commit)
+      stopLoading(commit, true)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -282,7 +285,7 @@ const actions = {
       })
       stopLoading(commit)
     }).catch(error => {
-      stopLoading(commit)
+      stopLoading(commit, true)
       if(error.response) {
         iziToast.error({
           message: error.response.data.message
@@ -304,7 +307,7 @@ const actions = {
         })
         stopLoading(commit)
       }).catch(error => {
-        stopLoading(commit)
+        stopLoading(commit, true)
         if(error.response) {
           iziToast.error({
             message: error.response.data.message
