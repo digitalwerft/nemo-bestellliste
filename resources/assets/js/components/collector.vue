@@ -230,11 +230,12 @@ export default {
         this.$emit('save-collector')
         if(this.collector.state != 'new') {
           this.$store.dispatch('updateCollectorName', this.collector)
-          this.oldName = '';
-          this.editing = false;
+          this.oldName = ''
+          this.editing = false
         } else {
-          this.$store.dispatch('createCollector', this.collector).catch(error => {
-            console.log('error')
+          this.$store.dispatch('createCollector', this.collector).then(() => {
+            this.oldName = ''
+            this.editing = false
           })
         }
 
