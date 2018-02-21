@@ -200,19 +200,23 @@ const actions = {
     commit
   }, collector) {
     commit('START_LOADING', 'CREATING_COLLECTOR')
-    return api.createCollector(collector).then(response => {
-      commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.data.resource.id})
-      stopLoading(commit)
-      iziToast.success({
-        message: response.data.message
-      })
-    }).catch(error => {
-      stopLoading(commit, true)
-      if(error.response) {
-        iziToast.error({
-          message: error.response.data.message
+    return new Promise((resolve, reject) => {
+      api.createCollector(collector).then(response => {
+        commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.data.resource.id})
+        stopLoading(commit)
+        resolve()
+        iziToast.success({
+          message: response.data.message
         })
-      }
+      }).catch(error => {
+        stopLoading(commit, true)
+        reject()
+        if(error.response) {
+          iziToast.error({
+            message: error.response.data.message
+          })
+        }
+      })
     })
   },
   deleteCollector({
@@ -224,73 +228,89 @@ const actions = {
       return
     }
     commit('START_LOADING', 'DELETING_COLLECTOR')
-    return api.deleteCollector(collector).then(response => {
-      commit('DELETE_COLLECTOR', collector)
-      stopLoading(commit)
-      iziToast.success({
-        message: response.data.message ? response.data.message : 'Löschen erfolgreich'
-      })
-    }).catch(error => {
-      stopLoading(commit, true)
-      if(error.response) {
-        iziToast.error({
-          message: error.response.data.message
+    return new Promise((resolve, reject) => {
+      return api.deleteCollector(collector).then(response => {
+        commit('DELETE_COLLECTOR', collector)
+        stopLoading(commit)
+        resolve()
+        iziToast.success({
+          message: response.data.message ? response.data.message : 'Löschen erfolgreich'
         })
-      }
+      }).catch(error => {
+        stopLoading(commit, true)
+        reject()
+        if(error.response) {
+          iziToast.error({
+            message: error.response.data.message
+          })
+        }
+      })
     })
   },
   createItem({
     commit
   }, {collector, item, newNumber, quantity} ) {
     commit('START_LOADING', 'CREATING_ITEM')
-    return api.createItem(collector, newNumber, 1).then(response => {
-      commit("UPDATE_ITEM_ID", {item: item, newId: response.data.data.resource.id})
-      commit('UPDATE_ITEM_NUMBER', {collector: collector, item: item, number:response.data.data.resource.number})
-      commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: item, quantity: quantity})
-      stopLoading(commit)
-    }).catch(error => {
-      stopLoading(commit, true)
-      if(error.response) {
-        iziToast.error({
-          message: error.response.data.message
-        })
-      }
+    return new Promise((resolve, reject) => {
+      return api.createItem(collector, newNumber, 1).then(response => {
+        commit("UPDATE_ITEM_ID", {item: item, newId: response.data.data.resource.id})
+        commit('UPDATE_ITEM_NUMBER', {collector: collector, item: item, number:response.data.data.resource.number})
+        commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: item, quantity: quantity})
+        stopLoading(commit)
+        resolve()
+      }).catch(error => {
+        stopLoading(commit, true)
+        reject()
+        if(error.response) {
+          iziToast.error({
+            message: error.response.data.message
+          })
+        }
+      })
     })
   },
   updateItemQuantity({
     commit
   }, {collector, itemObj, quantity}) {
     commit('START_LOADING', 'SAVING_ITEM')
-    return api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
-      commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
-      stopLoading(commit)
-    }).catch(error => {
-      stopLoading(commit, true)
-      if(error.response) {
-        iziToast.error({
-          message: error.response.data.message
-        })
-      }
+    return new Promise((resolve, reject) => {
+      return api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
+        commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
+        stopLoading(commit)
+        resolve()
+      }).catch(error => {
+        stopLoading(commit, true)
+        reject()
+        if(error.response) {
+          iziToast.error({
+            message: error.response.data.message
+          })
+        }
+      })
     })
   },
   updateItemNumber({
     commit
   }, {itemObj, collector, number}) {
     commit('START_LOADING', 'SAVING_ITEM')
-    return api.updateItem(collector, {number: number, quantity: itemObj.item.quantity, id: itemObj.item.id}).then(response => {
-      commit('UPDATE_ITEM_NUMBER', {
-        collector: collector,
-        item: itemObj.item,
-        number: number
-      })
-      stopLoading(commit)
-    }).catch(error => {
-      stopLoading(commit, true)
-      if(error.response) {
-        iziToast.error({
-          message: error.response.data.message
+    return new Promise((resolve, reject) => {
+      return api.updateItem(collector, {number: number, quantity: itemObj.item.quantity, id: itemObj.item.id}).then(response => {
+        commit('UPDATE_ITEM_NUMBER', {
+          collector: collector,
+          item: itemObj.item,
+          number: number
         })
-      }
+        stopLoading(commit)
+        resolve()
+      }).catch(error => {
+        stopLoading(commit, true)
+        reject()
+        if(error.response) {
+          iziToast.error({
+            message: error.response.data.message
+          })
+        }
+      })
     })
   },
   deleteItem({
@@ -299,20 +319,24 @@ const actions = {
     itemObj, collector
   }) {
     commit('START_LOADING', 'DELETING_ITEM')
-    return api.deleteItem(collector, itemObj.item)
-      .then(response => {
-        commit("DELETE_ITEM", itemObj)
-        iziToast.success({
-          message: response.data.message ? response.data.message : 'Löschen erfolgreich'
-        })
-        stopLoading(commit)
-      }).catch(error => {
-        stopLoading(commit, true)
-        if(error.response) {
-          iziToast.error({
-            message: error.response.data.message
+    return new Promise((resolve, reject) => {
+      return api.deleteItem(collector, itemObj.item)
+        .then(response => {
+          commit("DELETE_ITEM", itemObj)
+          iziToast.success({
+            message: response.data.message ? response.data.message : 'Löschen erfolgreich'
           })
-        }
+          stopLoading(commit)
+          resolve()
+        }).catch(error => {
+          stopLoading(commit, true)
+          reject()
+          if(error.response) {
+            iziToast.error({
+              message: error.response.data.message
+            })
+          }
+        })
       })
   }
 }
