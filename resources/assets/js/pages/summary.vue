@@ -3,13 +3,13 @@
     <div class="card mb-2 d-print-none">
       <div class="card-body">
         <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Bestellung</span> bearbeiten</router-link>
-        <a href="#" class="btn btn-outline-primary float-right print-button">
+        <a href="#" class="btn btn-outline-primary float-right print-button" @click.prevent="print">
           <i class="mdi mdi-printer">&nbsp;</i>Drucken
         </a>
       </div>
     </div>
 
-    <div class="card mb-2 orders" v-if="orders">
+    <div class="card mb-2 orders" v-if="orders.length > 0">
       <div class="card-body pt-1">
         <div class="navbar pl-0 pr-0">
           <span class="navbar-brand">Bereits abgeschlossene Bestellungen</span>
@@ -51,6 +51,23 @@
     created() {
       const store = this.$store
       const self  = { self: this }
+
+      var afterPrint = () => {
+        this.$store.commit('RESET_ACTIONS')
+      }
+
+      if (window.matchMedia) {
+        var mediaQueryList = window.matchMedia('print');
+        mediaQueryList.addListener(mql => {
+            if (mql.matches) {
+                // beforePrint()
+            } else {
+                afterPrint()
+            }
+        })
+      }
+
+      window.onafterprint = afterPrint
       // If needed components are already loaded, stop execution
       if (store.getters.hasLoaded(['campaign', 'collectors'])) {
         if(!store.getters.hasOrders) {
@@ -92,6 +109,12 @@
       }
     },
     methods: {
+      print() {
+        this.$store.commit('PRINTING')
+        setTimeout(() => {
+          window.print()
+        }, 10)
+      },
       formatDate(date) {
         return utils.formatDate(date)
       },

@@ -84,6 +84,9 @@ export default new Vuex.Store({
     },
     RESET_ACTIONS(state) {
       state.action = 'IDLE'
+    },
+    PRINTING(state) {
+      state.action = 'PRINTING'
     }
   },
   getters: {

@@ -174,6 +174,10 @@
         reverseSort: false,
         showSearch: false,
         uid: _.uniqueId(),
+        showListsCache: {
+          print: false,
+          summary: false
+        },
         style: {
           summary: {
             height: 0
@@ -185,6 +189,9 @@
       }
     },
     computed: {
+      printing() {
+        return this.$store.state.action == 'PRINTING'
+      },
       items() {
         var summarizedItems = []
 
@@ -370,6 +377,17 @@
       }
     },
     watch: {
+      printing(printing) {
+        if(printing) {
+          this.showListsCache.summary = this.showSummary
+          this.showListsCache.print = this.showPrintList
+          this.showPrintList = true
+          this.showSummary = true
+        } else {
+          this.showPrintList = this.showListsCache.print
+          this.showSummary = this.showListsCache.summary
+        }
+      },
       showPrintList(newVal, oldVal) {
         if (newVal && this.$refs['print-container']) {
           this.style.printList.height = `${this.$refs['print-container'].clientHeight + 16}px`
