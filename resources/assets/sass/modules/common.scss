@@ -81,3 +81,53 @@ a {
     min-width: 750px;
   }
 }
+
+@media print {
+  body {
+    background: white !important;
+  }
+}
+
+.printing {
+  overflow: visible !important;
+  .d-print-table-cell {
+    display: table-cell !important;
+  }
+
+  .card {
+    overflow: visible !important;
+    padding-bottom: 80px !important;
+  }
+
+  table {
+    overflow: visible !important;
+  }
+
+  .d-print-none {
+    display: none !important;
+  }
+
+  .print-list {
+    height: auto !important;
+  }
+
+  .d-print-no-border {
+    border: none !important;
+  }
+
+  .d-print-no-padding {
+    padding: 0 !important;
+  }
+
+  thead {
+        display: table-row-group !important;
+    }
+  tfoot {
+    display: table-row-group !important;
+  }
+  tr {
+    page-break-inside: avoid !important;
+  }
+
+  thead th { height: 1.1cm; }
+}

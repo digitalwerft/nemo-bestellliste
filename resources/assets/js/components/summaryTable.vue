@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card">
+    <div class="card d-print-no-border">
       <div class="card-body pt-1 pb-1">
         <div class="navbar pl-0 pr-0">
           <span class="navbar-brand">Zusammenfassung <span v-if="isCurrent">der aktuellen Bestelliste</span></span>
@@ -71,7 +71,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <p>
+                <p class="d-print-none">
                   Rabattaktionen und Versandkosten (bei unter 100 bestellten Boxen) sind im o.g. Rechnungsbetrag noch nicht enthalten. <br>
                   Voraussichtliche Versandkosten: {{ shippingCost }}€ <br>
                 </p>
@@ -81,7 +81,7 @@
         </transition>
       </div>
     </div>
-    <div class="card mt-2 print-view">
+    <div class="card mt-2 print-view d-print-no-border">
       <div class="card-body pt-1 pb-0">
         <div class="navbar navbar-expand pl-0 pr-0">
           <span class="navbar-brand">Teilnehmer  <span v-if="isCurrent">der aktuellen Bestelliste</span></span>
@@ -93,24 +93,6 @@
               </a>
             </li>
           </ul>
-          <!--<ul class="navbar-nav">
-            <li class="nav-item d-sm-none d-xs-list-item">
-              <a href="#" class="btn btn-outline-primary mr-2" @click.prevent="showSearch = !showSearch"><i class="mdi mdi-magnify"></i></a>
-            </li>
-          </ul>
-          <transition name="fade">
-            <div class="form-inline ml-auto d-sm-none" v-if="showSearch">
-              <input class="form-control" type="search" ref="searchInput-1" placeholder="Namen filtern" aria-label="Search" v-model="search" @input="updateSearch()" id="search-input">
-              <a href="" class="mdi mdi-close-circle-outline clear-search" @click.prevent="clearSearch"></a>
-            </div>
-          </transition>
-          <div class="form-inline ml-auto d-none d-sm-flex">
-            <input class="form-control" type="search" ref="searchInput-2" placeholder="Filtern" aria-label="Search" v-model="search" @input="updateSearch()" :id="'search-input-'+uid">
-            <label :for="'search-input-'+uid" class="search-icon" v-if="!search">
-              <i class="mdi mdi-magnify"></i>
-            </label>
-            <a href="" class="mdi mdi-close-circle-outline clear-search" @click.prevent="clearSearch" :class="{hidden: (search=='')}"></a>
-          </div>-->
         </div>
 
         <transition name="info-box">
@@ -129,26 +111,26 @@
                         <th scope="col">Anzahl Boxen</th>
                         <th scope="col">Gesamtbetrag</th>
                         <th scope="col">davon Spende</th>
-                        <th scope="col" class="d-none d-md-table-cell"><small>Boxen verteilt?</small></th>
-                        <th scope="col" class="d-none d-md-table-cell"><small>Geld erhalten?</small></th>
+                        <th scope="col" class="d-none d-md-table-cell d-print-table-cell"><small>Boxen verteilt?</small></th>
+                        <th scope="col" class="d-none d-md-table-cell d-print-table-cell"><small>Geld erhalten?</small></th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in collector.items" class="mb-0">
-                        <td data-label="Name" class="font-weight-bold d-md-none" v-if="index == 0" v-html="index == 0 ? highlight(collector.name) : ''"></td>
+                        <td data-label="Name" class="font-weight-bold d-md-none d-print-none" v-if="index == 0" v-html="index == 0 ? highlight(collector.name) : ''"></td>
                         <td data-label="Artikel-Nr.">{{ item.number }}<span class="d-none d-md-inline"> – {{ item.name}}</span></td>
                         <td data-label="Anzahl">{{ item.quantity }}</td>
                         <td data-label="Gesamtbetrag">{{ (parseFloat(item.suggested_donation)+parseFloat(item.gross_price)) * item.quantity }}€</td>
                         <td data-label="davon Spende">{{ item.suggested_donation * item.quantity}}€</td>
-                        <td class="d-none d-md-table-cell"></td>
-                        <td class="d-none d-md-table-cell"></td>
+                        <td class="d-none d-md-table-cell d-print-table-cell"></td>
+                        <td class="d-none d-md-table-cell d-print-table-cell"></td>
                       </tr>
                       <tr>
-                        <td class="font-weight-bold d-none d-md-table-cell">Summe:</td>
+                        <td class="font-weight-bold d-none d-md-table-cell d-print-table-cell">Summe:</td>
                         <td data-label="Summe Boxen">{{ getItemsQuantityByCollectorId(collector.id)}}</td>
                         <td data-label="Summe">{{ getPriceByCollectorId(collector.id) + getDonationsByCollectorId(collector.id)}}€</td>
                         <td data-label="davon Spenden">{{ getDonationsByCollectorId(collector.id) }}€</td>
-                        <td class="d-none d-md-table-cell" colspan="2"></td>
+                        <td class="d-none d-md-table-cell d-print-table-cell" colspan="2"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -378,7 +360,7 @@
     },
     watch: {
       printing(printing) {
-        if(printing) {
+        /*if(printing) {
           this.showListsCache.summary = this.showSummary
           this.showListsCache.print = this.showPrintList
           this.showPrintList = true
@@ -386,7 +368,7 @@
         } else {
           this.showPrintList = this.showListsCache.print
           this.showSummary = this.showListsCache.summary
-        }
+        }*/
       },
       showPrintList(newVal, oldVal) {
         if (newVal && this.$refs['print-container']) {

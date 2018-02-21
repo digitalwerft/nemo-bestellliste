@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading" class="container" :class="{printing: printing}">
+  <div v-if="!isLoading" class="container" :class="{printing: printing}" v-shortkey="['meta', 'p']" @shortkey="print">
     <div class="card mb-2 d-print-none">
       <div class="card-body">
         <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Bestellung</span> bearbeiten</router-link>
@@ -9,8 +9,8 @@
       </div>
     </div>
 
-    <div class="card mb-2 orders" v-if="orders.length > 0">
-      <div class="card-body pt-1">
+    <div class="card mb-2 orders card d-print-no-border" v-if="orders.length > 0">
+      <div class="card-body pt-1 d-print-no-padding">
         <div class="navbar pl-0 pr-0">
           <span class="navbar-brand">Bereits abgeschlossene Bestellungen</span>
         </div>
