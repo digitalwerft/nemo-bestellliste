@@ -4,7 +4,7 @@
     <div class="card collector-name-card" :class="{editing: editing, deleting: showModal}">
       <div class="card-body collector-name">
         <div class="input-group">
-          <input type="text" class="form-control" v-if="editing" placeholder="Name" v-model="collectorName" ref="name" v-focus="true" @keydown.esc="cancelEdit">
+          <textarea type="text" class="form-control" v-if="editing" placeholder="Name" v-model="collectorName" v-focus="true" @keydown.esc="cancelEdit" ref="textarea" @input="resizeTextarea" :style="{height: textareaSize}" @keypress.enter.prevent="validateName($event)"></textarea>
           <div class="mobile-save-modal d-flex d-md-none">
             <a href="#" class="btn btn-light save-collector text-success" @click="handleLeftButtonClick">
               <i class="mdi" :class="{'mdi-pencil': !editing, 'mdi-check': editing}"></i>
@@ -95,7 +95,6 @@ export default {
         })
       }
     })
-
   },
   data() {
     return {
@@ -103,6 +102,7 @@ export default {
       oldName: '',
       showModal: false,
       collapsed: true,
+      textareaSize: '38px'
     }
   },
   computed: {
@@ -145,10 +145,6 @@ export default {
       if (isEditing) {
         // tell parent
         this.$emit('editing-collector', true)
-        // and focus name (won't work without  timeout)
-        setTimeout(() => {
-          //this.$refs.name.focus()
-        }, 100)
       } else {
         // tell parent
         this.$emit('editing-collector', false)
@@ -161,6 +157,12 @@ export default {
     }
   },
   methods: {
+    validateName(input) {
+      //
+    },
+    resizeTextarea() {
+      this.textareaSize = this.$refs.textarea.scrollHeight + 'px';
+    },
     select(item) {
       //console.log(item)
     },
