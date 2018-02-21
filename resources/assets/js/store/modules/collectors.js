@@ -332,7 +332,7 @@ const mutations = {
     _.merge(item, newItem)
   },
   UPDATE_ITEM_QUANTITY(state, {collector, item, quantity}) {
-    item.quantity = quantity;
+    item.quantity = quantity
   },
   changeItemNumber(state, payload) {
     var collector = this.getters.getCollectorById(payload.collectorId)

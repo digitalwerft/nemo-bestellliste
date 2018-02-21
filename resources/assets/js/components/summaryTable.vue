@@ -4,7 +4,7 @@
       <div class="card-body pt-1 pb-1">
         <div class="navbar pl-0 pr-0">
           <span class="navbar-brand">Zusammenfassung <span v-if="isCurrent">der aktuellen Bestelliste</span></span>
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto d-print-none">
             <li class="nav-item">
               <a href="#" class="btn btn-sm" @click.prevent="showSummary = !showSummary" :class="{'btn-success': showSummary, 'btn-light': !showSummary}">
                 <i class="mdi" :class="{'mdi-chevron-down': !showSummary, 'mdi-chevron-up':  showSummary}">&nbsp;</i>
@@ -85,9 +85,9 @@
       <div class="card-body pt-1 pb-0">
         <div class="navbar navbar-expand pl-0 pr-0">
           <span class="navbar-brand">Teilnehmer  <span v-if="isCurrent">der aktuellen Bestelliste</span></span>
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto d-print-none">
             <li class="nav-item">
-              <a href="#" class="btn btn-sm float-right" @click.prevent="showPrintList = !showPrintList" :class="{'btn-success': showPrintList, 'btn-light': !showPrintList}">
+              <a href="#" class="btn btn-sm float-right d-print-none" @click.prevent="showPrintList = !showPrintList" :class="{'btn-success': showPrintList, 'btn-light': !showPrintList}">
                 <i class="mdi" :class="{'mdi-chevron-down': !showPrintList, 'mdi-chevron-up':  showPrintList}">&nbsp;</i>
                 <span class="d-none d-sm-inline">{{ !showPrintList ? 'anzeigen' : 'verstecken'}}</span>
               </a>

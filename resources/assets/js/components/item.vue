@@ -58,8 +58,33 @@
 import vSelect from 'vue-select'
 import InputSpinner from './input-spinner.vue'
 import confirm from './confirm.vue'
+import debounce from 'debounce-queue'
 
-export default {
+var process = function(item, value) {
+  console.log(item.item, value)
+  if(item.oldId == item.itemId) {
+    if(!_.startsWith(item.item.id, 'new-item')) {
+      item.$store.dispatch('updateItemQuantity', {collector: item.collector, itemObj: item, quantity: value})
+    }
+  }
+};
+
+function debounceProcess(a, b) {
+  if (! debounceProcess.queues) {
+    debounceProcess.queues = {};
+  }
+  if (! debounceProcess.queues[a.itemId]) {
+    debounceProcess.queues[a.itemId] = {};
+  }
+  if (! debounceProcess.queues[a.itemId][b]) {
+    debounceProcess.queues[a.itemId][b] = _.debounce(function(a, b) {
+      process(a, b);
+    }, 1000);
+  }
+  return debounceProcess.queues[a.itemId][b](a, b);
+};
+
+const item = {
   name: 'item',
   components: {
     vSelect,
@@ -86,9 +111,17 @@ export default {
   },
   created() {
     this.oldId = this.itemId
+
+    this.debouncer = _.debounce(function(value) {
+      const self = this
+      if(self.oldId == self.itemId) {
+        if(!_.startsWith(self.item.id, 'new-item')) {
+          self.$store.dispatch('updateItemQuantity', {collector: self.collector, itemObj: self, quantity: value})
+        }
+      }
+    }, 700)
   },
-  data() {
-    return {
+  data: () => ({
       step: 1,
       min: 1,
       max: 100,
@@ -98,8 +131,7 @@ export default {
       isInitial: true,
       isNewItem: false,
       oldId: 0
-    };
-  },
+  }),
   watch: {
     selected(val) {
       if(val) {
@@ -126,14 +158,7 @@ export default {
       get() {
         return this.item.quantity;
       },
-      set: _.debounce(function(value) {
-        // store new item quantityValue
-        if(this.oldId == this.itemId) {
-          if(!_.startsWith(this.item.id, 'new-item')) {
-            this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value})
-          }
-        }
-      }, 700)
+      set(value){ return this.debouncer(value) }
     },
     // get price of this item with speciied quantity
     sum() {
@@ -197,6 +222,8 @@ export default {
     }
   }
 }
+
+export default item
 </script>
 
 <style lang="scss">

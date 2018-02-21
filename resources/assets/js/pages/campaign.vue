@@ -120,7 +120,6 @@ export default {
   },
   computed: {
     isOnline() {
-      console.log(VueOnline)
       return VueOnline.isOnline
     },
     collectors() {

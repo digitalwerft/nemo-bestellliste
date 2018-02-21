@@ -1,6 +1,6 @@
 <template>
   <div v-if="!isLoading" class="container">
-    <div class="card mb-2">
+    <div class="card mb-2 d-print-none">
       <div class="card-body">
         <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Bestellung</span> bearbeiten</router-link>
         <a href="#" class="btn btn-outline-primary float-right print-button">
@@ -26,14 +26,14 @@
     <div class="quote">
       <summary-table :collectors="collectors" :comment="comment" :isCurrent="true"></summary-table>
     </div>
-    <div class="card bg-danger-light mt-2 mb-2">
+    <div class="card bg-danger-light mt-2 mb-2 d-print-none">
       <div class="card-body">
         Wenn ihr eure Bestellung abschickt, wird sie von uns gepackt und kann nicht mehr geändert werden. Nehmt euch daher bitte genügend Zeit, sie nochmals zu überprüfen. Nachbestellungen sind natürlich jederzeit möglich.
       </div>
     </div>
-    <a href="#" @click.prevent="" class="btn btn-secondary btn-block btn-lg"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
-    <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg"><i class="mdi mdi-lead-pencil">&nbsp;</i>Bestellung ändern</router-link>
-    <a href="#" @click.prevent="" class="btn btn-danger btn-block btn-lg">Bestellung jetzt aufgeben</a>
+    <a href="#" @click.prevent="" class="btn btn-secondary btn-block btn-lg d-print-none"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
+    <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none"><i class="mdi mdi-lead-pencil">&nbsp;</i>Bestellung ändern</router-link>
+    <a href="#" @click.prevent="" class="btn btn-danger btn-block btn-lg d-print-none">Bestellung jetzt aufgeben</a>
   </div>
 </template>
 <script>
