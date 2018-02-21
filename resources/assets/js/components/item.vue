@@ -1,5 +1,5 @@
 <template>
-<div class="input-group row no-gutters single-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected}"  ref="item">
+<div class="input-group row no-gutters single-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected, 'not-saved': !saved, 'saved': savedTimeout}"  ref="item">
   <div class="col select-col">
     <v-select v-model="item.number" :options="autocomplete" :on-change="onNumberChange" label="number" placeholder="Art.-Nr.">
       <span slot="no-options">Keine(n) Boxen gefunden.</span>
@@ -92,7 +92,10 @@ const item = {
       if(this.$store.state.action != 'SEARCHING') {
         /*if(this.oldId == this.itemId) {*/
           if(!_.startsWith(this.item.id, 'new-item')) {
-            this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value})
+            this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value}).then(() => {
+              this.saved = true
+              this.savedTimeout = true
+            })
           }
         //}
       }
@@ -107,9 +110,18 @@ const item = {
       selected: false,
       isInitial: true,
       isNewItem: false,
-      oldId: 0
+      oldId: 0,
+      saved: true,
+      savedTimeout: false
   }),
   watch: {
+    savedTimeout(value) {
+      if(value) {
+        setTimeout(()=> {
+          this.savedTimeout = false
+        }, 500)
+      }
+    },
     selected(val) {
       if(val) {
         this.$emit('selected', this.$refs.item)
@@ -160,6 +172,7 @@ const item = {
     onQuantityChange(value) {
       if(this.$store.state.action != 'SEARCHING') {
         this.$store.commit('START_EDITING', 'EDITING_ITEM')
+        this.saved = false
       }
     },
     // Invoke item deletion
@@ -191,10 +204,17 @@ const item = {
             this.isInitial = false
           }
           if(!_.startsWith(this.item.id, 'new-item')) {
-            this.$store.dispatch('updateItemNumber', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}, number: number})
+            this.saved = false
+            this.$store.dispatch('updateItemNumber', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}, number: number}).then(() => {
+              this.saved = true
+              this.savedTimeout = true
+            })
           } else {
+            this.saved = false
             this.$store.dispatch('createItem', { collector: this.collector, item: this.item, newNumber: number, quantity: this.item.quantity })
               .then(response => {
+                this.saved = true
+                this.savedTimeout = true
                 this.oldId = this.item.id
               })
           }

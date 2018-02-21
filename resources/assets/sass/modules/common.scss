@@ -82,14 +82,13 @@ a {
   }
 }
 
-@media print {
-  body {
-    background: white !important;
-  }
+body.printing {
+  background: white !important;
 }
 
 .printing {
   overflow: visible !important;
+
   .d-print-table-cell {
     display: table-cell !important;
   }
@@ -97,10 +96,12 @@ a {
   .card {
     overflow: visible !important;
     padding-bottom: 80px !important;
+    box-shadow: none !important;
   }
 
   table {
     overflow: visible !important;
+    box-shadow: none !important;
   }
 
   .d-print-none {

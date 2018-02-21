@@ -12,7 +12,7 @@
             <i class="mdi mdi-library-books">&nbsp;</i>Bestellte Boxen: {{ totalOrders }}&nbsp;|&nbsp;
           </li>
           <li class="nav-item">
-            Gesamtbetrag: {{ winnings }}€ = Rechnungsbetrag {{ price }}€ + Spende {{ earnings }}€
+            Rechnungsbetrag {{ price }}€ + Spende {{ earnings }}€ = Gesamtbetrag {{ winnings }}€
           </li>
         </ul>
       </div>

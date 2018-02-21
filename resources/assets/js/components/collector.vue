@@ -228,29 +228,29 @@ export default {
         this.makeEditable(e)
       } else if (!this.collector.name) {    // if in editing mode dont save collector if name is empty
         return
-      } else {                          // close editing mode and syve changes
+      } else {                          // close editing mode and save changes
         this.saveCollector()
       }
     },
+    leaveEditingMode() {
+      this.oldName = ''
+      this.editing = false
+    },
     saveCollector() {
-      this.$emit('save-collector')
-      if(this.collector.state != 'new') {
+      if(this.collector.name === this.oldName) {
+        this.leaveEditingMode()
+      } else if(this.collector.state != 'new') {
         this.$store.dispatch('updateCollectorName', this.collector)
-        this.oldName = ''
-        this.editing = false
+        this.leaveEditingMode()
       } else {
         this.$store.dispatch('createCollector', this.collector).then(() => {
-          this.oldName = ''
-          this.editing = false
+          this.leaveEditingMode()
         }).catch(error => {
           //
         })
       }
     },
     handleShortkeys(e) {
-      /*if(e.srcKey == 'delete') {
-        this.archive()
-      }*/
       if(e.srcKey == 'cancel') {
         this.showModal = false
       }

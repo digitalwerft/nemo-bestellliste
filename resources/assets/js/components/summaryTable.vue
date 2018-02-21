@@ -360,15 +360,11 @@
     },
     watch: {
       printing(printing) {
-        /*if(printing) {
-          this.showListsCache.summary = this.showSummary
-          this.showListsCache.print = this.showPrintList
-          this.showPrintList = true
-          this.showSummary = true
+        if(printing) {
+          $('body').addClass('printing')
         } else {
-          this.showPrintList = this.showListsCache.print
-          this.showSummary = this.showListsCache.summary
-        }*/
+          $('body').removeClass('printing')
+        }
       },
       showPrintList(newVal, oldVal) {
         if (newVal && this.$refs['print-container']) {

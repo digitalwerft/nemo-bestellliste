@@ -2,7 +2,7 @@
   <div v-if="!isLoading" class="container" :class="{printing: printing}" v-shortkey="['meta', 'p']" @shortkey="print">
     <div class="card mb-2 d-print-none">
       <div class="card-body">
-        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Bestellung</span> bearbeiten</router-link>
+        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Liste</span> bearbeiten</router-link>
         <a href="#" class="btn btn-outline-primary float-right print-button" @click.prevent="print">
           <i class="mdi mdi-printer">&nbsp;</i>Drucken
         </a>
@@ -16,7 +16,7 @@
         </div>
         <div class="orders-list" v-for="(order, index) in orders">
           <div class="order">
-            <h6 class="mt-2">Bestellnr. #{{ order.identifier }}</h6>
+            <h6 class="mt-2 font-weight-bold">Bestellnr. #{{ order.identifier }}</h6>
             <summary-table :collectors="order.quote.collectors" :comment="order.comment"></summary-table>
             <hr v-if="(index+1 != orders.length)">
           </div>
@@ -32,7 +32,7 @@
       </div>
     </div>
     <a href="#" @click.prevent="" class="btn btn-secondary btn-block btn-lg d-print-none"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
-    <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none"><i class="mdi mdi-lead-pencil">&nbsp;</i>Bestellung ändern</router-link>
+    <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none"><i class="mdi mdi-lead-pencil">&nbsp;</i>Liste bearbeiten</router-link>
     <a href="#" @click.prevent="" class="btn btn-danger btn-block btn-lg d-print-none">Bestellung jetzt aufgeben</a>
   </div>
 </template>

@@ -255,10 +255,11 @@ section.orders {
   .single-item {
     border-top: 1px solid $gray-400;
     border-left: 1px solid $gray-400;
+    border-right: 1px solid $gray-400;
     border-bottom: 1px solid $gray-400;
     position: relative;
     background-color: $white;
-    transition: border-color .25s;
+    transition: border-color .5s;
 
     &.selected {
       border-color: $blue;
@@ -268,6 +269,14 @@ section.orders {
       .btn-outline-danger.btn-block.btn {
         border-right-color: $blue !important;
       }
+    }
+
+    &.not-saved {
+      border-color: $red !important;
+    }
+
+    &.saved {
+      border-color: $green !important;
     }
 
     .select-col {
@@ -297,6 +306,9 @@ section.orders {
 
     .delete-col {
       min-width: 45px;
+      .btn {
+        border-right: none;
+      }
       @include media-breakpoint-down(md) {
         .btn {
           border-left: none;
