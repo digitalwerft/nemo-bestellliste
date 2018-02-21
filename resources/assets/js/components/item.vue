@@ -90,11 +90,11 @@ const item = {
     // otherwise the same debounce function will be called for every item
     this.debouncer = _.debounce(function(value) {
       if(this.$store.state.action != 'SEARCHING') {
-        if(this.oldId == this.itemId) {
+        /*if(this.oldId == this.itemId) {*/
           if(!_.startsWith(this.item.id, 'new-item')) {
             this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value})
           }
-        }
+        //}
       }
     }, 700)
   },
