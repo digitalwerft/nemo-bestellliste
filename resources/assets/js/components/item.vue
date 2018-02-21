@@ -89,10 +89,9 @@ const item = {
     // Declare debounce function wehn component is created
     // otherwise the same debounce function will be called for every item
     this.debouncer = _.debounce(function(value) {
-      const self = this
-      if(self.oldId == self.itemId) {
-        if(!_.startsWith(self.item.id, 'new-item')) {
-          self.$store.dispatch('updateItemQuantity', {collector: self.collector, itemObj: self, quantity: value})
+      if(this.oldId == this.itemId) {
+        if(!_.startsWith(this.item.id, 'new-item')) {
+          this.$store.dispatch('updateItemQuantity', {collector: this.collector, itemObj: this, quantity: value})
         }
       }
     }, 700)
