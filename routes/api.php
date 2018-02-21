@@ -218,7 +218,7 @@ Route::post('/campaign/{campaign_id}/shipping-address', function() {
 });
 
 Route::post('/campaign/{campaign_id}/quote/collector/', function(\Response $response) {
-  //return response([], 404);
+  //return response([], 500);
   return [
     "message" => "Teilnehmer erstellt",
     "status" => "success",
