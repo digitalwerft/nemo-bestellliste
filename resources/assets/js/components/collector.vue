@@ -236,6 +236,8 @@ export default {
           this.$store.dispatch('createCollector', this.collector).then(() => {
             this.oldName = ''
             this.editing = false
+          }).catch(error => {
+            //
           })
         }
 
