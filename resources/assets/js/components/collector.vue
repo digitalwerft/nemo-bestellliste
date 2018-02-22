@@ -48,7 +48,7 @@
     <div class="card">
       <div class="card-body">
         <div v-for="(item, index) in collector.items">
-          <item :item="item" :disabled="editing" v-on:selected="select" :collectorId="collector.id" :campaignId="collector.campaign_id" :index="index"></item>
+          <item :item="item" :disabled="editing" v-on:selected="select" :collectorId="collector.id" :campaignId="collector.campaign_id" :index="index" @shortkey.native="selectNextItem" v-shortkey="{down: ['arrowdown'], up: ['arrowup']}"></item>
         </div>
         <div class="no-items text-center" v-if="collector.items.length<1">
           <small class="text-muted text-danger text-center" v-if="!collector.name">Dieser Teilnehmer braucht einen Namen, bevor du ihm Artikel zuweisen kannst.</small>
@@ -160,6 +160,19 @@ export default {
     }
   },
   methods: {
+    selectNextItem(event) {
+      if(event.srcKey == 'down') {
+        var nextItem = this.$store.getters.getNextItem
+        if(nextItem) {
+          this.$store.commit('SELECT_ITEM', nextItem.id)
+        }
+      } else if(event.srcKey == 'up'){
+        var previousItem = this.$store.getters.getPreviousItem
+        if(previousItem) {
+          this.$store.commit('SELECT_ITEM', previousItem.id)
+        }
+      }
+    },
     validateName(input) {
       //
     },
@@ -248,11 +261,6 @@ export default {
         }).catch(error => {
           //
         })
-      }
-    },
-    handleShortkeys(e) {
-      if(e.srcKey == 'cancel') {
-        this.showModal = false
       }
     },
     // Wrapper for this.delete() for optional undo feature

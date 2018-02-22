@@ -1,5 +1,16 @@
 <template>
-<div class="input-group row no-gutters single-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected, 'not-saved': !saved, 'saved': savedTimeout}"  ref="item">
+<div
+  class="input-group row no-gutters single-item mb-2"
+  :id="id"
+  :class="{
+    'dialog-open': showModal,
+    disabled: disabled,
+    selected: selected,
+    'not-saved': !saved,
+    'saved': savedTimeout
+    }"
+    ref="item"
+    @click.prevent="select">
   <div class="col select-col">
     <v-select v-model="item.number" :options="autocomplete" :on-change="onNumberChange" label="number" placeholder="Art.-Nr.">
       <span slot="no-options">Keine(n) Boxen gefunden.</span>
@@ -107,7 +118,6 @@ const item = {
       max: 100,
       maxLength: 3,
       showModal: false,
-      selected: false,
       isInitial: true,
       isNewItem: false,
       oldId: 0,
@@ -121,14 +131,12 @@ const item = {
           this.savedTimeout = false
         }, 500)
       }
-    },
-    selected(val) {
-      if(val) {
-        this.$emit('selected', this.$refs.item)
-      }
     }
   },
   computed: {
+    selected() {
+      return this.$store.getters.isItemSelected(this.itemId)
+    },
     name() {
       return this.item.name ? this.item.name : false
     },
@@ -168,6 +176,14 @@ const item = {
     }
   },
   methods: {
+    deleteItem() {
+      console.log('deleted')
+    },
+    select() {
+      if(!this.selected) {
+        this.$store.commit('SELECT_ITEM', this.itemId)
+      }
+    },
     // update item quantityValue in store
     onQuantityChange(value) {
       if(this.$store.state.action != 'SEARCHING') {

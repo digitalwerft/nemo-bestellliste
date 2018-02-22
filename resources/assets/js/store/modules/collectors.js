@@ -5,7 +5,8 @@ import iziToast from 'izitoast'
 
 const state = {
   all: [],
-  requestComplete: false
+  requestComplete: false,
+  selectedItem: null
 }
 
 function stopLoading(commit, withError = false, timeout = 500) {
@@ -18,6 +19,43 @@ function stopLoading(commit, withError = false, timeout = 500) {
 }
 
 const getters = {
+  getNextItem: (state, getters) => {
+    var collector = getters.getCollectorByItemId(state.selectedItem)
+
+    if(collector) {
+      var index = _.findIndex(collector.items, ['id', state.selectedItem])
+      if(collector.items[index+1]) {
+        return collector.items[index+1]
+      }
+    }
+  },
+  getPreviousItem: (state, getters) => {
+    var collector = getters.getCollectorByItemId(state.selectedItem)
+
+    if(collector) {
+      var index = _.findIndex(collector.items, ['id', state.selectedItem])
+      if(collector.items[index-1]) {
+        return collector.items[index-1]
+      }
+    }
+  },
+  getCollectorByItemId: (state, getters) => id => {
+    var collectors = getters.getAllCollectors
+    var result = null
+
+    collectors.forEach(collector => {
+      collector.items.forEach(item => {
+        if(item.id == id) {
+          result = collector
+        }
+      })
+    })
+
+    return result
+  },
+  isItemSelected: state => item_id => {
+    return state.selectedItem == item_id
+  },
   getCollectorById: state => id => {
     return state.all.find(collector => {
       return collector.id === id
@@ -468,6 +506,9 @@ const mutations = {
         quote_id: state.all[0].pivot.quote_id
       }
     })
+  },
+  SELECT_ITEM(state, item_id) {
+    state.selectedItem = item_id
   }
 }
 

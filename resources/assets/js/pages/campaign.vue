@@ -10,7 +10,7 @@
       <navbar v-model="search" @oncollectorcreate="createCollector"></navbar>
     </section>
     <section class="orders">
-      <div class="container">
+      <div class="container" v-shortkey="['shift', 't']" @shortkey.native="createCollector($event)">
         <div v-for="(collector, index) in filteredCollector">
           <collector :collector-id="collector.id" :filterkey="search" v-on:delete-collector="onCollectorDelete(collector)" v-on:save-collector="onCollectorSave(collector)" v-on:editing-collector="handleEditing"></collector>
           </div>
@@ -217,6 +217,7 @@ export default {
       })
     },
     createCollector(e) {
+      console.log(e)
       if (e) {
         e.preventDefault();
       }
