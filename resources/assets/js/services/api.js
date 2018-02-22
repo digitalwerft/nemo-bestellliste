@@ -54,6 +54,9 @@ export default {
   fetchOrders(campaign_id) {
     return axios.get('/api/campaign/'+campaign_id+'/orders')
   },
+  fetchFundraiser() {
+    return axios.get('/api/fundraiser')
+  },
   placeOrder() {
     //
   },

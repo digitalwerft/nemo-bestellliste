@@ -110,13 +110,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    fetchAll({dispatch, commit}, {self}) {
-      dispatch('fetchCollectors', {self: self})
-      dispatch('fetchItems', {self: self})
-      dispatch('fetchCampaign', {self: self})
-      dispatch('fetchFundraiser', {self: self})
-      dispatch('fetchCampaigns', {self: self})
-    },
     login({dispatch, commit}) {
       commit('LOGIN')
     },

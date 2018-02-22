@@ -105,6 +105,9 @@ export default {
               .then(this.hideSpinner)
           })
       })
+      if (!store.getters.hasLoaded('fundraiser')) {
+        store.dispatch('fetchFundraiser', self)
+      }
   },
   store,
   data() {

@@ -99,6 +99,17 @@
     created() {
       const store = this.$store
       const self  = {self: this}
+
+      if (store.getters.hasLoaded('fundraiser')) {
+        this.form.address = _.clone(this.campaign.shipping_address)
+        this.form.comment = _.clone(this.quote.comment)
+        setTimeout(() => {
+          this.hasChanged = false
+        }, 250)
+
+        return
+      }
+
       // Fetch Data if not already happened
       store.dispatch('fetchFundraiser', self).then(()=> {
         this.form.address = _.clone(this.campaign.shipping_address)

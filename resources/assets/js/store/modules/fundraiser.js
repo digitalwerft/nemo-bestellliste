@@ -1,3 +1,5 @@
+import api from '../../services/api'
+
 const state = {
   data: {},
   requestComplete: false
@@ -16,7 +18,7 @@ const actions = {
     self
   }) {
     return new Promise((resolve, reject) => {
-      self.$http.get('/api/fundraiser')
+      api.fetchFundraiser('/api/fundraiser')
         .then(response => {
           commit('FETCH_FUNDRAISER', response.data)
           resolve(response)
