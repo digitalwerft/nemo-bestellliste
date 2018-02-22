@@ -259,7 +259,7 @@ section.orders {
     border-bottom: 1px solid $gray-400;
     position: relative;
     background-color: $white;
-    transition: border-color .5s;
+    transition: border-color .25s, box-shadow .25s, background-color .25s;
 
     &.selected {
       border-color: $blue;
@@ -272,11 +272,15 @@ section.orders {
     }
 
     &.not-saved {
-      border-color: $red !important;
+      border-color: rgba($red, .4) !important;
+      box-shadow: 0 0 3px rgba($red, .13);
+      background-color: rgba($red, .02)
     }
 
     &.saved {
-      border-color: $green !important;
+      border-color: rgba($green, .6) !important;
+      box-shadow: 0 0 3px rgba($green, .13);
+      background-color: rgba($green, .05)
     }
 
     .select-col {
@@ -284,6 +288,7 @@ section.orders {
     }
 
     .name-col {
+      overflow-x: hidden;
       @include media-breakpoint-down(md) {
         order: -2;
         //border-left: 1px solid $gray-400 !important;
@@ -308,6 +313,9 @@ section.orders {
       min-width: 45px;
       .btn {
         border-right: none;
+        &:hover {
+          background-color: $red !important;
+        }
       }
       @include media-breakpoint-down(md) {
         .btn {
@@ -374,18 +382,25 @@ section.orders {
     .input-group-btn {
       //border-right: 1px solid $gray-400;
       .btn {
-        border-color: $gray-400;
+        border-color: rgba($black, .2);
         margin: 0;
+        background-color: rgba($black, .03);
+        border-top: none;
+        border-bottom: none;
 
         &:hover {
-          //background: white;
+          background-color: rgba($black, .12);
           //color: $red;
+        }
+
+        &:active {
+          background-color: rgba($black, .18);
         }
       }
     }
 
     .input-group-addon {
-      background: white;
+      background: transparent;
       border-right: 0;
       border-left: 0;
 
