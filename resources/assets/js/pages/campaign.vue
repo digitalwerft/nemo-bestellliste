@@ -94,7 +94,7 @@ export default {
     const store = this.$store
     const self  = {self: this}
     const modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
-    let force = this.isOrderPlaced
+    let force = this.reload
 
     if (store.getters.hasLoaded(modules)) {
       return
@@ -104,6 +104,7 @@ export default {
     // Fetch Data if not already happened
     store.dispatch('fetchModules', {modules: modules, self: this, force: force})
       .then(() => {
+        store.commit('NO_RELOAD')
         this.hideSpinner()
       })
   },
@@ -140,8 +141,8 @@ export default {
     hasLoaded() {
       return this.$store.getters.hasLoaded(['collectors', 'items', 'campaign', 'fundraiser'])
     },
-    isOrderPlaced() {
-      return this.$store.getters.isOrderplaced
+    reload() {
+      return this.$store.state.reload
     },
     hasOrders() {
       return this.$store.getters.hasOrders

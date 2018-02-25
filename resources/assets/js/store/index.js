@@ -24,7 +24,8 @@ export default new Vuex.Store({
     editing: false,
     error: false,
     action: 'IDLE',
-    actionCompleted: 'NONE'
+    actionCompleted: 'NONE',
+    reload: false
   },
   modules: {
     fundraiser,
@@ -52,6 +53,12 @@ export default new Vuex.Store({
     LOGGING_OUT(state) {
       state.actionCompleted = state.action
       state.action = 'LOGGING_OUT'
+    },
+    NO_RELOAD(state) {
+      state.reload = false
+    },
+    FORCE_RELOAD(state) {
+      state.reload = true
     },
     START_LOADING(state, action = 'SAVING') {
       state.actionCompleted = state.action

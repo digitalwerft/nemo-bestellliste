@@ -38,7 +38,7 @@
         <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-lead-pencil">&nbsp;</i>Liste bearbeiten</router-link>
       </div>
       <div class="col">
-        <a href="#" @click.prevent="" class="btn btn-secondary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
+        <a href="#" @click.prevent="print" class="btn btn-secondary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
       </div>
     </div>
     <a href="#" @click.prevent="placeOrder" class="btn btn-danger btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
@@ -46,8 +46,6 @@
 </template>
 <script>
   import store from '../store'
-  //import Navbar from '../components/navbar.vue'
-  // import SaveIndicator from '../components/save-indicator.vue'
   import SummaryTable from '../components/summaryTable.vue'
   import utils from '../services/utils'
 
@@ -60,7 +58,7 @@
       const store = this.$store
       const self  = { self: this }
       const modules = ['campaign', 'collectors', 'orders']
-      let force = this.isOrderPlaced
+      let force = this.reload
 
       var afterPrint = () => {
         this.$store.commit('RESET_ACTIONS')
@@ -86,7 +84,10 @@
       this.showSpinner()
 
       store.dispatch('fetchModules', {modules: modules, self: this, force: force})
-        .then(this.hideSpinner)
+        .then(response => {
+          this.hideSpinner()
+          store.commit('NO_RELOAD')
+        })
     },
     data() {
       return {}
@@ -106,7 +107,7 @@
         ])
       },
       isOrderPlaced() {
-        return this.$store.getters.isOrderplaced
+        return this.$store.state.reload
       },
       collectors() {
         return this.$store.getters.getAllCollectors
@@ -118,9 +119,12 @@
     methods: {
       placeOrder() {
         this.$store.dispatch('placeOrder', {self: this}).then(response => {
+          this.$store.commit('FORCE_RELOAD')
           this.$router.push({name: 'success'})
         }).catch(error => {
-
+          utils.note.error({
+            message: 'Ein Fehler ist aufgetreten. Bitte lade die Seite neu oder kontaktiere unser Team.'
+          })
         })
       },
       print() {
