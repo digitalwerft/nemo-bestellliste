@@ -442,7 +442,6 @@ const mutations = {
       id: 'new-item-' + _.uniqueId(),
       quantity: 1,
       collector_id: collector.id,
-      quote_id: collector.pivot.quote_id,
       number: 0,
       name: 'keine Auswahl',
       gross_price: 0,
