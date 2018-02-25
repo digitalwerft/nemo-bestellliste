@@ -55,6 +55,7 @@ export default {
     })
   },
   fetchOrders(campaign_id) {
+    console.log('asd')
     return axios.get('/api/campaign/'+campaign_id+'/orders')
   },
   fetchFundraiser() {
@@ -63,8 +64,8 @@ export default {
   fetchProducts() {
     return axios.get("/api/products")
   },
-  placeOrder() {
-    //
+  placeOrder(campaign_id) {
+    return axios.post('api/campaign/'+campaign_id+'/order')
   },
   login(code) {
     return axios.get('/api/login?auth-code=' + code)

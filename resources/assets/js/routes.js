@@ -4,6 +4,7 @@ import Home from './pages/home.vue'
 import Campaign from './pages/campaign.vue'
 import Summary from './pages/summary.vue'
 import Login from './pages/login.vue'
+import Success from './pages/success.vue'
 
 import Auth from './services/auth'
 
@@ -19,14 +20,21 @@ routes.push({
 routes.push({
   component: Campaign,
   name: 'campaign',
-  path: '/campaign/:id',
+  path: '/kampagne/:id',
   meta: {auth: true}
 })
 
 routes.push({
   component: Summary,
   name: 'summary',
-  path: '/campaign/:id/zusammenfassung',
+  path: '/kampagne/:id/zusammenfassung',
+  meta: {auth: true}
+})
+
+routes.push({
+  component: Success,
+  name: 'success',
+  path: '/kampagne/:id/bestellung-erfolgreich',
   meta: {auth: true}
 })
 

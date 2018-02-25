@@ -128,6 +128,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    isOrderPlaced(state) {
+      return state.actionCompleded === 'ORDER_PLACED'
+    },
     wasLoggedOut(state) {
       return state.actionCompleted === 'LOGGED_OUT'
     },
@@ -169,34 +172,30 @@ export default new Vuex.Store({
       getters
     }, {
       modules,
-      self
+      self,
+      force = false
     }) {
       return new Promise((resolve, reject) => {
         if (!Array.isArray(modules)) {
           modules = [modules]
         }
-        let completed = getters.getAllCompletedRequests
-        modules = _.pullAll(modules, completed)
+        if (!force) {
+          let completed = getters.getAllCompletedRequests
+          modules = _.pullAll(modules, completed)
+        }
 
-        if (!getters.hasLoaded(modules)) {
-          _.forEach(modules, module => {
-            if (!getters.hasLoaded(module)) {
-              dispatch(_.camelCase('fetch ' + module), {
-                self: self
-              }).then(() => {
-                _.pull(modules, module)
-                if (_.isEmpty(modules)) {
-                  resolve()
-                }
-              })
-            } else {
-              _.pull(modules, module)
-              if (_.isEmpty(modules)) {
-                resolve()
-              }
+        _.forEach(modules, module => {
+          console.log(_.camelCase('fetch ' + module))
+
+          dispatch(_.camelCase('fetch ' + module), {
+            self: self
+          }).then(() => {
+            _.pull(modules, module)
+            if (_.isEmpty(modules)) {
+              resolve()
             }
           })
-        }
+        })
       })
     },
     login({

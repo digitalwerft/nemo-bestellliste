@@ -1,25 +1,27 @@
 <template>
-  <section class="login row">
-    <div class="col col-sm-12 offset-sm-3 col-md-10 offset-md-4 col-lg-8 offset-lg-5">
-      <div class="container">
-        <div class="alert alert-success" v-if="wasLoggedOut">
-          Du wurdest erfolgreich abgemeldet!
-        </div>
-        <div class="card" ref="container">
-          <div class="card-body">
-            <h4 class="card-title">Login für Kontaktpersonen</h4>
-            <p>Melde Dich mit Deinem <strong>Login-Code</strong> an, um eine neue Sitzung zu starten.</p>
-            <form class="form-group" @submit.prevent="login({code})">
-              <button class="btn btn-primary btn-right" type="submit">Einloggen</button>
-              <span class="form-bfc">
-                <input class="form-control" type="text" v-model="code" placeholder="Dein Login-Code">
-              </span>
-            </form>
+  <div class="container-fluid">
+    <section class="login row">
+      <div class="col col-sm-12 offset-sm-3 col-md-10 offset-md-4 col-lg-8 offset-lg-5">
+        <div class="container">
+          <div class="alert alert-success" v-if="wasLoggedOut">
+            Du wurdest erfolgreich abgemeldet!
+          </div>
+          <div class="card" ref="container">
+            <div class="card-body">
+              <h4 class="card-title">Login für Kontaktpersonen</h4>
+              <p>Melde Dich mit Deinem <strong>Login-Code</strong> an, um eine neue Sitzung zu starten.</p>
+              <form class="form-group" @submit.prevent="login({code})">
+                <button class="btn btn-primary btn-right" type="submit">Einloggen</button>
+                <span class="form-bfc">
+                  <input class="form-control" type="text" v-model="code" placeholder="Dein Login-Code">
+                </span>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 <script>
 import store from '../store'

@@ -91,6 +91,7 @@ export default {
     const store = this.$store
     const self  = {self: this}
     const modules = ['campaign', 'items', 'collectors', 'fundraiser']
+    let force = this.isOrderPlaced
 
     if (store.getters.hasLoaded(modules)) {
       return
@@ -98,22 +99,10 @@ export default {
 
     this.showSpinner()
     // Fetch Data if not already happened
-    store.dispatch('fetchModules', {modules: modules, self: this})
+    store.dispatch('fetchModules', {modules: modules, self: this, force: force})
       .then(() => {
         this.hideSpinner()
       })
-    /*
-    store.dispatch('fetchCampaign', self)
-      .then(() => {
-        store.dispatch('fetchItems', self)
-          .then(() => {
-            store.dispatch('fetchCollectors', self)
-              .then(this.hideSpinner)
-          })
-      })
-      if (!store.getters.hasLoaded('fundraiser')) {
-        store.dispatch('fetchFundraiser', self)
-      }*/
   },
   store,
   data() {
@@ -147,6 +136,9 @@ export default {
     },
     hasLoaded() {
       return this.$store.getters.hasLoaded(['collectors', 'items', 'campaign', 'fundraiser'])
+    },
+    isOrderPlaced() {
+      return this.$store.getters.isOrderplaced
     }
   },
   watch: {

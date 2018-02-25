@@ -60,6 +60,7 @@
       const store = this.$store
       const self  = { self: this }
       const modules = ['campaign', 'collectors', 'orders']
+      let force = this.isOrderPlaced
 
       var afterPrint = () => {
         this.$store.commit('RESET_ACTIONS')
@@ -84,7 +85,7 @@
 
       this.showSpinner()
 
-      store.dispatch('fetchModules', {modules: modules, self: this})
+      store.dispatch('fetchModules', {modules: modules, self: this, force: force})
         .then(this.hideSpinner)
     },
     data() {
@@ -100,8 +101,12 @@
       isLoading() {
         return !this.$store.getters.hasLoaded([
           'campaign',
-          'collectors'
+          'collectors',
+          'orders'
         ])
+      },
+      isOrderPlaced() {
+        return this.$store.getters.isOrderplaced
       },
       collectors() {
         return this.$store.getters.getAllCollectors
@@ -111,6 +116,13 @@
       }
     },
     methods: {
+      placeOrder() {
+        this.$store.dispatch('placeOrder', {self: this}).then(response => {
+          this.$router.push({name: 'success'})
+        }).catch(error => {
+
+        })
+      },
       print() {
         this.$store.commit('PRINTING')
         setTimeout(() => {
