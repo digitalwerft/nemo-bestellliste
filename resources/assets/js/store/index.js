@@ -114,7 +114,7 @@ export default new Vuex.Store({
       commit('LOGIN')
     },
     logout({dispatch, commit}) {
-      api.logout().then(() => {
+      return api.logout().then(() => {
         commit('LOGOUT')
       })
     }
