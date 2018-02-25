@@ -3,13 +3,14 @@ import "babel-polyfill";
 import Vue from "vue";
 import Vuex from "vuex";
 
-import fundraiser from './modules/fundraiser'
-import campaigns from './modules/campaigns'
-import items from './modules/items'
-import collectors from './modules/collectors'
-import campaign from './modules/campaign'
+import fundraiser from './modules/Fundraiser'
+import campaigns from './modules/Campaigns'
+import items from './modules/Items'
+import collectors from './modules/Collectors'
+import campaign from './modules/Campaign'
 
-import api from '../services/api'
+import Api from '../services/Api'
+import Auth from '../services/auth'
 
 Vue.use(Vuex);
 
@@ -100,21 +101,13 @@ export default new Vuex.Store({
           return value && !!(state[module] && state[module].requestComplete)
         }, true)
       }
-    },
-    hasFullyLoaded(state, getters) {
-      var collectors = !_.isEmpty(state.collectors.all)
-      var items = !_.isEmpty(state.items.all)
-      var campaign = !_.isEmpty(state.campaign.data)
-
-      return state.collectors.requestComplete == state.campaign.requestComplete == state.items.requestComplete
     }
   },
   actions: {
     login({dispatch, commit}, {code, self}) {
       return new Promise((resolve, reject) => {
-        api.login(code).then(response => {
-          window.localStorage.setItem('auth', JSON.stringify({isAuthenticated: true}))
-          self.$router.replace('/')
+        Api.login(code).then(response => {
+          Auth.login()
           commit('LOGIN')
           resolve()
         }).catch(error => {
@@ -124,8 +117,15 @@ export default new Vuex.Store({
 
     },
     logout({dispatch, commit}) {
-      return api.logout().then(() => {
-        commit('LOGOUT')
+      return new Promise((resolve, reject) => {
+        Api.logout().then(() => {
+          Auth.logout()
+          commit('LOGOUT')
+          resolve()
+        }).catch(error => {
+          commit('LOGOUT')
+          resolve()
+        })
       })
     }
   },

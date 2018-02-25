@@ -39,21 +39,14 @@ export default {
   methods: {
     login() {
       const self = this
-      //const code = this.code
       const code  = encodeURIComponent(this.code)
 
       this.$store.dispatch('login', {code: code, self: self}).then(response => {
         console.log('Anmeldung erfolgreich!')
+        this.$router.replace('/')
       }).catch(error => {
         alert("Anmeldung fehlgeschlagen!")
       })
-
-      /*this.$http.get(url)
-        .then(response => {
-
-        }).catch(error => {
-
-        })*/
     }
   }
 }

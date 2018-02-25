@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading">
+  <div v-if="hasLoaded">
     <info-box :visible="displayInfo"></info-box>
     <section class="details">
       <fundraiser v-on:display-info="displayInfo = !displayInfo" @logout="logout"></fundraiser>
@@ -139,12 +139,8 @@ export default {
         return v;
       }
     },
-    isLoading() {
-      if(this.$store.getters.hasFullyLoaded) {
-        return false
-      } else {
-        return true
-      }
+    hasLoaded() {
+      return this.$store.getters.hasLoaded(['collectors', 'items', 'campaign', 'fundraiser'])
     }
   },
   watch: {
@@ -211,8 +207,10 @@ export default {
       iziToast.show(_.merge(opt, options));
     },
     logout() {
+
       this.$store.dispatch('logout').then(() => {
-        this.$router.replace('/login')
+        console.log('logging out')
+        this.$router.push({name: 'home'})
       })
     },
     createCollector(e) {
