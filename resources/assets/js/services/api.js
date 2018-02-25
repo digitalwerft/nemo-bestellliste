@@ -61,6 +61,6 @@ export default {
     //
   },
   logout() {
-    return axios.get('/api/campaign/logout')
+    return axios.get('/api/logout')
   }
 }
