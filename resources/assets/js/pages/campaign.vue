@@ -211,9 +211,8 @@ export default {
       iziToast.show(_.merge(opt, options));
     },
     logout() {
-      //console.log('logout')
       this.$store.dispatch('logout').then(() => {
-        this.$router.push('home')
+        this.$router.push({name: 'home'})
       })
     },
     createCollector(e) {
