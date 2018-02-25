@@ -131,7 +131,7 @@
       },
       logout() {
         this.$store.dispatch('logout').then(() => {
-          this.$router.push({name: 'login', params: {logout: true}})
+          this.$router.push({name: 'login'})
         })
       },
       showSpinner() {

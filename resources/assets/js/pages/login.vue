@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     wasLoggedOut() {
-      return this.$router.params.logout
+      return this.$store.getters.wasLoggedOut
     }
   }
 }

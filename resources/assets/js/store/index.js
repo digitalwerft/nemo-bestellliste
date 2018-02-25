@@ -36,9 +36,17 @@ export default new Vuex.Store({
   mutations: {
     LOGIN(state) {
       state.isAuthenticated = true
+      state.action = 'LOGGED_IN'
     },
     LOGOUT(state) {
       state.isAuthenticated = false
+      state.action = 'LOGGED_OUT'
+    },
+    LOGGING_IN(state) {
+      state.action = 'LOGGING_IN'
+    },
+    LOGGING_OUT(state) {
+      state.action = 'LOGGING_OUT'
     },
     START_LOADING(state, action = 'SAVING') {
       state.isLoading = true
@@ -93,6 +101,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    wasLoggedOut(state) {
+      return (state.action === 'LOGGING_OUT' || state.action === 'LOGGED_OUT')
+    },
     hasLoaded(state) {
       return (modules) => {
         if (!Array.isArray(modules)) {
