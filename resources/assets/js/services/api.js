@@ -60,6 +60,9 @@ export default {
   placeOrder() {
     //
   },
+  login(code) {
+    return axios.get('/api/login?auth-code=' + code)
+  },
   logout() {
     return axios.get('/api/logout')
   }

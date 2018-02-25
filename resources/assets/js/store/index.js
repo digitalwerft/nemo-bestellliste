@@ -110,8 +110,18 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    login({dispatch, commit}) {
-      commit('LOGIN')
+    login({dispatch, commit}, {code, self}) {
+      return new Promise((resolve, reject) => {
+        api.login(code).then(response => {
+          window.localStorage.setItem('auth', JSON.stringify({isAuthenticated: true}))
+          self.$router.replace('/')
+          commit('LOGIN')
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+
     },
     logout({dispatch, commit}) {
       return api.logout().then(() => {

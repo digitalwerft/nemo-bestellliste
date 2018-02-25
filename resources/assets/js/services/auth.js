@@ -6,5 +6,9 @@ export default {
     const auth = storage && JSON.parse(storage)
 
     return auth && auth.isAuthenticated
+  },
+  logout() {
+    const storage = window.localStorage.removeItem('auth')
+    return this.authenticated()
   }
 }

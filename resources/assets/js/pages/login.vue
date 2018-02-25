@@ -39,18 +39,21 @@ export default {
   methods: {
     login() {
       const self = this
-      const code = this.code
-      const url  = '/api/login?auth-code=' + encodeURIComponent(code)
+      //const code = this.code
+      const code  = encodeURIComponent(this.code)
 
-      this.$http.get(url)
+      this.$store.dispatch('login', {code: code, self: self}).then(response => {
+        console.log('Anmeldung erfolgreich!')
+      }).catch(error => {
+        alert("Anmeldung fehlgeschlagen!")
+      })
+
+      /*this.$http.get(url)
         .then(response => {
-          console.log("juhu")
-          window.localStorage.setItem('auth', JSON.stringify({isAuthenticated: true}))
-          self.$router.replace('/')
+
         }).catch(error => {
-          console.log(error)
-          alert("Anmeldung nicht erfolgreich")
-        })
+
+        })*/
     }
   }
 }
