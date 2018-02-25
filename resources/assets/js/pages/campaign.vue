@@ -212,7 +212,7 @@ export default {
     },
     logout() {
       this.$store.dispatch('logout').then(() => {
-        this.$router.push({name: 'home'})
+        this.$router.push({name: 'login'})
       })
     },
     createCollector(e) {
