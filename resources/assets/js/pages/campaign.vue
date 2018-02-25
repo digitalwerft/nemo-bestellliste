@@ -214,7 +214,7 @@ export default {
         e.preventDefault();
       }
       if(!this.hasUnsavedCollector) {
-        this.$store.commit('CREATE_COLLECTOR')
+        this.$store.commit('CREATE_COLLECTOR', this.$router.params.id)
       }
     }
   }

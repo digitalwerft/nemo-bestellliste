@@ -520,16 +520,13 @@ const mutations = {
   saveAllCollectors(state) {
     //
   },
-  CREATE_COLLECTOR(state) {
+  CREATE_COLLECTOR(state, campaign_id) {
     state.all.push({
       items: [],
       name: '',
       id: 'new-collector-' + _.uniqueId(),
       state: 'new',
-      campaign_id: state.all[0].campaign_id,
-      pivot: {
-        quote_id: state.all[0].pivot.quote_id
-      }
+      campaign_id: campaign_id
     })
   }
 }
