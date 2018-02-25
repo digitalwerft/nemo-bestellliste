@@ -155,9 +155,6 @@ export default {
       } else {
         this.$store.commit('RESET_ACTIONS')
       }
-    },
-    data(obj) {
-      //console.log(obj);
     }
   },
   methods: {

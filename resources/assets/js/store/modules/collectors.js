@@ -157,7 +157,6 @@ const actions = {
         stopLoading(commit, 'FETCHED_COLLECTORS')
       })
       .catch(error => {
-        console.log(error);
         commit('REQUEST_ERROR', 'FETCHED_COLLECTORS')
       })
   },
@@ -473,7 +472,6 @@ const mutations = {
   },
   START_DELETE(state) {
     state.deleting = true
-    console.log(state)
   },
   END_DELETE(state) {
     state.deleting = false

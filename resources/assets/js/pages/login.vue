@@ -47,7 +47,6 @@ export default {
       const code  = encodeURIComponent(this.code)
 
       this.$store.dispatch('login', {code: code, self: self}).then(response => {
-        console.log('Anmeldung erfolgreich!')
         this.$router.replace('/')
       }).catch(error => {
         alert("Anmeldung fehlgeschlagen!")

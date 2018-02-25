@@ -105,14 +105,6 @@ export default {
       ])
     }
   },
-  watch: {
-    search(term) {
-      //$list = $('.orders')
-    },
-    data(obj) {
-      //console.log(obj);
-    }
-  },
   methods: {
     hideSpinner() {
       const spinner = $('.loading-overlay')

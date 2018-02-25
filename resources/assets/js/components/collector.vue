@@ -167,7 +167,7 @@ export default {
       this.textareaSize = this.$refs.textarea.scrollHeight + 'px';
     },
     select(item) {
-      //console.log(item)
+      //
     },
     makeEditable(e) {
       // enter editing mode

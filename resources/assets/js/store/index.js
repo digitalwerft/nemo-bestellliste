@@ -198,8 +198,6 @@ export default new Vuex.Store({
         }
 
         _.forEach(modules, module => {
-          console.log(_.camelCase('fetch ' + module))
-
           dispatch(_.camelCase('fetch ' + module), {
             self: self
           }).then(() => {

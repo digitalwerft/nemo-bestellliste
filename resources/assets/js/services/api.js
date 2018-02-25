@@ -55,7 +55,6 @@ export default {
     })
   },
   fetchOrders(campaign_id) {
-    console.log('asd')
     return axios.get('/api/campaign/'+campaign_id+'/orders')
   },
   fetchFundraiser() {

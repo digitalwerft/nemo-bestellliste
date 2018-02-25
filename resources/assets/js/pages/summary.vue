@@ -72,7 +72,6 @@
       const self  = { self: this }
       const modules = ['campaign', 'collectors', 'orders']
       let reload = this.forceReload
-      console.log(reload)
       var afterPrint = () => {
         this.$store.commit('RESET_ACTIONS')
       }

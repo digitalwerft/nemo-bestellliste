@@ -117,7 +117,7 @@ export default {
       }, 400)
     },
     onBlur() {
-      //console.log('blur')
+      //
     },
     setValue(value, emitChange = true) {
       this.numericValue = value
