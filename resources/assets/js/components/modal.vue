@@ -1,7 +1,7 @@
 <template>
     <transition name="modal">
         <div class="modal-mask modal">
-            <div class="modal-wrapper modal-dialog">
+            <div class="modal-wrapper modal-dialog" :class="{'modal-lg': large}">
                 <div class="modal-container modal-content">
 
                     <div class="modal-header">
@@ -25,3 +25,8 @@
         </div>
     </transition>
 </template>
+<script>
+  export default {
+    props: ['large']
+  }
+</script>
