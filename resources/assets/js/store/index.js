@@ -135,6 +135,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    isQuoteEmpty(state) {
+      return _.isEmpty(state.collectors.all)
+    },
     isOrderPlaced(state) {
       return state.actionCompleted === 'ORDER_PLACED'
     },
