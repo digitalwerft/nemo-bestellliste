@@ -94,7 +94,7 @@ export default {
     const store = this.$store
     const self  = {self: this}
     const modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
-    let force = this.reload
+    let force = this.forceReload
 
     if (store.getters.hasLoaded(modules)) {
       return
@@ -141,7 +141,7 @@ export default {
     hasLoaded() {
       return this.$store.getters.hasLoaded(['collectors', 'items', 'campaign', 'fundraiser'])
     },
-    reload() {
+    forceReload() {
       return this.$store.state.reload
     },
     hasOrders() {

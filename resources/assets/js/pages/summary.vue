@@ -58,7 +58,7 @@
       const store = this.$store
       const self  = { self: this }
       const modules = ['campaign', 'collectors', 'orders']
-      let force = this.reload
+      let force = this.forceReload
 
       var afterPrint = () => {
         this.$store.commit('RESET_ACTIONS')
@@ -106,7 +106,7 @@
           'orders'
         ])
       },
-      isOrderPlaced() {
+      forceReload() {
         return this.$store.state.reload
       },
       collectors() {
