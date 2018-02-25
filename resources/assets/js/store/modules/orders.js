@@ -8,6 +8,9 @@ const state = {
 const getters = {
   getOrders(state, getters) {
     return state.data
+  },
+  hasOrders(state) {
+    return !_.isEmpty(state.data)
   }
 }
 

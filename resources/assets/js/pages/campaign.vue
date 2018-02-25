@@ -13,7 +13,10 @@
       <div class="container">
         <div v-for="(collector, index) in filteredCollector">
           <collector :collector-id="collector.id" :filterkey="search" v-on:delete-collector="onCollectorDelete(collector)" v-on:save-collector="onCollectorSave(collector)" v-on:editing-collector="handleEditing"></collector>
-          </div>
+        </div>
+        <div class="has-orders alert mt-3 text-warning text-center" v-if="hasOrders">
+          <small>Hinweis: Diese Kampagne enthält bereits abgeschlossene Bestellungen. Um Alle Bestellungen dieser Kampagne zu sehen, rufe die <router-link :to="{ name: 'summary'}">Zusammenfassung</router-link> auf.</small>
+        </div>
         <div class="alert alert-no-collectors mt-3 text-muted text-center" v-if="filteredCollector && filteredCollector.length < 1">
           Deine Suche nach <mark>{{ search }}</mark> erzielte leider keine Treffer.
         </div>
@@ -90,7 +93,7 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
-    const modules = ['campaign', 'items', 'collectors', 'fundraiser']
+    const modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
     let force = this.isOrderPlaced
 
     if (store.getters.hasLoaded(modules)) {
@@ -139,6 +142,9 @@ export default {
     },
     isOrderPlaced() {
       return this.$store.getters.isOrderplaced
+    },
+    hasOrders() {
+      return this.$store.getters.hasOrders
     }
   },
   watch: {

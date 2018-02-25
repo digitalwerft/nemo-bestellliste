@@ -129,7 +129,7 @@ export default new Vuex.Store({
   },
   getters: {
     isOrderPlaced(state) {
-      return state.actionCompleded === 'ORDER_PLACED'
+      return state.actionCompleted === 'ORDER_PLACED'
     },
     wasLoggedOut(state) {
       return state.actionCompleted === 'LOGGED_OUT'

@@ -29,9 +29,6 @@ const getters = {
   },
   getComment(state) {
     return state.quote.comment
-  },
-  hasOrders(state) {
-    return !_.isEmpty(state.orders)
   }
 }
 
