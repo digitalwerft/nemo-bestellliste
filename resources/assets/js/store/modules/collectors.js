@@ -1,5 +1,4 @@
-import itemsState from './items'
-import api from '../../services/api'
+import Api from '../../services/api'
 
 import iziToast from 'izitoast'
 
@@ -152,7 +151,7 @@ const actions = {
     self
   }) {
     commit('START_LOADING')
-    api.fetchCollectors(self.$route.params.id)
+    Api.fetchCollectors(self.$route.params.id)
       .then(response => {
         commit("FETCH_COLLECTORS", response.data);
         stopLoading(commit)
@@ -166,7 +165,7 @@ const actions = {
     commit
   }, {campaign_id, address}) {
     commit('START_LOADING', 'UPDATING_SHIPPING_ADDRESS')
-    return api.updateShippingAddress(campaign_id, address).then(response => {
+    return Api.updateShippingAddress(campaign_id, address).then(response => {
       commit('UPDATE_SHIPPING_ADDRESS', address)
       stopLoading(commit)
     }).catch(error => {
@@ -182,7 +181,7 @@ const actions = {
     commit, rootState
   }, collector) {
     commit('START_LOADING', 'SAVING_COLLECTOR')
-    return api.updateCollector(collector).then(response => {
+    return Api.updateCollector(collector).then(response => {
       stopLoading(commit)
       iziToast.success({
         message: response.data.message
@@ -201,7 +200,7 @@ const actions = {
   }, collector) {
     commit('START_LOADING', 'CREATING_COLLECTOR')
     return new Promise((resolve, reject) => {
-      api.createCollector(collector).then(response => {
+      Api.createCollector(collector).then(response => {
         commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.data.resource.id})
         stopLoading(commit)
         resolve()
@@ -229,7 +228,7 @@ const actions = {
     }
     commit('START_LOADING', 'DELETING_COLLECTOR')
     return new Promise((resolve, reject) => {
-      return api.deleteCollector(collector).then(response => {
+      return Api.deleteCollector(collector).then(response => {
         commit('DELETE_COLLECTOR', collector)
         stopLoading(commit)
         resolve()
@@ -252,7 +251,7 @@ const actions = {
   }, {collector, item, newNumber, quantity} ) {
     commit('START_LOADING', 'CREATING_ITEM')
     return new Promise((resolve, reject) => {
-      return api.createItem(collector, newNumber, 1).then(response => {
+      return Api.createItem(collector, newNumber, 1).then(response => {
         commit("UPDATE_ITEM_ID", {item: item, newId: response.data.data.resource.id})
         commit('UPDATE_ITEM_NUMBER', {collector: collector, item: item, number:response.data.data.resource.number})
         commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: item, quantity: quantity})
@@ -274,7 +273,7 @@ const actions = {
   }, {collector, itemObj, quantity}) {
     commit('START_LOADING', 'SAVING_ITEM')
     return new Promise((resolve, reject) => {
-      return api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
+      return Api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
         commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
         stopLoading(commit)
         resolve()
@@ -294,7 +293,7 @@ const actions = {
   }, {itemObj, collector, number}) {
     commit('START_LOADING', 'SAVING_ITEM')
     return new Promise((resolve, reject) => {
-      return api.updateItem(collector, {number: number, quantity: itemObj.item.quantity, id: itemObj.item.id}).then(response => {
+      return Api.updateItem(collector, {number: number, quantity: itemObj.item.quantity, id: itemObj.item.id}).then(response => {
         commit('UPDATE_ITEM_NUMBER', {
           collector: collector,
           item: itemObj.item,
@@ -320,7 +319,7 @@ const actions = {
   }) {
     commit('START_LOADING', 'DELETING_ITEM')
     return new Promise((resolve, reject) => {
-      return api.deleteItem(collector, itemObj.item)
+      return Api.deleteItem(collector, itemObj.item)
         .then(response => {
           commit("DELETE_ITEM", itemObj)
           iziToast.success({

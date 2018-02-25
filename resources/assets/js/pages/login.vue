@@ -2,6 +2,9 @@
   <section class="login row">
     <div class="col col-sm-12 offset-sm-3 col-md-10 offset-md-4 col-lg-8 offset-lg-5">
       <div class="container">
+        <div class="alert alert-success" v-if="wasLoggedOut">
+          Du wurdest erfolgreich abgemeldet!
+        </div>
         <div class="card" ref="container">
           <div class="card-body">
             <h4 class="card-title">Login für Kontaktpersonen</h4>
@@ -47,6 +50,11 @@ export default {
       }).catch(error => {
         alert("Anmeldung fehlgeschlagen!")
       })
+    }
+  },
+  computed: {
+    wasLoggedOut() {
+      return this.$router.params.logout
     }
   }
 }

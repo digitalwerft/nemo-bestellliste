@@ -2,6 +2,7 @@
   <div v-if="!isLoading" class="container" :class="{printing: printing}" v-shortkey="['meta', 'p']" @shortkey="print">
     <div class="card mb-2 d-print-none">
       <div class="card-body">
+        <a href="#" @click.prevent="logout" class="btn btn-outline-danger ml-3 float-right">abmelden</a>
         <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Liste</span> bearbeiten</router-link>
         <a href="#" class="btn btn-outline-primary float-right print-button" @click.prevent="print">
           <i class="mdi mdi-printer">&nbsp;</i>Drucken
@@ -31,9 +32,16 @@
         Wenn ihr eure Bestellung abschickt, wird sie von uns gepackt und kann nicht mehr geändert werden. Nehmt euch daher bitte genügend Zeit, sie nochmals zu überprüfen. Nachbestellungen sind natürlich jederzeit möglich.
       </div>
     </div>
-    <a href="#" @click.prevent="" class="btn btn-secondary btn-block btn-lg d-print-none"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
-    <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none"><i class="mdi mdi-lead-pencil">&nbsp;</i>Liste bearbeiten</router-link>
-    <a href="#" @click.prevent="" class="btn btn-danger btn-block btn-lg d-print-none">Bestellung jetzt aufgeben</a>
+
+    <div class="row no-gutters">
+      <div class="col">
+        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-lead-pencil">&nbsp;</i>Liste bearbeiten</router-link>
+      </div>
+      <div class="col">
+        <a href="#" @click.prevent="" class="btn btn-secondary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
+      </div>
+    </div>
+    <a href="#" @click.prevent="" class="btn btn-danger btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
   </div>
 </template>
 <script>
@@ -51,6 +59,7 @@
     created() {
       const store = this.$store
       const self  = { self: this }
+      const modules = ['campaign', 'collectors', 'orders']
 
       var afterPrint = () => {
         this.$store.commit('RESET_ACTIONS')
@@ -69,24 +78,14 @@
 
       window.onafterprint = afterPrint
       // If needed components are already loaded, stop execution
-      if (store.getters.hasLoaded(['campaign', 'collectors'])) {
-        if(!store.getters.hasOrders) {
-          store.dispatch('fetchOrders', self)
-            .then(this.hideSpinner)
-        }
+      if (store.getters.hasLoaded(modules)) {
         return
       }
 
       this.showSpinner()
 
-      store.dispatch('fetchCampaign', self)
-        .then(() => {
-          store.dispatch('fetchCollectors', self)
-            .then(() => {
-                store.dispatch('fetchOrders', self)
-                  .then(this.hideSpinner)
-            })
-        })
+      store.dispatch('fetchModules', {modules: modules, self: this})
+        .then(this.hideSpinner)
     },
     data() {
       return {}
@@ -96,7 +95,7 @@
         return this.$store.state.action == 'PRINTING'
       },
       orders() {
-        return this.$store.state.campaign.orders
+        return this.$store.getters.getOrders
       },
       isLoading() {
         return !this.$store.getters.hasLoaded([
@@ -129,6 +128,11 @@
             spinner.addClass('hidden')
           }, 1000);
         }, 600);
+      },
+      logout() {
+        this.$store.dispatch('logout').then(() => {
+          this.$router.push({name: 'login', params: {logout: true}})
+        })
       },
       showSpinner() {
         const spinner = $('.loading-overlay')

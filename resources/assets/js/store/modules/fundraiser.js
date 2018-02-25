@@ -1,4 +1,4 @@
-import api from '../../services/api'
+import Api from '../../services/api'
 
 const state = {
   data: {},
@@ -18,7 +18,7 @@ const actions = {
     self
   }) {
     return new Promise((resolve, reject) => {
-      api.fetchFundraiser('/api/fundraiser')
+      Api.fetchFundraiser('/Api/fundraiser')
         .then(response => {
           commit('FETCH_FUNDRAISER', response.data)
           resolve(response)

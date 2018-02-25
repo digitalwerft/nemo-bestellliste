@@ -90,13 +90,19 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
+    const modules = ['campaign', 'items', 'collectors', 'fundraiser']
 
-    if (store.getters.hasLoaded(['campaign', 'items', 'collectors'])) {
+    if (store.getters.hasLoaded(modules)) {
       return
     }
 
     this.showSpinner()
     // Fetch Data if not already happened
+    store.dispatch('fetchModules', {modules: modules, self: this})
+      .then(() => {
+        this.hideSpinner()
+      })
+    /*
     store.dispatch('fetchCampaign', self)
       .then(() => {
         store.dispatch('fetchItems', self)
@@ -107,7 +113,7 @@ export default {
       })
       if (!store.getters.hasLoaded('fundraiser')) {
         store.dispatch('fetchFundraiser', self)
-      }
+      }*/
   },
   store,
   data() {
@@ -160,6 +166,7 @@ export default {
       location.reload()
     },
     hideSpinner() {
+      console.log('hide spinner')
       const spinner = $('.loading-overlay')
 
       setTimeout(() => {
@@ -208,7 +215,7 @@ export default {
     },
     logout() {
       this.$store.dispatch('logout').then(() => {
-        this.$router.push({name: 'login'})
+        this.$router.push({name: 'login', params: {logout: true}})
       })
     },
     createCollector(e) {

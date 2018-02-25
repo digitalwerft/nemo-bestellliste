@@ -1,4 +1,4 @@
-import api from '../../services/api'
+import Api from '../../services/api'
 import iziToast from 'izitoast'
 
 const state = {
@@ -32,7 +32,7 @@ const actions = {
   }, {
     self
   }) {
-    return api.fetchOrders(self.$route.params.id).then(response => {
+    return Api.fetchOrders(self.$route.params.id).then(response => {
       commit('FETCH_ORDERS', response.data)
     }).catch(error => {
       //
@@ -43,9 +43,9 @@ const actions = {
   }, {
     self
   }) {
-    return api.fetchQuote(self.$route.params.id).then(quoteResponse => {
+    return Api.fetchQuote(self.$route.params.id).then(quoteResponse => {
       commit('FETCH_QUOTE', quoteResponse.data)
-      api.fetchCampaign(self.$route.params.id)
+      Api.fetchCampaign(self.$route.params.id)
         .then(response => {
           commit('FETCH_CAMPAIGN', response.data)
           //resolve(response)
@@ -61,7 +61,7 @@ const actions = {
   }) {
     commit('START_LOADING')
     return new Promise((resolve, reject) => {
-      api.saveComment(quote, newComment).then(response => {
+      Api.saveComment(quote, newComment).then(response => {
         commit('SAVE_COMMENT', newComment)
         commit('STOP_LOADING')
         iziToast.success({

@@ -6,21 +6,21 @@ const state = {
 }
 
 const getters = {
-  getCampaigns(state, getters) {
+  getOrders(state, getters) {
     return state.data
   }
 }
 
 const actions = {
-  fetchCampaigns({
+  fetchOrders({
     commit
   }, {
     self
   }) {
     return new Promise((resolve, reject) => {
-      Api.fetchCampaigns()
+      Api.fetchOrders(self.$route.params.id)
         .then(response => {
-          commit('FETCH_CAMPAIGNS', response.data)
+          commit('FETCH_ORDERS', response.data)
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -30,7 +30,7 @@ const actions = {
 }
 
 const mutations = {
-  FETCH_CAMPAIGNS(state, campaigns) {
+  FETCH_ORDERS(state, campaigns) {
     state.data = campaigns;
     state.requestComplete = true;
   }

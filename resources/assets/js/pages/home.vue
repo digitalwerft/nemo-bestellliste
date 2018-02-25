@@ -4,7 +4,9 @@
       <div class="container">
         <div class="card">
           <div class="card-body">
+            <a href="#" @click.prevent="logout" class="btn btn-sm btn-outline-danger logout-button ml-3 float-right">abmelden</a>
             <h4 class="card-title pb-3 mb-3">Hallo {{ fundraiser.first_name }}!</h4>
+
             <p>
               Bitte wähle zunächst dasjenige Projekt aus, für welches du
               eine Sammelbestellung aufgeben/erstellen möchtest:
@@ -54,16 +56,14 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
+    const modules = ['fundraiser', 'campaigns']
 
-    if (store.getters.hasLoaded('fundraiser')) {
+    if (store.getters.hasLoaded(modules)) {
       return
     }
 
-    store.dispatch('fetchFundraiser', self)
-      .then(() => {
-        store.dispatch('fetchCampaigns', self)
-          .then(this.hideSpinner)
-      })
+    store.dispatch('fetchModules', {modules: modules, self: this})
+      .then(this.hideSpinner)
   },
   store,
   data() {
@@ -123,6 +123,11 @@ export default {
           spinner.addClass('hidden');
         }, 1000);
       }, 600);
+    },
+    logout() {
+      this.$store.dispatch('logout').then(() => {
+        this.$router.push({name: 'login', params: {logout: true}})
+      })
     },
     note(options) {
       var opt = {

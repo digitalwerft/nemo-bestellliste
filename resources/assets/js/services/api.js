@@ -46,6 +46,9 @@ export default {
   fetchCampaign(campaign_id) {
     return axios.get('/api/campaign/'+campaign_id)
   },
+  fetchCampaigns() {
+    return axios.get('/api/campaigns')
+  },
   saveComment(quote, newComment) {
     return axios.post('/api/campaign/'+quote.campaign_id+'/quote', {
       comment: newComment
