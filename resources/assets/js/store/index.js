@@ -180,13 +180,13 @@ export default new Vuex.Store({
     }, {
       modules,
       self,
-      force = false
+      reload = false
     }) {
       return new Promise((resolve, reject) => {
         if (!Array.isArray(modules)) {
           modules = [modules]
         }
-        if (!force) {
+        if (!reload) {
           let completed = getters.getAllCompletedRequests
           modules = _.pullAll(modules, completed)
         }

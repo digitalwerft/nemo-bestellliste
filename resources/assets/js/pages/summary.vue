@@ -58,7 +58,7 @@
       const store = this.$store
       const self  = { self: this }
       const modules = ['campaign', 'collectors', 'orders']
-      let force = this.forceReload
+      let reload = this.forceReload
 
       var afterPrint = () => {
         this.$store.commit('RESET_ACTIONS')
@@ -77,13 +77,13 @@
 
       window.onafterprint = afterPrint
       // If needed components are already loaded, stop execution
-      if (store.getters.hasLoaded(modules)) {
+      if (store.getters.hasLoaded(modules) && !reload) {
         return
       }
 
       this.showSpinner()
 
-      store.dispatch('fetchModules', {modules: modules, self: this, force: force})
+      store.dispatch('fetchModules', {modules: modules, self: this, reload: reload})
         .then(response => {
           this.hideSpinner()
           store.commit('NO_RELOAD')

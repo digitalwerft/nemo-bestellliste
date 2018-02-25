@@ -94,15 +94,15 @@ export default {
     const store = this.$store
     const self  = {self: this}
     const modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
-    let force = this.forceReload
+    let reload = this.forceReload
 
-    if (store.getters.hasLoaded(modules)) {
+    if (store.getters.hasLoaded(modules) && !reload) {
       return
     }
 
     this.showSpinner()
     // Fetch Data if not already happened
-    store.dispatch('fetchModules', {modules: modules, self: this, force: force})
+    store.dispatch('fetchModules', {modules: modules, self: this, reload: reload})
       .then(() => {
         store.commit('NO_RELOAD')
         this.hideSpinner()
