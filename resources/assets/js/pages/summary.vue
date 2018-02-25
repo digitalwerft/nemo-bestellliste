@@ -41,7 +41,7 @@
         <a href="#" @click.prevent="print" class="btn btn-secondary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
       </div>
     </div>
-    <a href="#" @click.prevent="placeOrder" class="btn btn-danger btn-block btn-lg d-print-none mt-2" v-if="isQuoteEmpty"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
+    <a href="#" @click.prevent="placeOrder" class="btn btn-danger btn-block btn-lg d-print-none mt-2" v-if="!isQuoteEmpty"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
   </div>
 </template>
 <script>
