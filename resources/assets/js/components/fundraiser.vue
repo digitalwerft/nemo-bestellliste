@@ -2,7 +2,7 @@
 <div class="container">
   <div class="card">
     <div class="card-body">
-      <a href="#" @click.prevent="$emit('logout')" class="btn btn-sm btn-outline-danger logout-button ml-3">abmelden</a>
+      <a href="#" @click.prevent="$emit('logout')" class="btn btn-sm btn-outline-danger logout-button ml-3"><i class="mdi mdi-logout">&nbsp;</i>abmelden</a>
       <a href="#" class="btn btn-sm btn-link show-help"  @click.prevent="$emit('display-info')">
         <i class="mdi mdi-help-box"></i>
       </a>

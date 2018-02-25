@@ -4,7 +4,7 @@
       <div class="container">
         <div class="card">
           <div class="card-body">
-            <a href="#" @click.prevent="logout" class="btn btn-sm btn-outline-danger logout-button ml-3 float-right">abmelden</a>
+            <a href="#" @click.prevent="logout" class="btn btn-sm btn-outline-danger logout-button ml-3 float-right"><i class="mdi mdi-logout">&nbsp;</i>abmelden</a>
             <h4 class="card-title pb-3 mb-3">Hallo {{ fundraiser.first_name }}!</h4>
 
             <p>

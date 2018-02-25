@@ -2,7 +2,7 @@
   <div v-if="!isLoading" class="container" :class="{printing: printing}" v-shortkey="['meta', 'p']" @shortkey="print">
     <div class="card mb-2 d-print-none">
       <div class="card-body">
-        <a href="#" @click.prevent="logout" class="btn btn-outline-danger ml-3 float-right">abmelden</a>
+        <a href="#" @click.prevent="logout" class="btn btn-outline-danger ml-3 float-right"><i class="mdi mdi-logout">&nbsp;</i>abmelden</a>
         <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Liste</span> bearbeiten</router-link>
         <a href="#" class="btn btn-outline-primary float-right print-button" @click.prevent="print">
           <i class="mdi mdi-printer">&nbsp;</i>Drucken
