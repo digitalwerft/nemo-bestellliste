@@ -27,7 +27,7 @@
     <div class="quote" v-if="!isQuoteEmpty">
       <summary-table :collectors="collectors" :comment="comment" :isCurrent="true"></summary-table>
     </div>
-    <div class="card bg-danger-light mt-2 mb-2 d-print-none">
+    <div class="card bg-danger-light mt-2 mb-2 d-print-none" v-if="!isQuoteEmpty">
       <div class="card-body">
         Wenn ihr eure Bestellung abschickt, wird sie von uns gepackt und kann nicht mehr geändert werden. Nehmt euch daher bitte genügend Zeit, sie nochmals zu überprüfen. Nachbestellungen sind natürlich jederzeit möglich.
       </div>
