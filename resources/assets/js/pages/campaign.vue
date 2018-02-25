@@ -207,10 +207,8 @@ export default {
       iziToast.show(_.merge(opt, options));
     },
     logout() {
-
       this.$store.dispatch('logout').then(() => {
-        console.log('logging out')
-        this.$router.push({name: 'home'})
+        this.$router.push({name: 'login'})
       })
     },
     createCollector(e) {
