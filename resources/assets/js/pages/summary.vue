@@ -59,7 +59,7 @@
       const self  = { self: this }
       const modules = ['campaign', 'collectors', 'orders']
       let reload = this.forceReload
-
+      console.log(reload)
       var afterPrint = () => {
         this.$store.commit('RESET_ACTIONS')
       }
@@ -107,7 +107,7 @@
         ])
       },
       forceReload() {
-        return this.$store.state.reload
+        return this.$store.getters.forceReload
       },
       collectors() {
         return this.$store.getters.getAllCollectors

@@ -142,7 +142,7 @@ export default {
       return this.$store.getters.hasLoaded(['collectors', 'items', 'campaign', 'fundraiser'])
     },
     forceReload() {
-      return this.$store.state.reload
+      return this.$store.getters.forceReload
     },
     hasOrders() {
       return this.$store.getters.hasOrders

@@ -141,6 +141,9 @@ export default new Vuex.Store({
     wasLoggedOut(state) {
       return state.actionCompleted === 'LOGGED_OUT'
     },
+    forceReload(state) {
+      return state.reload
+    },
     hasLoaded(state) {
       return (modules) => {
         if (!Array.isArray(modules)) {
