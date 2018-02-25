@@ -60,6 +60,9 @@ export default {
   fetchFundraiser() {
     return axios.get('/api/fundraiser')
   },
+  fetchProducts() {
+    return axios.get("/api/products")
+  },
   placeOrder() {
     //
   },

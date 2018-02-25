@@ -18,11 +18,14 @@ const actions = {
     self
   }) {
     return new Promise((resolve, reject) => {
+      commit('START_LOADING', 'FETCHING_CAMPAIGNS')
       Api.fetchCampaigns()
         .then(response => {
           commit('FETCH_CAMPAIGNS', response.data)
+          commit('STOP_LOADING', 'FETCHED_CAMPAIGNS')
           resolve(response)
         }).catch(error => {
+          commit('REQUEST_ERROR', 'FETCHED_CAMPAIGNS')
           reject(error)
         })
     })

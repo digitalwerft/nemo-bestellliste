@@ -166,7 +166,6 @@ export default {
       location.reload()
     },
     hideSpinner() {
-      console.log('hide spinner')
       const spinner = $('.loading-overlay')
 
       setTimeout(() => {

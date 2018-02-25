@@ -23,7 +23,8 @@ export default new Vuex.Store({
     isLoading: false,
     editing: false,
     error: false,
-    action: 'IDLE'
+    action: 'IDLE',
+    actionCompleted: 'NONE'
   },
   modules: {
     fundraiser,
@@ -36,73 +37,99 @@ export default new Vuex.Store({
   mutations: {
     LOGIN(state) {
       state.isAuthenticated = true
-      state.action = 'LOGGED_IN'
+      state.actionCompleted = 'LOGGED_IN'
+      state.action = 'IDLE'
     },
     LOGOUT(state) {
       state.isAuthenticated = false
-      state.action = 'LOGGED_OUT'
+      state.actionCompleted = 'LOGGED_OUT'
+      state.action = 'IDLE'
     },
     LOGGING_IN(state) {
+      state.actionCompleted = state.action
       state.action = 'LOGGING_IN'
     },
     LOGGING_OUT(state) {
+      state.actionCompleted = state.action
       state.action = 'LOGGING_OUT'
     },
     START_LOADING(state, action = 'SAVING') {
+      state.actionCompleted = state.action
       state.isLoading = true
       state.error = false
       state.action = action
     },
-    STOP_LOADING(state) {
+    STOP_LOADING(state, action = 'NONE') {
       state.isLoading = false
       state.editing = false
       state.error = false
+      state.actionCompleted = action
       state.action = 'IDLE'
     },
     START_EDITING(state, action = 'EDITING') {
+      state.actionCompleted = state.action
       state.editing = true
       state.action = action
     },
-    ERROR_SAVING(state) {
+    ERROR_SAVING(state, action = 'NONE') {
       state.isLoading = false
       state.editing = true
       state.error = true
+      state.actionCompleted = action
+      state.action = 'ERROR'
+    },
+    REQUEST_ERROR(state, action = 'NONE') {
+      state.isLoading = false
+      state.editing = true
+      state.error = true
+      state.actionCompleted = action
+      state.action = 'ERROR'
     },
     STOP_EDITING(state) {
+      state.actionCompleted = state.action
       state.editing = false
       state.action = 'IDLE'
     },
     SAVING_COLLECTOR(state) {
+      state.actionCompleted = state.action
       state.action = 'SAVING COLLECTOR'
     },
     DELETING_COLLECTOR(state) {
+      state.actionCompleted = state.action
       state.action = 'DELETING COLLECTOR'
     },
     CREATING_COLLECTOR(state) {
+      state.actionCompleted = state.action
       state.action = 'CREATING COLLECTOR'
     },
     SAVING_ITEM(state) {
+      state.actionCompleted = state.action
       state.action = 'SAVING ITEM'
     },
     DELETING_ITEM(state) {
+      state.actionCompleted = state.action
       state.action = 'DELETING ITEM'
     },
     CREATING_ITEM(state) {
+      state.actionCompleted = state.action
       state.action = 'CREATING ITEM'
     },
     SEARCHING(state) {
+      state.actionCompleted = state.action
       state.action = 'SEARCHING'
     },
     RESET_ACTIONS(state) {
+      state.actionCompleted = state.action
       state.action = 'IDLE'
     },
     PRINTING(state) {
+      state.actionCompleted = state.action
       state.action = 'PRINTING'
     }
   },
   getters: {
     wasLoggedOut(state) {
-      return (state.action === 'LOGGING_OUT' || state.action === 'LOGGED_OUT')
+      return state.actionCompleted === 'LOGGED_OUT'
     },
     hasLoaded(state) {
       return (modules) => {
@@ -179,6 +206,7 @@ export default new Vuex.Store({
       code,
       self
     }) {
+      commit('LOGGING_IN')
       return new Promise((resolve, reject) => {
         Api.login(code).then(response => {
           Auth.login()
@@ -194,6 +222,7 @@ export default new Vuex.Store({
       dispatch,
       commit
     }) {
+      commit('LOGGING_OUT')
       return new Promise((resolve, reject) => {
         Api.logout().then(() => {
           Auth.logout()

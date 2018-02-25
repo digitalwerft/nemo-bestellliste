@@ -7,11 +7,11 @@ const state = {
   requestComplete: false
 }
 
-function stopLoading(commit, withError = false, timeout = 500) {
-  setTimeout(()=> {
-    commit('STOP_LOADING')
-    if(withError) {
-      commit('ERROR_SAVING')
+function stopLoading(commit, lastAction = 'NONE', withError = false, timeout = 500) {
+  setTimeout(() => {
+    commit('STOP_LOADING', lastAction)
+    if (withError) {
+      commit('ERROR_SAVING', lastAction)
     }
   }, timeout)
 }
@@ -32,7 +32,7 @@ const getters = {
     return unsaved ? true : false
   },
   getAllItemsQuantity: (state, getters) => (collectors = false) => {
-    if(!collectors) {
+    if (!collectors) {
       collectors = getters.getAllCollectors
     }
     var totalOrders = 0;
@@ -65,12 +65,12 @@ const getters = {
     var sum = 0;
     var collector = getters.getCollectorById(id);
     _.each(collector.items, (item) => {
-        sum += item.quantity * item.suggested_donation;
+      sum += item.quantity * item.suggested_donation;
     });
     return sum;
   },
   getAllItemsPrice: (state, getters) => (collectors = false) => {
-    if(!collectors) {
+    if (!collectors) {
       collectors = getters.getAllCollectors
     }
     var sum = 0
@@ -80,7 +80,7 @@ const getters = {
     return sum
   },
   getAllItemsPriceWithDonations: (state, getters) => (collectors = false) => {
-    if(!collectors) {
+    if (!collectors) {
       collectors = getters.getAllCollectors
     }
     var price = 0
@@ -90,7 +90,7 @@ const getters = {
     return price
   },
   getAllItemsDonations: (state, getters) => (collectors = false) => {
-    if(!collectors) {
+    if (!collectors) {
       collectors = getters.getAllCollectors
     }
     var sum = 0
@@ -118,9 +118,9 @@ const getters = {
     allCollectors.forEach(collector => {
       collector.items.forEach(item => {
         var itemExists = _.findIndex(summarizedItems, i => {
-          return(i.number === item.number)
+          return (i.number === item.number)
         })
-        if(itemExists > 0) {
+        if (itemExists > 0) {
           summarizedItems[itemExists].quantity += item.quantity
         } else {
           summarizedItems.push({
@@ -150,27 +150,30 @@ const actions = {
   }, {
     self
   }) {
-    commit('START_LOADING')
+    commit('START_LOADING', 'FETCHING_COLLECTORS')
     Api.fetchCollectors(self.$route.params.id)
       .then(response => {
         commit("FETCH_COLLECTORS", response.data);
-        stopLoading(commit)
+        stopLoading(commit, 'FETCHED_COLLECTORS')
       })
       .catch(error => {
         console.log(error);
-        stopLoading(commit)
+        commit('REQUEST_ERROR', 'FETCHED_COLLECTORS')
       })
   },
   updateShippingAddress({
     commit
-  }, {campaign_id, address}) {
+  }, {
+    campaign_id,
+    address
+  }) {
     commit('START_LOADING', 'UPDATING_SHIPPING_ADDRESS')
     return Api.updateShippingAddress(campaign_id, address).then(response => {
       commit('UPDATE_SHIPPING_ADDRESS', address)
-      stopLoading(commit)
+      stopLoading(commit, 'UPDATED_SHIPPING_ADDRESS')
     }).catch(error => {
-      stopLoading(commit, true)
-      if(error.response) {
+      stopLoading(commit, 'UPDATE_SHIPPING_ADDRESS', true)
+      if (error.response) {
         iziToast.error({
           message: error.response.data.message
         })
@@ -178,17 +181,18 @@ const actions = {
     })
   },
   updateCollectorName({
-    commit, rootState
+    commit,
+    rootState
   }, collector) {
     commit('START_LOADING', 'SAVING_COLLECTOR')
     return Api.updateCollector(collector).then(response => {
-      stopLoading(commit)
+      stopLoading(commit, 'UPDATED_COLLECTOR_NAME')
       iziToast.success({
         message: response.data.message
       })
     }).catch(error => {
-      stopLoading(commit, true)
-      if(error.response) {
+      stopLoading(commit, 'UPDATED_COLLECTOR_NAME', true)
+      if (error.response) {
         iziToast.error({
           message: error.response.data.message
         })
@@ -201,16 +205,19 @@ const actions = {
     commit('START_LOADING', 'CREATING_COLLECTOR')
     return new Promise((resolve, reject) => {
       Api.createCollector(collector).then(response => {
-        commit('UPDATE_COLLECTOR_ID', {collector: collector, id: response.data.data.resource.id})
-        stopLoading(commit)
+        commit('UPDATE_COLLECTOR_ID', {
+          collector: collector,
+          id: response.data.data.resource.id
+        })
+        stopLoading(commit, 'CREATED_COLLECTOR')
         resolve()
         iziToast.success({
           message: response.data.message
         })
       }).catch(error => {
-        stopLoading(commit, true)
+        stopLoading(commit, 'CREATED_COLLECTOR', true)
         reject()
-        if(error.response) {
+        if (error.response) {
           iziToast.error({
             message: error.response.data.message
           })
@@ -221,24 +228,24 @@ const actions = {
   deleteCollector({
     commit
   }, collector) {
-    if(collector.state == 'new') {
+    if (collector.state == 'new') {
       commit('DELETE_COLLECTOR', collector)
-      stopLoading(commit)
+      stopLoading(commit, 'DELETED_COLLECTOR')
       return
     }
     commit('START_LOADING', 'DELETING_COLLECTOR')
     return new Promise((resolve, reject) => {
       return Api.deleteCollector(collector).then(response => {
         commit('DELETE_COLLECTOR', collector)
-        stopLoading(commit)
+        stopLoading(commit, 'DELETED_COLLECTOR')
         resolve()
         iziToast.success({
           message: response.data.message ? response.data.message : 'Löschen erfolgreich'
         })
       }).catch(error => {
-        stopLoading(commit, true)
+        stopLoading(commit, 'DELETED_COLLECTOR', true)
         reject()
-        if(error.response) {
+        if (error.response) {
           iziToast.error({
             message: error.response.data.message
           })
@@ -248,19 +255,35 @@ const actions = {
   },
   createItem({
     commit
-  }, {collector, item, newNumber, quantity} ) {
+  }, {
+    collector,
+    item,
+    newNumber,
+    quantity
+  }) {
     commit('START_LOADING', 'CREATING_ITEM')
     return new Promise((resolve, reject) => {
       return Api.createItem(collector, newNumber, 1).then(response => {
-        commit("UPDATE_ITEM_ID", {item: item, newId: response.data.data.resource.id})
-        commit('UPDATE_ITEM_NUMBER', {collector: collector, item: item, number:response.data.data.resource.number})
-        commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: item, quantity: quantity})
-        stopLoading(commit)
+        commit("UPDATE_ITEM_ID", {
+          item: item,
+          newId: response.data.data.resource.id
+        })
+        commit('UPDATE_ITEM_NUMBER', {
+          collector: collector,
+          item: item,
+          number: response.data.data.resource.number
+        })
+        commit('UPDATE_ITEM_QUANTITY', {
+          collector: collector,
+          item: item,
+          quantity: quantity
+        })
+        stopLoading(commit, 'CREATED_ITEM')
         resolve()
       }).catch(error => {
-        stopLoading(commit, true)
+        stopLoading(commit, 'CREATED_ITEM', true)
         reject()
-        if(error.response) {
+        if (error.response) {
           iziToast.error({
             message: error.response.data.message
           })
@@ -270,17 +293,29 @@ const actions = {
   },
   updateItemQuantity({
     commit
-  }, {collector, itemObj, quantity}) {
+  }, {
+    collector,
+    itemObj,
+    quantity
+  }) {
     commit('START_LOADING', 'SAVING_ITEM')
     return new Promise((resolve, reject) => {
-      return Api.updateItem(collector, {number: itemObj.item.number, quantity: quantity, id: itemObj.item.id}).then(response => {
-        commit('UPDATE_ITEM_QUANTITY', {collector: collector, item: itemObj.item, quantity: quantity})
-        stopLoading(commit)
+      return Api.updateItem(collector, {
+        number: itemObj.item.number,
+        quantity: quantity,
+        id: itemObj.item.id
+      }).then(response => {
+        commit('UPDATE_ITEM_QUANTITY', {
+          collector: collector,
+          item: itemObj.item,
+          quantity: quantity
+        })
+        stopLoading(commit, 'UPDATED_ITEM_QUANTITY')
         resolve()
       }).catch(error => {
-        stopLoading(commit, true)
+        stopLoading(commit, 'UPDATED_ITEM_QUANTITY', true)
         reject()
-        if(error.response) {
+        if (error.response) {
           iziToast.error({
             message: error.response.data.message
           })
@@ -290,21 +325,29 @@ const actions = {
   },
   updateItemNumber({
     commit
-  }, {itemObj, collector, number}) {
+  }, {
+    itemObj,
+    collector,
+    number
+  }) {
     commit('START_LOADING', 'SAVING_ITEM')
     return new Promise((resolve, reject) => {
-      return Api.updateItem(collector, {number: number, quantity: itemObj.item.quantity, id: itemObj.item.id}).then(response => {
+      return Api.updateItem(collector, {
+        number: number,
+        quantity: itemObj.item.quantity,
+        id: itemObj.item.id
+      }).then(response => {
         commit('UPDATE_ITEM_NUMBER', {
           collector: collector,
           item: itemObj.item,
           number: number
         })
-        stopLoading(commit)
+        stopLoading(commit, 'UPDATED_ITEM_NUMBER')
         resolve()
       }).catch(error => {
-        stopLoading(commit, true)
+        stopLoading(commit, 'UPDATED_ITEM_NUMBER', true)
         reject()
-        if(error.response) {
+        if (error.response) {
           iziToast.error({
             message: error.response.data.message
           })
@@ -313,9 +356,11 @@ const actions = {
     })
   },
   deleteItem({
-    commit, state
+    commit,
+    state
   }, {
-    itemObj, collector
+    itemObj,
+    collector
   }) {
     commit('START_LOADING', 'DELETING_ITEM')
     return new Promise((resolve, reject) => {
@@ -325,39 +370,47 @@ const actions = {
           iziToast.success({
             message: response.data.message ? response.data.message : 'Löschen erfolgreich'
           })
-          stopLoading(commit)
+          stopLoading(commit, 'DELETED_ITEM')
           resolve()
         }).catch(error => {
-          stopLoading(commit, true)
+          stopLoading(commit, 'DELETED_ITEM', true)
           reject()
-          if(error.response) {
+          if (error.response) {
             iziToast.error({
               message: error.response.data.message
             })
           }
         })
-      })
+    })
   }
 }
 
 const mutations = {
   FETCH_COLLECTORS(state, collectors) {
-    /*collectors.forEach(collector => {
-      collector.state = 'saved'
-    })*/
     state.all = collectors
     state.requestComplete = true
   },
-  UPDATE_ITEM_ID(state, {item, newId}) {
+  UPDATE_ITEM_ID(state, {
+    item,
+    newId
+  }) {
     item.id = newId
   },
-  UPDATE_ITEM_NUMBER(state, {collector, item, number}) {
+  UPDATE_ITEM_NUMBER(state, {
+    collector,
+    item,
+    number
+  }) {
     item.number = number
     var newItem = this.getters.getItemByNumber(number)
     _.unset(newItem, 'id')
     _.merge(item, newItem)
   },
-  UPDATE_ITEM_QUANTITY(state, {collector, item, quantity}) {
+  UPDATE_ITEM_QUANTITY(state, {
+    collector,
+    item,
+    quantity
+  }) {
     item.quantity = quantity
   },
   changeItemNumber(state, payload) {
@@ -368,23 +421,25 @@ const mutations = {
     _.unset(newItem, 'id')
     _.merge(item, newItem)
   },
-  UPDATE_ITEM(state, {payload}) {
-      var collector = this.getters.getCollectorById(payload.item.collectorId)
-      var item = collector.items.find(item => item.id === payload.item.item.id)
-      var number = payload.newItem.number
-      // If ID doesn't exist, the item to update is new
-      if(item.length < 1) {
-        return
-      }
+  UPDATE_ITEM(state, {
+    payload
+  }) {
+    var collector = this.getters.getCollectorById(payload.item.collectorId)
+    var item = collector.items.find(item => item.id === payload.item.item.id)
+    var number = payload.newItem.number
+    // If ID doesn't exist, the item to update is new
+    if (item.length < 1) {
+      return
+    }
 
-      var newItem = this.getters.getItemByNumber(number)
-      _.unset(newItem, 'id')
-      _.merge(item, newItem)
+    var newItem = this.getters.getItemByNumber(number)
+    _.unset(newItem, 'id')
+    _.merge(item, newItem)
   },
   CREATE_ITEM(state, collector) {
     //var defaultItem = this.getters.getItemByNumber(110)
     var newItem = {
-      id: 'new-item-'+_.uniqueId(),
+      id: 'new-item-' + _.uniqueId(),
       quantity: 1,
       collector_id: collector.id,
       quote_id: collector.pivot.quote_id,
@@ -393,11 +448,14 @@ const mutations = {
       gross_price: 0,
       suggested_donation: 0
     }
-  //  _.unset(defaultItem, 'id')
+    //  _.unset(defaultItem, 'id')
     //_.merge(newItem, defaultItem)
     collector.items.push(newItem)
   },
-  CREATE_EMPTY_ITEM(state, {collector, item}) {
+  CREATE_EMPTY_ITEM(state, {
+    collector,
+    item
+  }) {
     var defaultItem = this.getters.getItemByNumber(110)
     var newItem = {
       id: item.id,
@@ -433,12 +491,18 @@ const mutations = {
       collector.items[0].quantity = 1;
     }
   },
-  UPDATE_COLLECTOR_NAME(state, {collector, newName}) {
+  UPDATE_COLLECTOR_NAME(state, {
+    collector,
+    newName
+  }) {
     collector.name = newName
   },
-  UPDATE_COLLECTOR_ID(state, {collector, id}) {
+  UPDATE_COLLECTOR_ID(state, {
+    collector,
+    id
+  }) {
     collector.id = id
-    if(collector.state) {
+    if (collector.state) {
       _.unset(collector, 'state')
     }
   },
@@ -460,7 +524,7 @@ const mutations = {
     state.all.push({
       items: [],
       name: '',
-      id: 'new-collector-'+_.uniqueId(),
+      id: 'new-collector-' + _.uniqueId(),
       state: 'new',
       campaign_id: state.all[0].campaign_id,
       pivot: {

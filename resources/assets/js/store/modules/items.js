@@ -1,3 +1,5 @@
+import Api from '../../services/api'
+
 const state = {
   all: [],
   requestComplete: false
@@ -27,29 +29,19 @@ const actions = {
   }, {
     self
   }) {
-    self.$http
-      .get("./api/products")
-      .then(response => {
-        commit("FETCH_ITEMS", response.data);
-      })
-      .catch(error => {
-        //console.log(error);
-      });
-  },
-  saveItem({
-    commit
-  }, {
-    self
-  }, {
-    item
-  }) {
-    self.$http.get('/api/campaign/'+item.campaignId+'/quote/collector/'+item.collectorId+'/item/'+item.identifier)
-      .then(response => {
-        commit("SAVE_ITEM", response.data, item)
-      })
-      .catch(error => {
-        //
-      })
+    commit('START_LOADING', 'FETCHING_PRODUCTS')
+    return new Promise((resolve, reject) => {
+      Api.fetchProducts()
+        .then(response => {
+          commit("FETCH_ITEMS", response.data)
+          commit('STOP_LOADING', 'FETCHED_PRODUCTS')
+          resolve(response)
+        })
+        .catch(error => {
+          commit('REQUEST_ERROR', 'FETCHING_PRODUCTS')
+          reject(error)
+        })
+    })
   }
 }
 

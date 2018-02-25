@@ -1,6 +1,15 @@
 import Api from '../../services/api'
 import iziToast from 'izitoast'
 
+function stopLoading(commit, lastAction = 'NONE', withError = false, timeout = 500) {
+  setTimeout(() => {
+    commit('STOP_LOADING', lastAction)
+    if (withError) {
+      commit('ERROR_SAVING', lastAction)
+    }
+  }, timeout)
+}
+
 const state = {
   data: {},
   quote: {},
@@ -43,14 +52,18 @@ const actions = {
   }, {
     self
   }) {
+    commit('START_LOADING', 'FETCHING_QUOTE')
     return Api.fetchQuote(self.$route.params.id).then(quoteResponse => {
       commit('FETCH_QUOTE', quoteResponse.data)
+      stopLoading(commit, 'FETCHED_QUOTE')
+      commit('START_LOADING', 'FETCHING_CAMPAIGN')
       Api.fetchCampaign(self.$route.params.id)
         .then(response => {
           commit('FETCH_CAMPAIGN', response.data)
+          stopLoading(commit, 'FETCHED_CAMPAIGN')
           //resolve(response)
         }).catch(error => {
-          //reject(error)
+          commit('REQUEST_ERROR', 'FETCHED_CAMPAIGN')
         })
       })
   },
@@ -59,17 +72,17 @@ const actions = {
   }, {
     quote, newComment
   }) {
-    commit('START_LOADING')
+    commit('START_LOADING', 'SAVING_COMMENT')
     return new Promise((resolve, reject) => {
       Api.saveComment(quote, newComment).then(response => {
         commit('SAVE_COMMENT', newComment)
-        commit('STOP_LOADING')
+        stopLoading(commit, 'SAVED_COMMENT')
         iziToast.success({
           message: 'Kommentar erfolgreich gespeichert.'
         })
         resolve(response)
       }).catch(error => {
-        commit('ERROR_SAVING')
+        stopLoading(commit, 'FETCHED_CAMPAIGN', true)
         iziToast.error({
           message: error.response.data.message
         })

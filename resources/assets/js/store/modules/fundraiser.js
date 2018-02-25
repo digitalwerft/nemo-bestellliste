@@ -17,12 +17,15 @@ const actions = {
   }, {
     self
   }) {
+    commit('START_LOADING', 'FETCHING_FUNDRAISER')
     return new Promise((resolve, reject) => {
       Api.fetchFundraiser('/Api/fundraiser')
         .then(response => {
           commit('FETCH_FUNDRAISER', response.data)
+          commit('STOP_LOADING', 'FETCHED_FUNDRAISER')
           resolve(response)
         }).catch(error => {
+          commit('REQUEST_ERROR', 'FETCHED_FUNDRAISER')
           reject(error)
         })
     })
