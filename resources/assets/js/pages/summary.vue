@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="quote">
+    <div class="quote" v-if="!isQuoteEmpty">
       <summary-table :collectors="collectors" :comment="comment" :isCurrent="true"></summary-table>
     </div>
     <div class="card bg-danger-light mt-2 mb-2 d-print-none">
