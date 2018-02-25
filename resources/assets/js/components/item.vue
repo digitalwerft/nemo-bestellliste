@@ -155,7 +155,11 @@ const item = {
       get() {
         return this.item.quantity;
       },
-      set(value){ return this.debouncer(value) }
+      set(value) {
+        if(this.quantity != value) {
+          return this.debouncer(value)
+        }
+      }
     },
     // get price of this item with speciied quantity
     sum() {
@@ -176,12 +180,23 @@ const item = {
     }
   },
   methods: {
-    deleteItem() {
-      console.log('deleted')
+    destroy() {
+      this.onItemDelete()
     },
     select() {
       if(!this.selected) {
         this.$store.commit('SELECT_ITEM', this.itemId)
+        this.$store.commit('SELECT_COLLECTOR', this.collectorId)
+      }
+    },
+    increaseQuantity() {
+      if(!this.hasNoNumber) {
+        this.$children[1].increaseNumber()
+      }
+    },
+    decreaseQuantity() {
+      if(!this.hasNoNumber) {
+        this.$children[1].decreaseNumber()
       }
     },
     // update item quantityValue in store
@@ -193,7 +208,9 @@ const item = {
     },
     // Invoke item deletion
     onItemDelete(e) {
-      e.preventDefault()
+      if(e) {
+        e.preventDefault()
+      }
       // If item has no number it exists only in the data store
       if(!this.hasNoNumber) {
         this.$store.dispatch('deleteItem', {itemObj: this, collector: {id: this.collectorId, campaign_id: this.campaignId}}).then(()=> {
@@ -202,6 +219,11 @@ const item = {
           }, 250)
         })
       } else {
+        var itemIndex = this.$store.getters.getItemIndexById(this.item.id)
+        itemIndex = (itemIndex === 0) ? 0 : itemIndex-1
+        if(this.collector.items[itemIndex]) {
+          this.$store.commit('SELECT_ITEM', this.collector.items[itemIndex].id)
+        }
         this.$store.commit('DELETE_ITEM', this)
         if(!this.$store.getters.hasUnsavedItems) {
           this.$store.commit('STOP_EDITING')

@@ -70,6 +70,9 @@ export default new Vuex.Store({
     CREATING_COLLECTOR(state) {
       state.action = 'CREATING COLLECTOR'
     },
+    EDITING_COLLECTOR(state) {
+      state.action = 'EDITING_COLLECTOR'
+    },
     SAVING_ITEM(state) {
       state.action = 'SAVING ITEM'
     },

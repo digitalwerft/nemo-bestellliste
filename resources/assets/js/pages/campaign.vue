@@ -9,8 +9,8 @@
     <section class="order-navigation">
       <navbar v-model="search" @oncollectorcreate="createCollector"></navbar>
     </section>
-    <section class="orders">
-      <div class="container" v-shortkey="['shift', 't']" @shortkey.native="createCollector($event)">
+    <section class="orders" @shortkey="handleShortcuts" v-shortkey="{down: ['arrowdown'], up: ['arrowup'], tab: ['tab'], shiftTab: ['shift', 'tab'], plus: ['arrowright'], minus: ['arrowleft'], delete: ['46'], create: ['enter'], cancel: ['esc'], createCollector: ['shift', 't'], number: ['1']}">
+      <div class="container">
         <div v-for="(collector, index) in filteredCollector">
           <collector :collector-id="collector.id" :filterkey="search" v-on:delete-collector="onCollectorDelete(collector)" v-on:save-collector="onCollectorSave(collector)" v-on:editing-collector="handleEditing"></collector>
           </div>
@@ -154,14 +154,124 @@ export default {
       } else {
         this.$store.commit('RESET_ACTIONS')
       }
-    },
-    data(obj) {
-      //console.log(obj);
     }
   },
   methods: {
+    handleShortcuts(event) {
+      //console.log(event)
+      switch (event.srcKey) {
+        case 'down':
+          if(!this.$store.state.collectors.selectedItem) {
+            var firstCollector = this.$store.state.collectors.all[0]
+            var firstItem = firstCollector.items[0]
+            if(firstItem) {
+              this.$store.commit('SELECT_ITEM', firstItem.id)
+              this.$store.commit('SELECT_COLLECTOR', firstCollector.id)
+            }
+          }
+          else {
+            var next = this.$store.getters.getNextItemWithCollector
+            if(next) {
+              this.$store.commit('SELECT_ITEM', next.item.id)
+              this.$store.commit('SELECT_COLLECTOR', next.collector.id)
+            }
+          }
+        break
+        case 'up':
+          if(!this.$store.state.collectors.selectedItem) {
+            var firstCollector = this.$store.state.collectors.all[0]
+            var firstItem = firstCollector.items[0]
+            if(firstItem) {
+              this.$store.commit('SELECT_ITEM', firstItem.id)
+              this.$store.commit('SELECT_COLLECTOR', firstCollector.id)
+            }
+          }
+          var previous = this.$store.getters.getPreviousItemWithCollector
+          if(previous) {
+            this.$store.commit('SELECT_ITEM', previous.item.id)
+            this.$store.commit('SELECT_COLLECTOR', previous.collector.id)
+          }
+        break
+        case 'tab':
+          var nextCollector = this.$store.getters.getNextCollector
+          if(nextCollector) {
+            this.$store.commit('SELECT_COLLECTOR', nextCollector.id)
+            if(nextCollector.items[0]) {
+              this.$store.commit('SELECT_ITEM', nextCollector.items[0].id)
+            }
+          }
+        break
+        case 'shiftTab':
+        var previousCollector = this.$store.getters.getPreviousCollector
+        if(previousCollector) {
+          this.$store.commit('SELECT_COLLECTOR', previousCollector.id)
+          if(previousCollector.items[0]) {
+            this.$store.commit('SELECT_ITEM', previousCollector.items[previousCollector.items.length-1].id)
+          }
+        }
+        break
+        case 'plus':
+          var item = this.getSelectedItemComponent()
+          if(item) {
+            item.increaseQuantity()
+          }
+        break
+        case 'minus':
+          var item = this.getSelectedItemComponent()
+          if(item) {
+            item.decreaseQuantity()
+          }
+        break
+        case 'create':
+          var collector = this.$store.getters.getCollectorById(this.$store.state.collectors.selectedCollector)
+          if(collector) {
+            this.$store.commit('START_EDITING', 'CREATING_ITEM')
+            this.$store.commit('CREATE_ITEM', collector)
+            this.$store.commit('SELECT_ITEM', collector.items[collector.items.length-1].id)
+          }
+        break
+        case 'cancel':
+          if(this.$store.state.action == 'EDITING_COLLECTOR') {
+            this.cancelCollectorEditing()
+          } else if(this.$store.state.action == 'CREATING_ITEM') {
+            this.cancelItemCreation()
+          }
+        break
+        case 'createCollector':
+          this.createCollector()
+        break
+        case 'number':
+          console.log(event)
+        break
+      }
+    },
     reload() {
       location.reload()
+    },
+    cancelCollectorEditing() {
+      console.log('cancel collector editing')
+    },
+    cancelItemCreation() {
+      var item = this.getSelectedItemComponent()
+      if(this.$store.getters.itemHasNoNumber(item.item.id)) {
+        item.destroy()
+      }
+    },
+    getSelectedItemComponent() {
+      var collectorComponents = _.filter(this.$children, component => {
+        return component.isCollector
+      })
+      var collectorComponent = _.filter(collectorComponents, collector => {
+        return collector.collectorId == this.$store.state.collectors.selectedCollector
+      })
+      if(collectorComponent.length > 0) {
+        var itemComponent = _.filter(collectorComponent[0].$children, item => {
+          return item.item.id == this.$store.state.collectors.selectedItem
+        })
+      }
+      if(itemComponent && itemComponent.length > 0) {
+        return itemComponent[0]
+      }
     },
     hideSpinner() {
       const spinner = $('.loading-overlay')
@@ -223,6 +333,7 @@ export default {
       }
       if(!this.hasUnsavedCollector) {
         this.$store.commit('CREATE_COLLECTOR')
+        this.$store.commit('EDITING_COLLECTOR')
       }
     }
   }

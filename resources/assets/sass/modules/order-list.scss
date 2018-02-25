@@ -5,6 +5,17 @@ section.orders {
     background: rgba($black, .03);
   }
   .collector {
+    position: relative;
+    transition: transform .25s;
+    &.selected {
+      //transform: translateY(-2px) scale(1.005);
+      z-index: 2;
+      .card {
+        border-color: $primary !important;
+        box-shadow: inset 0 0 0 transparent, 0 4px 20px rgba($black, .15);
+
+      }
+    }
     @include media-breakpoint-down(sm) {
       &.opened {
         .card {

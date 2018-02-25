@@ -1,5 +1,5 @@
 <template>
-<div class="row collector small-gutters mb-1 row-eq-height" :class="{opened: !collapsed}">
+<div class="row collector small-gutters mb-1 row-eq-height" :class="{opened: !collapsed, selected: selected}">
   <div class="col-md-5">
     <div class="card collector-name-card" :class="{editing: editing, deleting: showModal}">
       <div class="card-body collector-name">
@@ -48,7 +48,7 @@
     <div class="card">
       <div class="card-body">
         <div v-for="(item, index) in collector.items">
-          <item :item="item" :disabled="editing" v-on:selected="select" :collectorId="collector.id" :campaignId="collector.campaign_id" :index="index" @shortkey.native="selectNextItem" v-shortkey="{down: ['arrowdown'], up: ['arrowup']}"></item>
+          <item :item="item" :disabled="editing" v-on:selected="select" :collectorId="collector.id" :campaignId="collector.campaign_id" :index="index"></item>
         </div>
         <div class="no-items text-center" v-if="collector.items.length<1">
           <small class="text-muted text-danger text-center" v-if="!collector.name">Dieser Teilnehmer braucht einen Namen, bevor du ihm Artikel zuweisen kannst.</small>
@@ -102,7 +102,8 @@ export default {
       oldName: '',
       showModal: false,
       collapsed: true,
-      textareaSize: '38px'
+      textareaSize: '38px',
+      isCollector: true
     }
   },
   computed: {
@@ -118,6 +119,9 @@ export default {
           newName: value
         })
       }
+    },
+    selected() {
+      return this.$store.getters.isCollectorSelected(this.collectorId)
     },
     // get current Collector by this.collectorId from store component
     collector() {
@@ -160,19 +164,6 @@ export default {
     }
   },
   methods: {
-    selectNextItem(event) {
-      if(event.srcKey == 'down') {
-        var nextItem = this.$store.getters.getNextItem
-        if(nextItem) {
-          this.$store.commit('SELECT_ITEM', nextItem.id)
-        }
-      } else if(event.srcKey == 'up'){
-        var previousItem = this.$store.getters.getPreviousItem
-        if(previousItem) {
-          this.$store.commit('SELECT_ITEM', previousItem.id)
-        }
-      }
-    },
     validateName(input) {
       //
     },

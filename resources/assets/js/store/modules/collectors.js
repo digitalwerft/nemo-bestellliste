@@ -6,7 +6,8 @@ import iziToast from 'izitoast'
 const state = {
   all: [],
   requestComplete: false,
-  selectedItem: null
+  selectedItem: null,
+  selectedCollector: null
 }
 
 function stopLoading(commit, withError = false, timeout = 500) {
@@ -20,22 +21,103 @@ function stopLoading(commit, withError = false, timeout = 500) {
 
 const getters = {
   getNextItem: (state, getters) => {
+    var next =  getters.getNextItemWithCollector
+    if(next) {
+      return next.item
+    }
+  },
+  getNextItemWithCollector: (state, getters) => {
     var collector = getters.getCollectorByItemId(state.selectedItem)
 
     if(collector) {
       var index = _.findIndex(collector.items, ['id', state.selectedItem])
       if(collector.items[index+1]) {
-        return collector.items[index+1]
+        return {
+          item: collector.items[index+1],
+          collector: collector
+        }
+      } else {
+        var collectorIndex = _.findIndex(state.all, ['id', collector.id])
+
+        if(state.all[collectorIndex+1] && !_.isEmpty(state.all[collectorIndex+1].items)) {
+          return {
+            item: state.all[collectorIndex+1].items[0],
+            collector: state.all[collectorIndex+1]
+          }
+        }
       }
     }
   },
-  getPreviousItem: (state, getters) => {
+  getPreviousItemWithCollector: (state, getters) => {
     var collector = getters.getCollectorByItemId(state.selectedItem)
 
     if(collector) {
       var index = _.findIndex(collector.items, ['id', state.selectedItem])
       if(collector.items[index-1]) {
-        return collector.items[index-1]
+        return {
+          item: collector.items[index-1],
+          collector: collector
+        }
+      } else {
+        var collectorIndex = _.findIndex(state.all, ['id', collector.id])
+        if(state.all[collectorIndex-1] && !_.isEmpty(state.all[collectorIndex-1].items)) {
+          return {
+            item: state.all[collectorIndex-1].items[state.all[collectorIndex-1].items.length-1],
+            collector: state.all[collectorIndex-1]
+          }
+        }
+      }
+    }
+  },
+  getItemIndexById: (state, getters) => id => {
+    var collector = getters.getCollectorByItemId(id)
+    var index = 0
+    if(collector && !_.isEmpty(collector.items)) {
+      index = _.findIndex(collector.items, ['id', id])
+    }
+    return index
+  },
+  getPreviousItem: (state, getters) => {
+    var previous =  getters.getNextItemWithCollector
+    if(previous) {
+      return previous.item
+    }
+  },
+  getNextCollector: (state, getters) => {
+    if(!state.selectedCollector) {
+      return state.all[0]
+    }
+    var index = _.findIndex(state.all, ['id', state.selectedCollector])
+    if(state.all[index+1]) {
+      return state.all[index+1]
+    }
+  },
+  getPreviousCollector: (state, getters) => {
+    if(!state.selectedCollector) {
+      return state.all[0]
+    }
+    var index = _.findIndex(state.all, ['id', state.selectedCollector])
+    if(state.all[index-1]) {
+      return state.all[index-1]
+    }
+  },
+  getSelectedCollector: (state, getters) => {
+    if(state.selectedCollector) {
+      return getters.getCollectorById(state.selectedCollector)
+    }
+  },
+  getSelectedItem: (state, getters) => {
+    getters.getItemById(state.selectedItem)
+  },
+  getItemById: (state, getters) => id => {
+    var collector = getters.getCollectorByItemId(id)
+    if(collector) {
+      var item = _.filter(collector.items, item => {
+        return item.id == id
+      })
+
+      if(item) {
+        return item
       }
     }
   },
@@ -55,6 +137,9 @@ const getters = {
   },
   isItemSelected: state => item_id => {
     return state.selectedItem == item_id
+  },
+  isCollectorSelected: state => collector_id => {
+    return state.selectedCollector == collector_id
   },
   getCollectorById: state => id => {
     return state.all.find(collector => {
@@ -180,6 +265,9 @@ const getters = {
   },
   getRootItemByNumber: (state, getters, rootState) => number => {
     return rootState.getters.getItemByNumber(number);
+  },
+  itemHasNoNumber: (state, getters) => id => {
+    return _.startsWith(id, 'new-item')
   }
 }
 
@@ -509,6 +597,9 @@ const mutations = {
   },
   SELECT_ITEM(state, item_id) {
     state.selectedItem = item_id
+  },
+  SELECT_COLLECTOR(state, collector_id) {
+    state.selectedCollector = collector_id
   }
 }
 
