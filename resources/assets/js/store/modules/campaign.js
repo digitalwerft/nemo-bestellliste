@@ -36,17 +36,6 @@ const getters = {
 }
 
 const actions = {
-  fetchOrders({
-    commit
-  }, {
-    self
-  }) {
-    return Api.fetchOrders(self.$route.params.id).then(response => {
-      commit('FETCH_ORDERS', response.data)
-    }).catch(error => {
-      //
-    })
-  },
   fetchCampaign({
     commit
   }, {
@@ -66,6 +55,22 @@ const actions = {
           commit('REQUEST_ERROR', 'FETCHED_CAMPAIGN')
         })
       })
+  },
+  placeOrder({
+    commit
+  }, {
+    self
+  }) {
+    commit('START_LOADING', 'PLACING_ORDER')
+    return new Promise((resolve, reject) => {
+      Api.placeOrder(self.$route.params.id).then(response => {
+        commit('STOP_LOADING', 'ORDER_PLACED')
+        resolve()
+      }).catch(error => {
+      commit('REQUEST_ERROR', 'ORDER_PLACED')
+        reject()
+      })
+    })
   },
   saveComment({
     commit

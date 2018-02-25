@@ -18,7 +18,9 @@ const actions = {
     self
   }) {
     commit('START_LOADING', 'FETCHING_ORDERS')
+
     return new Promise((resolve, reject) => {
+
       Api.fetchOrders(self.$route.params.id)
         .then(response => {
           commit('FETCH_ORDERS', response.data)
