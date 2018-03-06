@@ -88,6 +88,8 @@ body.printing {
 
 .printing {
   overflow: visible !important;
+  background: white !important;
+  font-size: 11px;
 
   .d-print-table-cell {
     display: table-cell !important;
@@ -131,4 +133,14 @@ body.printing {
   }
 
   thead th { height: 1.1cm; }
+}
+
+
+.summary-container {
+  .shipping-address {
+    border: 1px solid rgba(black, .3);
+    padding: 20px;
+    color: rgba($black, .6);
+    margin-bottom: 25px;
+  }
 }

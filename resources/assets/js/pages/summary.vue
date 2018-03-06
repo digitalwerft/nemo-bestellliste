@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isLoading" class="container" :class="{printing: printing}" v-shortkey="['meta', 'p']" @shortkey="print">
+  <div v-if="!isLoading" class="container summary-container" :class="{printing: printing}" v-shortkey="['meta', 'p']" @shortkey="print">
     <div class="card mb-2 d-print-none">
       <div class="card-body">
         <a href="#" @click.prevent="logout" class="btn btn-outline-danger ml-3 float-right"><i class="mdi mdi-logout">&nbsp;</i>abmelden</a>
@@ -12,6 +12,12 @@
 
     <div class="card mb-2 d-print-no-border">
       <div class="card-body pt-4 d-print-no-padding">
+        <div class="shipping-address">
+          <h6 class="card-title font-weight-bold">Lieferadresse</h6>
+          {{ fundraiser.address.first_name }} {{ fundraiser.address.last_name }} <br>
+          {{ fundraiser.address.address }} <br>
+          {{ fundraiser.address.postal }}
+        </div>
         <div class="quote" v-if="!isQuoteEmpty">
           <summary-table :collectors="collectors" :comment="comment" :isCurrent="true"></summary-table>
         </div>
@@ -25,7 +31,7 @@
         </div>
         <div class="orders-list" v-for="(order, index) in orders">
           <div class="order">
-            <h6 class="mt-2 font-weight-bold">Bestellnr. #{{ order.identifier }}</h6>
+            <h6 class="mt-2 font-weight-bold">Bestellnr. #{{ order.identifier }} – {{ formatDate(order.created_at) }}</h6>
             <summary-table :collectors="order.quote.collectors" :comment="order.comment"></summary-table>
             <hr v-if="(index+1 != orders.length)">
           </div>
@@ -75,7 +81,7 @@
     created() {
       const store = this.$store
       const self  = { self: this }
-      const modules = ['campaign', 'collectors', 'orders']
+      const modules = ['campaign', 'collectors', 'orders', 'fundraiser']
       let reload = this.forceReload
       var afterPrint = () => {
         this.$store.commit('RESET_ACTIONS')
@@ -93,6 +99,7 @@
       }
 
       window.onafterprint = afterPrint
+
       // If needed components are already loaded, stop execution
       if (store.getters.hasLoaded(modules) && !reload) {
         return
@@ -113,7 +120,10 @@
     },
     computed: {
       printing() {
-        return this.$store.state.action == 'PRINTING'
+        if(this.$route.query.print == 1) {
+          this.$store.commit('PRINTING')
+        }
+        return this.$route.query.print == 1
       },
       orders() {
         return this.$store.getters.getOrders
@@ -134,6 +144,9 @@
       comment() {
         return this.$store.getters.getComment
       },
+      fundraiser() {
+        return this.$store.getters.getFundraiser
+      },
       isQuoteEmpty() {
         return this.$store.getters.isQuoteEmpty
       }
@@ -150,10 +163,11 @@
         })
       },
       print() {
-        this.$store.commit('PRINTING')
-        setTimeout(() => {
+        //this.$store.commit('PRINTING')
+        /*setTimeout(() => {
           window.print()
-        }, 10)
+        }, 10)*/
+        window.open(location.href + '?print=1')
       },
       formatDate(date) {
         return utils.formatDate(date)

@@ -17,7 +17,7 @@
               Eure Bestellung wird nun von unserem Team bearbeitet und an die angegebene Lieferadresse versendet.<br>
               <small class="text-muted">Hinweis: Diese Bestellung lässt sich jetzt nicht mehr ändern. Ihr könnt aber jederzeit noch <router-link :to="{ name: 'campaign' }">Nachbestellungen aufgeben</router-link>.</small>
             </p>
-            <router-link :to="{ name: 'home' }" class="btn btn-primary btn-block">Zur Übersicht</router-link>
+            <router-link :to="{ name: 'home' }" class="btn btn-primary btn-block">zurück zur Übersicht</router-link>
           </div>
         </div>
       </div>
