@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="card d-print-no-border">
-      <div class="card-body pt-1 pb-1">
+      <div class="card-body pt-1 pb-3">
         <div class="navbar pl-0 pr-0">
           <span class="navbar-brand">Zusammenfassung <span v-if="isCurrent">der aktuellen Bestelliste</span></span>
           <ul class="navbar-nav ml-auto d-print-none">
@@ -35,19 +35,19 @@
                         </a>
                       </th>
                       <th scope="col">
-                        <a href="#" @click.prevent="sort('invoice')">
+                        <a href="#" @click.prevent="sort('invoice')" title="Der Rechnungsbetrag für die bestellten Produkte">
                           Rechnungsbetrag
                           <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='invoice'"></i>
                         </a>
                       </th>
                       <th scope="col">
-                        <a href="#" @click.prevent="sort('returns')">
+                        <a href="#" @click.prevent="sort('returns')" title="Die Spende bleibt bei eurem Projekt und wird nicht überwiesen">
                           Spendensumme
                           <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='returns'"></i>
                         </a>
                       </th>
                       <th scope="col">
-                        <a href="#" @click.prevent="sort('total')">
+                        <a href="#" @click.prevent="sort('total')" title="Dieser Betrag wird von den Teilnehmern eingesammelt">
                           Gesamtbetrag
                           <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='total'"></i>
                         </a>
@@ -56,11 +56,28 @@
                   </thead>
                   <tbody>
                     <tr v-for="item in sortedItems">
-                      <td data-label="Artikel-Nr.">{{ item.number }}<span class="d-none d-md-inline"> – {{ item.name }}</span></td>
+                      <td data-label="Artikel-Nr.">{{ item.number }}<span class="d-none d-md-inline d-print-none"> – {{ item.name }}</span></td>
                       <td data-label="Anzahl Boxen">{{ item.quantity }}</td>
                       <td data-label="Rechnungsbetrag">{{ item.quantity*item.gross_price }}€</td>
                       <td data-label="Spende">{{ item.suggested_donation*item.quantity }}€</td>
                       <td data-label="Gesamtbetrag">{{ getItemTotal(item) }}€</td>
+                    </tr>
+                    <tr class="footer-header">
+                      <td scope="col" class="text-muted">
+                          Artikel
+                      </td>
+                      <td scope="col" class="text-muted">
+                          Anzahl Boxen
+                      </td>
+                      <td scope="col" class="text-muted">
+                          Rechnungsbetrag
+                      </td>
+                      <td scope="col" class="text-muted">
+                        Spendensumme
+                      </td>
+                      <td scope="col" class="text-muted">
+                          Gesamtbetrag
+                      </td>
                     </tr>
                     <tr class="tfooter">
                       <td>Summe:</td>
@@ -72,8 +89,9 @@
                   </tbody>
                 </table>
                 <p class="d-print-none">
-                  Rabattaktionen und Versandkosten (bei unter 100 bestellten Boxen) sind im o.g. Rechnungsbetrag noch nicht enthalten. <br>
-                  Voraussichtliche Versandkosten: {{ shippingCost }}€ <br>
+                  Aktionen und Versandkosten (bei unter 100 bestellten Boxen) sind im o.g. Rechnungsbetrag noch nicht enthalten. <br>
+                  Mit deiner Lieferung erhältst du eine Rechnung für die gelieferten Produkte. Danach hast du 14 Tage Zeit, den Rechnungsbetrag zu überweisen. <br>
+                  Versandkosten: {{ shippingCost }}€ <br>
                 </p>
               </div>
             </div>
@@ -141,6 +159,7 @@
         </transition>
       </div>
     </div>
+
   </div>
 </template>
 <script>

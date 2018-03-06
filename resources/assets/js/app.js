@@ -28,7 +28,7 @@ import * as directives from './directives'
 Vue.use(VueRouter)
 Vue.use(VueWaypoint)
 Vue.use(shortkey)
-Vue.use(Popover)
+Vue.use(Popover, {tooltip: true})
 
 Vue.prototype.$http = axios;
 

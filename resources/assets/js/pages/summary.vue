@@ -10,6 +10,14 @@
       </div>
     </div>
 
+    <div class="card mb-2 d-print-no-border">
+      <div class="card-body pt-4 d-print-no-padding">
+        <div class="quote" v-if="!isQuoteEmpty">
+          <summary-table :collectors="collectors" :comment="comment" :isCurrent="true"></summary-table>
+        </div>
+      </div>
+    </div>
+
     <div class="card mb-2 orders card d-print-no-border" v-if="orders.length > 0">
       <div class="card-body pt-1 d-print-no-padding">
         <div class="navbar pl-0 pr-0">
@@ -24,12 +32,9 @@
         </div>
       </div>
     </div>
-    <div class="quote" v-if="!isQuoteEmpty">
-      <summary-table :collectors="collectors" :comment="comment" :isCurrent="true"></summary-table>
-    </div>
     <div class="card bg-danger-light mt-2 mb-2 d-print-none" v-if="!isQuoteEmpty">
       <div class="card-body">
-        Wenn ihr eure Bestellung abschickt, wird sie von uns gepackt und kann nicht mehr geändert werden. Nehmt euch daher bitte genügend Zeit, sie nochmals zu überprüfen. Nachbestellungen sind natürlich jederzeit möglich.
+        Wenn ihr eure Bestellung abschickt, wird sie von uns gepackt und kann nicht mehr geändert werden. Nehmt euch daher bitte genügend Zeit, sie nochmals zu überprüfen.
       </div>
     </div>
 
@@ -41,16 +46,16 @@
         <a href="#" @click.prevent="print" class="btn btn-secondary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
       </div>
     </div>
-    <a href="#" @click.prevent="showModal = true" class="btn btn-danger btn-block btn-lg d-print-none mt-2" v-if="!isQuoteEmpty"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
+    <a href="#" @click.prevent="showModal = true" class="btn btn-success btn-block btn-lg d-print-none mt-2" v-if="!isQuoteEmpty"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
 
     <modal v-if="showModal" @close="showModal = false" :large="true">
       <h4 slot="header"><strong>Bestellung bestätigen</strong></h4>
       <span slot="body">
-        Bist du dir sicher, dass du die Bestellung jetzt aufgeben willst? Änderungen an der aktuellen Liste sind dann nicht mehr möglich. Wir empfehlen dir, lieber noch ein zweites Mal drüber zu schauen, damit ihr euch auch zu 100% sicher seid, dass die Bestellung korrekt ist. Nachbestellungen sind natürlich weiterhin jederzeit möglich.
+        Bist du dir sicher, dass du die Bestellung jetzt aufgeben willst? Änderungen an der aktuellen Liste sind dann nicht mehr möglich. Wir empfehlen dir, lieber noch ein zweites Mal drüber zu schauen.
       </span>
       <div slot="footer" class="modal-footer">
-        <a href="#" class="btn btn-secondary btn-lg col" @click.prevent="showModal = false">abbrechen</a>
-        <a href="#" class="btn btn-danger btn-lg col" @click.prevent="placeOrder">bestellen</a>
+        <a href="#" class="btn btn-danger btn-lg col" @click.prevent="showModal = false">abbrechen</a>
+        <a href="#" class="btn btn-success btn-lg col" @click.prevent="placeOrder">bestellen</a>
       </div>
     </modal>
 
