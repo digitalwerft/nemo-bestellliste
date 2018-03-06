@@ -134,7 +134,7 @@ const store =  new Vuex.Store({
       state.action = 'PRINTING'
     },
     CLEAR_STATE(state) {
-      clearState()
+      resetState()
     }
   },
   getters: {

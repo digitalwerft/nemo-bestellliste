@@ -30,8 +30,9 @@ import store from '../store'
   export default {
     store,
     created() {
-      if(this.$store.state.status !== "ORDER_PLACED") {
-        this.$router.push({name: 'home'})
+      if(this.$store.state.status != "ORDER_PLACED") {
+        //this.$router.push({name: 'home'})
+        console.log('?')
       }
       this.$store.commit('CLEAR_STATE')
       this.hideSpinner()
