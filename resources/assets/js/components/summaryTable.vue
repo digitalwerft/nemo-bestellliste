@@ -146,6 +146,12 @@
 <script>
   export default {
     props: ['collectors', 'comment', 'isCurrent'],
+    created() {
+      if(this.isCurrent) {
+        this.showPrintList = true
+        this.showSummary = true
+      }
+    },
     data() {
       return {
         showPrintList: false,

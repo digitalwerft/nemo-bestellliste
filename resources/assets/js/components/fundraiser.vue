@@ -172,8 +172,8 @@
           quote: this.quote,
           newComment: this.form.comment
         }).then(() => {
-          this.editingDetails = false
-          this.hasChanged = false
+          //this.editingDetails = false
+          //this.hasChanged = false
         }).catch(error => {
           //
         })

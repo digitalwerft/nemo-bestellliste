@@ -9,6 +9,18 @@
           <div class="alert alert-info">
             <i class="mdi mdi-information-outline mdi-18px">&nbsp;</i>Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns gerne jederzeit von Mo-Fr 9-18 Uhr unter <a href="tel:076170788833">0761 / 707 888 33</a> an oder schreibt uns eine E-Mail an <a href="mailto:bestellung@neuemasche.com">bestellung@neuemasche.com</a>.
           </div>
+          <h5>In 3 Schritten zu deiner Sammelbestellung:</h5>
+          <ul>
+            <li>
+              1. Teilnehmer hinzufügen und jeweilige Bestellungen (Artikelnummer und Anzahl) eintragen
+            </li>
+            <li>
+              2. Zusammenfassung kontrollieren und drucken
+            </li>
+            <li>
+              3. Abschicken
+            </li>
+          </ul>
         </div>
       </div>
     </div>

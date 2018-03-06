@@ -1,48 +1,48 @@
 <template>
   <div v-if="!isLoading">
     <section>
-      <div class="container">
+      <div class="container" style="max-width: 700px">
         <div class="card">
           <div class="card-body">
             <a href="#" @click.prevent="logout" class="btn btn-sm btn-outline-danger logout-button ml-3 float-right"><i class="mdi mdi-logout">&nbsp;</i>abmelden</a>
             <h4 class="card-title pb-3 mb-3">Hallo {{ fundraiser.first_name }}!</h4>
 
             <p>
-              Bitte wähle zunächst dasjenige Projekt aus, für welches du
-              eine Sammelbestellung aufgeben/erstellen möchtest:
+              Bitte wähle das Projekt, für das du eine Sammelbestellung aufgeben möchtest.
             </p>
           </div>
         </div>
       </div>
     </section>
     <section class="campaigns">
-      <div class="container">
+      <div class="container" style="max-width: 700px">
         <div v-for="(campaign, index) in campaigns" class="card mt-1">
           <div class="card-body">
-            SBNr #{{ campaign.id }}: <router-link :to="{ name: 'campaign', params: {id: campaign.id}}">{{ campaign.group }}</router-link>
+            <h5 class="card-title">
+              SBNr #{{ campaign.id }} <router-link :to="{ name: 'campaign', params: {id: campaign.id}}">{{ campaign.group }}</router-link>
+            </h5>
+            <p class="card-text">
+              Aktionszeitraum: {{ date(campaign.starts_at) }} - {{ date(campaign.ends_at) }}
+            </p>
+          </div>
+          <div class="card-footer">
+            <div class="row no-gutters">
+              <div class="col">
+                <router-link :to="{ name: 'campaign', params: {id: campaign.id}}" class="btn btn-primary btn-block">Bestellung bearbeiten</router-link>
+              </div>
+              <div class="col">
+                <router-link :to="{ name: 'summary', params: {id: campaign.id}}" class="btn btn-success btn-block">Bestellung aufgeben</router-link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
-    <!--
-        <div class="alert alert-no-collectors mt-3 text-muted text-center" v-if="filteredCollector && filteredCollector.length < 1">
-          Deine Suche nach <mark>{{ search }}</mark> erzielte leider keine Treffer.
-        </div>
-        <div class="alert alert-no-collectors mt-3 text-muted text-center" v-if="collectors.length < 1">
-          Noch wurden keine Teilnehmer zu dieser Bestellung hinzugefügt.
-          <a href="#" class="btn btn-lg btn-block btn-success mt-3" @click.prevent="createCollector" >Jetzt ersten Teilnehmer hinzufügen!</a>
-        </div>
-        <a href="" class="btn btn-light btn-lg btn-block mt-3" @click.prevent="createCollector" :class="{hidden: (search != ''), disabled: hasUnsavedCollector}" v-if="collectors.length > 0">
-                      <i class="mdi mdi-account-plus"></i> Teilnehmer hinzufügen
-                  </a>
-      </div>
-    </section>
-  -->
   </div>
 </template>
 <script>
 import store from '../store'
-
+import utils from '../services/utils'
 import collector from '../components/collector.vue'
 import navbar from '../components/navbar.vue'
 import infoBox from '../components/info-box.vue'
@@ -106,6 +106,9 @@ export default {
     }
   },
   methods: {
+    date(date) {
+      return utils.formatDate(date)
+    },
     hideSpinner() {
       const spinner = $('.loading-overlay')
 
