@@ -189,8 +189,8 @@
               console.log(i.number, item.number, i.number === item.number)
               return(i.number === item.number)
             })
-            //console.log(item.number)
-            if(itemExists > 0) {
+            console.log(itemExists, summarizedItems[itemExists])
+            if(itemExists > -1) {
               summarizedItems[itemExists].quantity += item.quantity
             } else {
               summarizedItems.push({
