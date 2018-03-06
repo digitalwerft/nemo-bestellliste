@@ -14,11 +14,10 @@
             </div>
             <p>
               <strong>Herzlichen Glückwunsch!</strong> <br>
-              Eure Bestellung wird nun von unserem Team verarbeitet und an eure Kontakt-Person gesendet.br <br>
+              Eure Bestellung wird nun von unserem Team bearbeitet und an die angegebene Lieferadresse versendet.<br>
               <small class="text-muted">Hinweis: Diese Bestellung lässt sich jetzt nicht mehr ändern. Ihr könnt aber jederzeit noch <router-link :to="{ name: 'campaign' }">Nachbestellungen aufgeben</router-link>.</small>
             </p>
-            <router-link :to="{ name: 'campaign' }" class="btn btn-primary btn-block">Nachbestellung aufgeben</router-link>
-            <a href="" class="btn btn-success btn-block" @click.prevent>Nächste schritte</a>
+            <router-link :to="{ name: 'home' }" class="btn btn-primary btn-block">Zur Übersicht</router-link>
           </div>
         </div>
       </div>
@@ -34,6 +33,7 @@ import store from '../store'
       if(this.$store.state.status !== "ORDER_PLACED") {
         this.$router.push({name: 'home'})
       }
+      this.$store.commit('CLEAR_STATE')
       this.hideSpinner()
     },
     data() {

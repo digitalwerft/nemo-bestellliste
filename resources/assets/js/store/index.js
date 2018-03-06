@@ -59,7 +59,6 @@ const store =  new Vuex.Store({
     },
     FORCE_RELOAD(state) {
       state.reload = true
-      resetState()
     },
     START_LOADING(state, action = 'SAVING') {
       state.actionCompleted = state.action
@@ -133,6 +132,9 @@ const store =  new Vuex.Store({
     PRINTING(state) {
       state.actionCompleted = state.action
       state.action = 'PRINTING'
+    },
+    CLEAR_STATE(state) {
+      clearState()
     }
   },
   getters: {
