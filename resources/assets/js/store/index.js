@@ -17,7 +17,7 @@ Vue.use(Vuex);
 
 const debug = true
 
-export default new Vuex.Store({
+const store =  new Vuex.Store({
   state: {
     isAuthenticated: false,
     isLoading: false,
@@ -236,9 +236,11 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Api.logout().then(() => {
           Auth.logout()
+          resetState()
           commit('LOGOUT')
           resolve()
         }).catch(error => {
+          resetState()
           commit('LOGOUT')
           resolve()
         })
@@ -247,3 +249,11 @@ export default new Vuex.Store({
   },
   strict: debug
 });
+
+export default store
+
+const initialStateCopy = JSON.parse(JSON.stringify(store.state))
+
+export function resetState() {
+  store.replaceState(JSON.parse(JSON.stringify(initialStateCopy)))
+}
