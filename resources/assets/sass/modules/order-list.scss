@@ -86,7 +86,7 @@ section.orders {
 
   .collector-name {
     position: relative;
-    padding-bottom: 54px;
+    padding-bottom: 5px;
 
     @include media-breakpoint-down(xs) {
       padding-bottom: 20px;
@@ -272,9 +272,9 @@ section.orders {
     }
 
     &.not-saved {
-      border-color: rgba($red, .4) !important;
-      box-shadow: 0 0 3px rgba($red, .13);
-      background-color: rgba($red, .02)
+      border-color: rgba($orange, .5) !important;
+      box-shadow: 0 0 3px rgba($orange, .23);
+      background-color: rgba($orange, .05)
     }
 
     &.saved {

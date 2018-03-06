@@ -186,8 +186,10 @@
         this.collectors.forEach(collector => {
           collector.items.forEach(item => {
             var itemExists = _.findIndex(summarizedItems, i => {
+              console.log(i.number, item.number, i.number === item.number)
               return(i.number === item.number)
             })
+            //console.log(item.number)
             if(itemExists > 0) {
               summarizedItems[itemExists].quantity += item.quantity
             } else {

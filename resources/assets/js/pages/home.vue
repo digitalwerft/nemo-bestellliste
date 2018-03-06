@@ -19,7 +19,7 @@
         <div v-for="(campaign, index) in campaigns" class="card mt-1">
           <div class="card-body">
             <h5 class="card-title">
-              SBNr #{{ campaign.id }} <router-link :to="{ name: 'campaign', params: {id: campaign.id}}">{{ campaign.group }}</router-link>
+              Sammelbestellnummer: #{{ campaign.id }} – <router-link :to="{ name: 'campaign', params: {id: campaign.id}}" class="font-weight-bold">{{ campaign.group }}</router-link>
             </h5>
             <p class="card-text">
               Aktionszeitraum: {{ date(campaign.starts_at) }} - {{ date(campaign.ends_at) }}
@@ -28,10 +28,7 @@
           <div class="card-footer">
             <div class="row no-gutters">
               <div class="col">
-                <router-link :to="{ name: 'campaign', params: {id: campaign.id}}" class="btn btn-primary btn-block">Bestellung bearbeiten</router-link>
-              </div>
-              <div class="col">
-                <router-link :to="{ name: 'summary', params: {id: campaign.id}}" class="btn btn-success btn-block">Bestellung aufgeben</router-link>
+                <router-link :to="{ name: 'campaign', params: {id: campaign.id}}" class="btn btn-primary btn-block">{{ buttonText }}</router-link>
               </div>
             </div>
           </div>
@@ -89,6 +86,9 @@ export default {
     },
     items() {
       return this.$store.getters.getAllItems;
+    },
+    buttonText() {
+        return "Bestellung eingeben"
     },
     filteredCollector() {
       if (!_.isEmpty(this.collectors)) {

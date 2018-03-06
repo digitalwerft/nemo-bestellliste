@@ -8,13 +8,13 @@
       <span class="navbar-brand mr-0">Bestellliste</span>
       <transition name="fade">
         <div class="form-inline d-block d-sm-none" v-if="showSearch">
-          <input class="form-control" type="search" ref="searchInput-1" placeholder="Suchen" aria-label="Search" :value="value" @input="updateSearch()" id="search-input">
+          <input class="form-control" type="search" ref="searchInput-1" placeholder="Teilnehmer/in suchen" aria-label="Search" :value="value" @input="updateSearch()" id="search-input">
           <a href="" class="mdi mdi-close-circle-outline clear-search" @click="clearSearch"></a>
         </div>
       </transition>
 
       <div class="form-inline d-none d-sm-flex ml-2">
-        <input class="form-control" type="search" ref="searchInput-2" placeholder="Suchen" aria-label="Search" :value="value" @input="updateSearch()" id="search-input">
+        <input class="form-control" type="search" ref="searchInput-2" placeholder="Teilnehmer/in suchen" aria-label="Search" :value="value" @input="updateSearch()" id="search-input">
         <label for="search-input" class="search-icon" v-if="!value">
           <i class="mdi mdi-magnify"></i>
         </label>
@@ -126,6 +126,8 @@ export default {
 
       if (direction === this.$waypointMap.DIRECTION_TOP && going === this.$waypointMap.GOING_OUT) {
         this.isFixed = true
+        var height = $('.order-navigation').height()
+        $('.order-navigation').height(height)
       }
     },
     createCollector() {
@@ -135,7 +137,9 @@ export default {
       this.isFixed = false;
     },
     outHandler(e) {
-      $('.order-navigation').height($('.order-navigation').height());
+      var height = $('.order-navigation').height()
+      $('.order-navigation').height(height)
+      console.log(height)
       this.isFixed = true;
     },
     updateSearch() {

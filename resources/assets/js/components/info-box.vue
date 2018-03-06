@@ -4,13 +4,12 @@
     <div class="container">
       <div class="card" ref="container">
         <div class="card-body">
-          <h4 class="card-title">Infos zum Bestellablauf</h4>
+          <button type="button" class="close" aria-label="Close" @click="$emit('close-info')">
+            <span aria-hidden="true">&times;</span>
+          </button>
 
-          <div class="alert alert-info">
-            <i class="mdi mdi-information-outline mdi-18px">&nbsp;</i>Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns gerne jederzeit von Mo-Fr 9-18 Uhr unter <a href="tel:076170788833">0761 / 707 888 33</a> an oder schreibt uns eine E-Mail an <a href="mailto:bestellung@neuemasche.com">bestellung@neuemasche.com</a>.
-          </div>
-          <h5>In 3 Schritten zu deiner Sammelbestellung:</h5>
-          <ul>
+          <h4>In 3 Schritten zu deiner Sammelbestellung:</h4>
+          <ul class="list-unstyled">
             <li>
               1. Teilnehmer hinzufügen und jeweilige Bestellungen (Artikelnummer und Anzahl) eintragen
             </li>

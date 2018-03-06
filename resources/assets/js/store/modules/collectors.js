@@ -79,6 +79,11 @@ const getters = {
     })
     return sum
   },
+  getAllItemsPriceWithDonationsByCollectorId: (state, getters) => id => {
+    let donations = getters.getAllItemsDonationsByCollectorId(id)
+    let price = getters.getTotalItemsPriceByCollectorId(id)
+    return donations + price
+  },
   getAllItemsPriceWithDonations: (state, getters) => (collectors = false) => {
     if (!collectors) {
       collectors = getters.getAllCollectors

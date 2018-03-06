@@ -20,21 +20,21 @@ routes.push({
 routes.push({
   component: Campaign,
   name: 'campaign',
-  path: '/kampagne/:id',
+  path: '/projekt/:id',
   meta: {auth: true}
 })
 
 routes.push({
   component: Summary,
   name: 'summary',
-  path: '/kampagne/:id/zusammenfassung',
+  path: '/projekt/:id/zusammenfassung',
   meta: {auth: true}
 })
 
 routes.push({
   component: Success,
   name: 'success',
-  path: '/kampagne/:id/bestellung-erfolgreich',
+  path: '/projekt/:id/bestellung-erfolgreich',
   meta: {auth: true}
 })
 

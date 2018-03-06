@@ -23,6 +23,9 @@ section.order-navigation {
   }
 
   .form-inline {
+    input.form-control {
+      padding-right: 35px;
+    }
     label {
       display: flex;
       margin-bottom: 0;
@@ -48,6 +51,7 @@ section.order-navigation {
 
       input.form-control {
         height: 100%;
+        padding-right: .75rem;
       }
     }
   }

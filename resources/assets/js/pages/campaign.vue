@@ -1,6 +1,6 @@
 <template>
   <div v-if="hasLoaded">
-    <info-box :visible="displayInfo"></info-box>
+    <info-box :visible="displayInfo" @close-info="displayInfo = false"></info-box>
     <section class="details">
       <fundraiser v-on:display-info="displayInfo = !displayInfo" @logout="logout"></fundraiser>
     </section>

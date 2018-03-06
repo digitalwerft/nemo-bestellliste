@@ -1,5 +1,5 @@
 <template>
-<div class="input-group row no-gutters single-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected, 'not-saved': !saved, 'saved': savedTimeout}"  ref="item">
+<div class="input-group row no-gutters single-item mb-2" :id="id" :class="{'dialog-open': showModal, disabled: disabled, selected: selected, 'not-saved': (!saved || hasNoNumber), 'saved': savedTimeout}"  ref="item">
   <div class="col select-col">
     <v-select v-model="item.number" :options="autocomplete" :on-change="onNumberChange" label="number" placeholder="Art.-Nr.">
       <span slot="no-options">Keine(n) Boxen gefunden.</span>

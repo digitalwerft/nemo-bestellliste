@@ -3,17 +3,13 @@
   <div class="card">
     <div class="card-body">
       <a href="#" @click.prevent="$emit('logout')" class="btn btn-sm btn-outline-danger logout-button ml-3"><i class="mdi mdi-logout">&nbsp;</i>abmelden</a>
-      <a href="#" class="btn btn-sm btn-link show-help"  @click.prevent="$emit('display-info')">
-        <i class="mdi mdi-help-box"></i>
-      </a>
-      <transition name="fade" mode="out-in">
-        <popover name="help-info" :event="'hover'">
-          Infos zum Bestellablauf anzeigen
-        </popover>
-      </transition>
       <h4 class="card-title pb-3 mb-3">
           Sammelbestellung:&nbsp; #<strong>{{ campaign.id }}</strong>&nbsp;–&nbsp;<span class="group-name">{{ campaign.group }}</span>
           </h4>
+      <a href="#" class="btn btn-link show-help"  @click.prevent="$emit('display-info')">
+        <i class="mdi mdi-help-circle"></i>&nbsp; So gebe ich meine Bestellung ab
+      </a>
+      <hr class="mt-1">
       <div class="row">
         <div class="col-lg-7 mb-4">
           <label class="text-muted">Kontaktdaten</label>
@@ -84,7 +80,7 @@
       <div class="row">
         <div class="col">
           <label for="fundraiser-message" class="text-muted mt-3">Kommentar zu deiner Bestellung</label>
-          <textarea v-model="form.comment" class="form-control" id="fundraiser-message" @keyup="saveComment"></textarea>
+          <textarea v-model="form.comment" class="form-control" id="fundraiser-message" @keyup="saveComment" placeholder="Beispiel: Bitte erst am 10.10. versenden."></textarea>
           <small class="form-text text-muted">
             Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns gerne jederzeit von Mo-Fr 9-18 Uhr unter <a href="tel:076170788833">0761 / 707 888 33</a> an <br>oder schreibt uns eine E-Mail an <a href="mailto:bestellung@neuemasche.com">bestellung@neuemasche.com</a>.
               </small>

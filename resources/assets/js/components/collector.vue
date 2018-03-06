@@ -132,7 +132,7 @@ export default {
     },
     // evaluate price of all items togehter
     totalPrice() {
-      return this.$store.getters.getTotalItemsPriceByCollectorId(this.collectorId)
+      return this.$store.getters.getAllItemsPriceWithDonationsByCollectorId(this.collectorId)
     },
     totalEarnings() {
       return this.$store.getters.getAllItemsDonationsByCollectorId(this.collectorId)
