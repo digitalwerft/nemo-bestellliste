@@ -59,6 +59,7 @@ const store =  new Vuex.Store({
     },
     FORCE_RELOAD(state) {
       state.reload = true
+      resetState()
     },
     START_LOADING(state, action = 'SAVING') {
       state.actionCompleted = state.action
