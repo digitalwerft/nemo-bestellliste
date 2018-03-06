@@ -31,7 +31,7 @@ import store from '../store'
   export default {
     store,
     created() {
-      if(!this.$store.getters.hasLoaded(['campaign', 'orders', 'collectors'])) {
+      if(this.$store.state.status !== "ORDER_PLACED") {
         this.$router.push({name: 'home'})
       }
       this.hideSpinner()

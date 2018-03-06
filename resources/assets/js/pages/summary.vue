@@ -142,9 +142,7 @@
       placeOrder() {
         this.$store.dispatch('placeOrder', {self: this}).then(response => {
           this.$store.commit('FORCE_RELOAD')
-          this.$router.push({name: 'success', params: {
-            id: this.$route.params.id
-          } })
+          this.$router.push({name: 'success'})
         }).catch(error => {
           utils.note.error({
             message: 'Ein Fehler ist aufgetreten. Bitte lade die Seite neu oder kontaktiere unser Team.'
