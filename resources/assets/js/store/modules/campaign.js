@@ -29,6 +29,9 @@ const getters = {
   },
   getComment(state) {
     return state.quote.comment
+  },
+  isCurrentCampaign: state => id => {
+    return state.data.id == id
   }
 }
 
