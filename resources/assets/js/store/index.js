@@ -200,7 +200,7 @@ const store =  new Vuex.Store({
           modules = _.pullAll(modules, completed)
         }
 
-        console.log(modules)
+        console.log(modules, reload)
 
         _.forEach(modules, module => {
           dispatch(_.camelCase('fetch ' + module), {
