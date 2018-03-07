@@ -93,11 +93,11 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
-    
+
     let modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
     let reload = this.forceReload
 
-    console.log(store.getters.isCurrentCampaign(this.$route.params.id))
+    console.log(store.getters.isCurrentCampaign(this.$route.params.id), modules)
 
     if (store.getters.hasLoaded(modules) && !reload && store.getters.isCurrentCampaign(this.$route.params.id)) {
       return
@@ -105,7 +105,7 @@ export default {
 
     this.showSpinner()
     // Fetch Data if not already happened
-    store.dispatch('fetchModules', {modules: modules, self: this, reload: reload})
+    store.dispatch('fetchModules', {modules: _.clone(modules), self: this, reload: reload})
       .then(() => {
         store.commit('NO_RELOAD')
         this.hideSpinner()
