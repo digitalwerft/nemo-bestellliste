@@ -93,7 +93,7 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
-    this.showSpinner()
+    this.showSpinnerOnLoad()
 
     let modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
     let reload = this.forceReload
@@ -182,6 +182,10 @@ export default {
       setTimeout(()=> {
         spinner.addClass('loading')
       }, 150)
+    },
+    showSpinnerOnLoad() {
+      const spinner = $('.loading-overlay')
+      spinner.addClass('loading').removeClass('hidden')
     },
     handleEditing(isEditing) {
       if (isEditing) {
