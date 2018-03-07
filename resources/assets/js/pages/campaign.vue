@@ -97,7 +97,7 @@ export default {
     let modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
     let reload = this.forceReload
 
-    if(store.getters.isCurrentCampaign(this.$route.params.id)) {
+    if(!store.getters.isCurrentCampaign(this.$route.params.id)) {
       reload = true
     }
 
