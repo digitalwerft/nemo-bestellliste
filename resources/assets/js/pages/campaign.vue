@@ -93,6 +93,7 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
+    
     let modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
     let reload = this.forceReload
 
