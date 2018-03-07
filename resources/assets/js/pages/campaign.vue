@@ -103,6 +103,7 @@ export default {
     }
 
     if (store.getters.hasLoaded(modules) && !reload && store.getters.isCurrentCampaign(this.$route.params.id)) {
+      this.loadingComplete = true
       this.hideSpinner()
       return
     }
@@ -110,6 +111,7 @@ export default {
     store.dispatch('fetchModules', {modules: modules, self: this, reload: reload})
       .then(() => {
         store.commit('NO_RELOAD')
+        this.loadingComplete = true
         this.hideSpinner()
       })
   },
@@ -122,7 +124,8 @@ export default {
       showModal: false,
       hasUnsavedCollector: false,
       savingComplete: false,
-      displayInfo: false
+      displayInfo: false,
+      loadingComplete: false
     };
   },
   computed: {
@@ -144,7 +147,7 @@ export default {
       }
     },
     hasLoaded() {
-      return this.$store.getters.hasLoaded(['collectors', 'items', 'campaign', 'fundraiser'])
+      return this.$store.getters.hasLoaded(['campaign', 'items', 'collectors', 'fundraiser', 'orders'])
     },
     forceReload() {
       return this.$store.getters.forceReload
