@@ -93,7 +93,7 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
-    const modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
+    let modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
     let reload = this.forceReload
 
     console.log(store.getters.isCurrentCampaign(this.$route.params.id))
