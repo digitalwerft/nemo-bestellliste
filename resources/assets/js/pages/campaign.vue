@@ -93,6 +93,7 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
+    this.showSpinner()
 
     let modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
     let reload = this.forceReload
@@ -102,10 +103,9 @@ export default {
     }
 
     if (store.getters.hasLoaded(modules) && !reload && store.getters.isCurrentCampaign(this.$route.params.id)) {
+      this.hideSpinner()
       return
     }
-
-    this.showSpinner()
     // Fetch Data if not already happened
     store.dispatch('fetchModules', {modules: modules, self: this, reload: reload})
       .then(() => {
