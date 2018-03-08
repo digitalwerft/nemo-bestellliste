@@ -16,7 +16,7 @@ const getters = {
 
 const actions = {
   fetchOrders({
-    commit
+    commit, dispatch
   }, {
     self
   }) {

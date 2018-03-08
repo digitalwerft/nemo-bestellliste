@@ -13,7 +13,7 @@ const getters = {
 
 const actions = {
   fetchCampaigns({
-    commit
+    commit, dispatch
   }, {
     self
   }) {

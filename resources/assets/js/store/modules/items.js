@@ -25,7 +25,7 @@ const getters = {
 
 const actions = {
   fetchItems({
-    commit
+    commit, dispatch
   }, {
     self
   }) {

@@ -13,7 +13,7 @@ const getters = {
 
 const actions = {
   fetchFundraiser({
-    commit
+    commit, dispatch
   }, {
     self
   }) {

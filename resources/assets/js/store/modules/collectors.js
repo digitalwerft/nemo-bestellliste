@@ -177,7 +177,7 @@ const getters = {
 
 const actions = {
   fetchCollectors({
-    commit
+    commit, dispatch
   }, {
     self
   }) {
