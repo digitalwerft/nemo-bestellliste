@@ -93,7 +93,7 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
-    this.showSpinnerOnLoad()
+    //this.showSpinner()
 
     let modules = ['campaign', 'items', 'collectors', 'fundraiser', 'orders']
     let reload = this.forceReload
@@ -162,6 +162,13 @@ export default {
         this.$store.commit('SEARCHING')
       } else {
         this.$store.commit('RESET_ACTIONS')
+      }
+    },
+    hasLoaded(value) {
+      if(value) {
+        this.hideSpinner()
+      } else {
+        this.showSpinner()
       }
     }
   },

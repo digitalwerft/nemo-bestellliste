@@ -8,6 +8,14 @@ import Success from './pages/success.vue'
 
 import Auth from './services/auth'
 
+let showSpinner = () => {
+  const spinner = $('.loading-overlay')
+  spinner.removeClass('hidden')
+  setTimeout(()=> {
+    spinner.addClass('loading')
+  }, 150)
+}
+
 const routes = [];
 
 routes.push({
@@ -44,7 +52,7 @@ routes.push({
   path: '/login',
   beforeEnter: (to, from, next) => {
     let path = from.fullPath
-
+    showSpinner()
     if (Auth.authenticated()) {
       // Redirect back to home to break the cycle
       if (from.name === 'login') {
