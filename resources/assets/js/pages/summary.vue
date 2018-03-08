@@ -1,5 +1,8 @@
 <template>
   <div v-if="!isLoading" class="container summary-container" :class="{printing: printing}" v-shortkey="['meta', 'p']" @shortkey="print">
+    <a href="#" class="btn btn-block btn-outline-secondary mb-3 d-none d-fake-print-block" @click.prevent="printDialog">
+      <i class="mdi mdi-printer">&nbsp;</i>Drucken
+    </a>
     <div class="card mb-2 d-print-none">
       <div class="card-body">
         <a href="#" @click.prevent="logout" class="btn btn-outline-danger ml-3 float-right"><i class="mdi mdi-logout">&nbsp;</i>abmelden</a>
@@ -111,6 +114,12 @@
         .then(response => {
           this.hideSpinner()
           store.commit('NO_RELOAD')
+
+          if(this.printing) {
+            setTimeout(() => {
+              window.print()
+            }, 1800)
+          }
         })
     },
     data() {
@@ -122,6 +131,7 @@
       printing() {
         if(this.$route.query.print == 1) {
           this.$store.commit('PRINTING')
+          $('body').addClass('print')
         }
         return this.$route.query.print == 1
       },
@@ -129,11 +139,7 @@
         return this.$store.getters.getOrders
       },
       isLoading() {
-        return !this.$store.getters.hasLoaded([
-          'campaign',
-          'collectors',
-          'orders'
-        ])
+        return !this.$store.getters.hasLoaded(['campaign', 'collectors', 'orders', 'fundraiser'])
       },
       forceReload() {
         return this.$store.getters.forceReload
@@ -163,11 +169,10 @@
         })
       },
       print() {
-        //this.$store.commit('PRINTING')
-        /*setTimeout(() => {
-          window.print()
-        }, 10)*/
         window.open(location.href + '?print=1')
+      },
+      printDialog() {
+        window.print()
       },
       formatDate(date) {
         return utils.formatDate(date)
