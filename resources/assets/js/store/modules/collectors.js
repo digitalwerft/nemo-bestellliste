@@ -152,7 +152,7 @@ const getters = {
         var itemExists = _.findIndex(summarizedItems, i => {
           return (i.number === item.number)
         })
-        if (itemExists > 0) {
+        if (itemExists >= 0) {
           summarizedItems[itemExists].quantity += item.quantity
         } else {
           summarizedItems.push({
