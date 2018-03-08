@@ -246,6 +246,7 @@ const store =  new Vuex.Store({
           resetState()
           commit('LOGOUT')
           resolve()
+          window.location = '/'
         })
       })
     }
