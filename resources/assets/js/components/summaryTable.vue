@@ -256,7 +256,7 @@
         let collectors = _.cloneDeep(this.collectors)
         _.each(collectors, (collector, index) => {
           let items = this.$store.getters.getSummarizedItemsByCollectorId(collector.id, collectors)
-          collectors[index].items = items
+          collector.items = items
         })
         return collectors
       },
