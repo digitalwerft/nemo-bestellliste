@@ -17,8 +17,11 @@ function stopLoading(commit, lastAction = 'NONE', withError = false, timeout = 5
 }
 
 const getters = {
-  getCollectorById: state => id => {
-    return state.all.find(collector => {
+  getCollectorById: state => (id, collectors = false) => {
+    if(!collectors || _.isEmpty(collectors)) {
+      collectors = state.all
+    }
+    return collectors.find(collector => {
       return collector.id === id
     });
   },
@@ -112,8 +115,8 @@ const getters = {
     })
     return count != items.length
   },
-  getItemsByCollectorId: (state, getters) => id => {
-    var collector = getters.getCollectorById(id);
+  getItemsByCollectorId: (state, getters) => (id, collectors = false) => {
+    var collector = getters.getCollectorById(id, collectors);
     return _.sortBy(collector.items, 'number')
   },
   getSummarizedItems: (state, getters) => {
@@ -141,8 +144,8 @@ const getters = {
     })
     return summarizedItems
   },
-  getSummarizedItemsByCollectorId: (state, getters) => id => {
-    let items = getters.getItemsByCollectorId(id)
+  getSummarizedItemsByCollectorId: (state, getters) => (id, collectors = false) => {
+    let items = getters.getItemsByCollectorId(id, collectors)
     let summarizedItems = []
 
       items.forEach(item => {

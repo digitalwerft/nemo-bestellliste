@@ -117,7 +117,7 @@
           <div :style="style.printList" class="print-list">
             <div class="print-list-container" ref="print-container">
               <hr>
-              <div v-for="collector in filteredCollectors">
+              <div v-for="collector in summarizedCollectors">
                 <div class="table-responsive">
                   <table class="table table-bordered table-striped table-mobile" :class="{printing: printing}">
                     <thead class="thead-light">
@@ -200,11 +200,12 @@
         return this.$store.state.action == 'PRINTING'
       },
       items() {
-        var summarizedItems = []
+        let summarizedItems = []
 
-        this.collectors.forEach(collector => {
-          collector.items.forEach(item => {
+        _.each(this.collectors, collector => {
+          _.each(collector.items, item => {
             var itemExists = _.findIndex(summarizedItems, i => {
+              console.log(i.number, item.number)
               return(i.number === item.number)
             })
             if(itemExists > -1) {
@@ -254,17 +255,21 @@
       },
       summarizedCollectors() {
         let collectors = _.cloneDeep(this.collectors)
-        collectors.forEach(collector => {
-          collector.items = this.$store.getters.getSummarizedItemsByCollectorId(collector.id)
+        _.each(collectors, (collector, index) => {
+          let items = this.$store.getters.getSummarizedItemsByCollectorId(collector.id, collectors)
+          console.log(items)
+          collectors[index].items = items
         })
+        console.log(collectors)
         return collectors
       },
-      filteredCollectors() {
+      /*filteredCollectors() {
         var v = this.summarizedCollectors.filter((collector) => {
           return _.lowerCase(collector.name).match(_.lowerCase(this.search))
         });
+        console.log(v)
         return v;
-      },
+      },*/
       shippingCost() {
         var totalOrders = this.$store.getters.getAllItemsQuantity()
         if(totalOrders < 21 ) {
