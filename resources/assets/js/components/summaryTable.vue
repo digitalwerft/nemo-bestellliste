@@ -205,7 +205,6 @@
         _.each(this.collectors, collector => {
           _.each(collector.items, item => {
             var itemExists = _.findIndex(summarizedItems, i => {
-              console.log(i.number, item.number)
               return(i.number === item.number)
             })
             if(itemExists > -1) {
@@ -257,19 +256,10 @@
         let collectors = _.cloneDeep(this.collectors)
         _.each(collectors, (collector, index) => {
           let items = this.$store.getters.getSummarizedItemsByCollectorId(collector.id, collectors)
-          console.log(items)
           collectors[index].items = items
         })
-        console.log(collectors)
         return collectors
       },
-      /*filteredCollectors() {
-        var v = this.summarizedCollectors.filter((collector) => {
-          return _.lowerCase(collector.name).match(_.lowerCase(this.search))
-        });
-        console.log(v)
-        return v;
-      },*/
       shippingCost() {
         var totalOrders = this.$store.getters.getAllItemsQuantity()
         if(totalOrders < 21 ) {
