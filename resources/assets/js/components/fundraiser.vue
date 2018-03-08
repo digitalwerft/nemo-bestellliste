@@ -3,6 +3,7 @@
   <div class="card">
     <div class="card-body">
       <a href="#" @click.prevent="$emit('logout')" class="btn btn-sm btn-outline-danger logout-button ml-3"><i class="mdi mdi-logout">&nbsp;</i>abmelden</a>
+      <router-link :to="{ name: 'home' }" class="btn btn-sm btn-outline-secondary float-right ml-3"><i class="mdi mdi-logout">&nbsp;</i>Projektauswahl</router-link>
       <h4 class="card-title pb-3 mb-3">
           Sammelbestellung:&nbsp; #<strong>{{ campaign.id }}</strong>&nbsp;–&nbsp;<span class="group-name">{{ campaign.group }}</span>
           </h4>

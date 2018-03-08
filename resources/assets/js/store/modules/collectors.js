@@ -141,6 +141,29 @@ const getters = {
     })
     return summarizedItems
   },
+  getSummarizedItemsByCollectorId: (state, getters) => id => {
+    let items = getters.getItemsByCollectorId(id)
+    let summarizedItems = []
+
+      items.forEach(item => {
+        var itemExists = _.findIndex(summarizedItems, i => {
+          return (i.number === item.number)
+        })
+        if (itemExists > 0) {
+          summarizedItems[itemExists].quantity += item.quantity
+        } else {
+          summarizedItems.push({
+            quantity: item.quantity,
+            number: item.number,
+            vat: item.vat,
+            gross_price: item.gross_price,
+            suggested_donation: item.suggested_donation,
+            name: item.name
+          })
+        }
+      })
+    return summarizedItems
+  },
   getAllCollectors: (state, getters) => {
     return state.all
   },

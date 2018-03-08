@@ -129,8 +129,8 @@
                         <th scope="col">Anzahl Boxen</th>
                         <th scope="col">Gesamtbetrag</th>
                         <th scope="col">davon Spende</th>
-                        <th scope="col" class="d-none d-md-table-cell d-print-table-cell"><small>Boxen verteilt?</small></th>
-                        <th scope="col" class="d-none d-md-table-cell d-print-table-cell"><small>Geld erhalten?</small></th>
+                        <th scope="col" class="d-none d-print-table-cell"><small>Boxen verteilt?</small></th>
+                        <th scope="col" class="d-none d-print-table-cell"><small>Geld erhalten?</small></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -140,15 +140,15 @@
                         <td data-label="Anzahl">{{ item.quantity }}</td>
                         <td data-label="Gesamtbetrag">{{ (parseFloat(item.suggested_donation)+parseFloat(item.gross_price)) * item.quantity }}€</td>
                         <td data-label="davon Spende">{{ item.suggested_donation * item.quantity}}€</td>
-                        <td class="d-none d-md-table-cell d-print-table-cell"></td>
-                        <td class="d-none d-md-table-cell d-print-table-cell"></td>
+                        <td class="d-none d-print-table-cell"></td>
+                        <td class="d-none d-print-table-cell"></td>
                       </tr>
                       <tr>
                         <td class="font-weight-bold d-none d-md-table-cell d-print-table-cell">Summe:</td>
                         <td data-label="Summe Boxen">{{ getItemsQuantityByCollectorId(collector.id)}}</td>
                         <td data-label="Summe">{{ getPriceByCollectorId(collector.id) + getDonationsByCollectorId(collector.id)}}€</td>
                         <td data-label="davon Spenden">{{ getDonationsByCollectorId(collector.id) }}€</td>
-                        <td class="d-none d-md-table-cell d-print-table-cell" colspan="2"></td>
+                        <td class="d-none d-print-table-cell" colspan="2"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -252,8 +252,15 @@
         }
         return sortedList
       },
+      summarizedCollectors() {
+        let collectors = _.cloneDeep(this.collectors)
+        collectors.forEach(collector => {
+          collector.items = this.$store.getters.getSummarizedItemsByCollectorId(collector.id)
+        })
+        return collectors
+      },
       filteredCollectors() {
-        var v = this.collectors.filter((collector) => {
+        var v = this.summarizedCollectors.filter((collector) => {
           return _.lowerCase(collector.name).match(_.lowerCase(this.search))
         });
         return v;
