@@ -258,6 +258,7 @@
           let items = this.$store.getters.getSummarizedItemsByCollectorId(collector.id, collectors)
           collector.items = items
         })
+        console.log(collectors)
         return collectors
       },
       shippingCost() {
