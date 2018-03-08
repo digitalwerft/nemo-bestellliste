@@ -139,7 +139,6 @@ export default {
     outHandler(e) {
       var height = $('.order-navigation').height()
       $('.order-navigation').height(height)
-      console.log(height)
       this.isFixed = true;
     },
     updateSearch() {
