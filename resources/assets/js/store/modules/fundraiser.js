@@ -26,6 +26,7 @@ const actions = {
           resolve(response)
         }).catch(error => {
           commit('REQUEST_ERROR', 'FETCHED_FUNDRAISER')
+          dispatch('logout')
           reject(error)
         })
     })

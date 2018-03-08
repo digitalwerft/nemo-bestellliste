@@ -37,7 +37,7 @@ const getters = {
 
 const actions = {
   fetchCampaign({
-    commit
+    commit, dispatch
   }, {
     self
   }) {
@@ -53,6 +53,7 @@ const actions = {
           //resolve(response)
         }).catch(error => {
           commit('REQUEST_ERROR', 'FETCHED_CAMPAIGN')
+          dispatch('logout')
         })
       })
   },

@@ -189,6 +189,7 @@ const actions = {
       })
       .catch(error => {
         commit('REQUEST_ERROR', 'FETCHED_COLLECTORS')
+        dispatch('logout')
       })
   },
   updateShippingAddress({

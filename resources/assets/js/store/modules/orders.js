@@ -31,6 +31,7 @@ const actions = {
           resolve(response)
         }).catch(error => {
           commit('REQUEST_ERROR', 'FETCHED_ORDERS')
+          dispatch('logout')
           reject(error)
         })
     })
