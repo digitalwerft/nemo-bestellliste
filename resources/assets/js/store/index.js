@@ -245,8 +245,8 @@ const store =  new Vuex.Store({
         }).catch(error => {
           resetState()
           commit('LOGOUT')
-          resolve()
-          window.location = '/'
+          reject()
+          window.location.reload()
         })
       })
     }
