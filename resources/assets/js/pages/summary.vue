@@ -14,13 +14,19 @@
     </div>
 
     <div class="card mb-2 d-print-no-border">
-      <div class="card-body pt-4 d-print-no-padding">
-        <div class="shipping-address">
+      <div class="card-body pt-4 pb-4 d-print-no-padding">
+        <div class="shipping-address mb-0">
           <h6 class="card-title font-weight-bold">Lieferadresse</h6>
           {{ fundraiser.address.first_name }} {{ fundraiser.address.last_name }} <br>
           {{ fundraiser.address.address }} <br>
           {{ fundraiser.address.postal }}
         </div>
+      </div>
+    </div>
+
+    <div class="card mb-2 d-print-no-border">
+      <div class="card-body pt-0 print-border p-print mt-print">
+        <h4 class="mb-4 mt-4">Aktuelle Bestellung</h4>
         <div class="quote" v-if="!isQuoteEmpty">
           <summary-table :collectors="collectors" :comment="comment" :isCurrent="true"></summary-table>
         </div>
@@ -28,13 +34,11 @@
     </div>
 
     <div class="card mb-2 orders card d-print-no-border" v-if="orders.length > 0">
-      <div class="card-body pt-1 d-print-no-padding">
-        <div class="navbar pl-0 pr-0">
-          <span class="navbar-brand">Bereits abgeschlossene Bestellungen</span>
-        </div>
+      <div class="card-body d-print-no-padding">
+        <h4 class="mb-4 mt-print">Bereits abgeschlossene Bestellungen</h4>
         <div class="orders-list" v-for="(order, index) in orders">
-          <div class="order">
-            <h6 class="mt-2 font-weight-bold">Bestellnr. #{{ order.identifier }} – {{ formatDate(order.created_at) }}</h6>
+          <div class="order print-border p-print mt-print">
+            <h5 class="mt-4 mb-3 font-weight-bold">Bestellnr. #{{ order.identifier }} – {{ formatDate(order.created_at) }}</h5>
             <summary-table :collectors="order.quote.collectors" :comment="order.comment"></summary-table>
             <hr v-if="(index+1 != orders.length)">
           </div>

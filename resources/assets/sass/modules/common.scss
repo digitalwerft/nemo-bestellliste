@@ -112,10 +112,30 @@ body.print {
     }
   }
 
+  th.print-list-header {
+    width: 300px;
+  }
+
+  .print-border {
+    border: 1px solid rgba(black, .2);
+  }
+
+  .p-print {
+    padding: 15px !important;
+  }
+
+  .mt-print {
+    margin-top: 15px !important;
+  }
+
   .card {
     overflow: visible !important;
     padding-bottom: 0px !important;
     box-shadow: none !important;
+
+    /*&.closed {
+      display: none;
+    }*/
 
     .card-body {
       padding: 0;

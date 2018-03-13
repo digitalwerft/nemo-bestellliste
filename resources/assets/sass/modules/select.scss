@@ -1,4 +1,9 @@
 .v-select {
+
+  .dropdown-menu {
+    max-height: 150px !important;
+    z-index: 1040;
+  }
   &.open {
     .open-indicator:before {
       transform: rotate(180deg);
@@ -7,6 +12,8 @@
     .dropdown-menu {
       border-radius: 0;
       box-shadow: 0 4px 7px rgba(0, 0, 0, 0.33);
+
+      margin-bottom: 50px;
     }
   }
   .dropdown-toggle {

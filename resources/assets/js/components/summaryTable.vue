@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="card d-print-no-border">
+    <div class="card d-print-no-border" :class="{closed: !showSummary}">
       <div class="card-body pt-1 pb-3">
         <div class="navbar pl-0 pr-0">
-          <span class="navbar-brand">Zusammenfassung <span v-if="isCurrent">der aktuellen Bestellliste</span></span>
+          <span class="navbar-brand">Zusammenfassung</span>
           <ul class="navbar-nav ml-auto d-print-none">
             <li class="nav-item">
               <a href="#" class="btn btn-sm" @click.prevent="showSummary = !showSummary" :class="{'btn-success': showSummary, 'btn-light': !showSummary}">
@@ -99,10 +99,10 @@
         </transition>
       </div>
     </div>
-    <div class="card mt-2 print-view d-print-no-border">
+    <div class="card mt-2 print-view d-print-no-border" :class="{ closed: !showPrintList }">
       <div class="card-body pt-1 pb-0">
         <div class="navbar navbar-expand pl-0 pr-0">
-          <span class="navbar-brand">Teilnehmer  <span v-if="isCurrent">der aktuellen Bestellliste</span></span>
+          <span class="navbar-brand">Teilnehmer</span>
           <ul class="navbar-nav ml-auto d-print-none">
             <li class="nav-item">
               <a href="#" class="btn btn-sm float-right d-print-none" @click.prevent="showPrintList = !showPrintList" :class="{'btn-success': showPrintList, 'btn-light': !showPrintList}">
@@ -125,12 +125,12 @@
                         <td scope="col" v-html="highlight(collector.name)" colspan="7" class="font-weight-bold"></td>
                       </tr>
                       <tr>
-                        <th scope="col">Artikel</th>
+                        <th scope="col" class="print-list-header">Artikel</th>
                         <th scope="col">Anzahl Boxen</th>
                         <th scope="col">Gesamtbetrag</th>
                         <th scope="col">davon Spende</th>
-                        <th scope="col" class="d-none d-print-table-cell"><small>Boxen verteilt?</small></th>
-                        <th scope="col" class="d-none d-print-table-cell"><small>Geld erhalten?</small></th>
+                        <th scope="col" class="d-none d-print-table-cell" width="50px"><small>Boxen verteilt?</small></th>
+                        <th scope="col" class="d-none d-print-table-cell" width="50px"><small>Geld erhalten?</small></th>
                       </tr>
                     </thead>
                     <tbody>
