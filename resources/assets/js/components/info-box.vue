@@ -14,10 +14,10 @@
               1. Teilnehmer hinzufügen und jeweilige Bestellungen (Artikelnummer und Anzahl) eintragen
             </li>
             <li>
-              2. Zusammenfassung kontrollieren
+              2.  Zusammenfassung kontrollieren und abschicken
             </li>
             <li>
-              3. Abschicken
+              3. Du erhältst eine Bestellübersicht per E-Mail. Drucke diese zum Verteilen der Bestellung aus.
             </li>
           </ul>
         </div>

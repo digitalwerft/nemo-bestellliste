@@ -44,7 +44,7 @@
     </div>
     <div class="card bg-danger-light mt-2 mb-2 d-print-none" v-if="!isQuoteEmpty">
       <div class="card-body">
-        Wenn ihr eure Bestellung abschickt, wird sie von uns gepackt und kann nicht mehr geändert werden. Nehmt euch daher bitte genügend Zeit, sie nochmals zu überprüfen.
+        Wenn du eure <strong>Bestellung abschickst</strong>, wird sie von uns gepackt und <strong>kann nicht mehr geändert werden</strong>. Sie kann in diesem Portal jederzeit eingesehen werden und du erhältst eine <strong>Bestell-Übersicht per E-Mail (als PDF Anhang)</strong>. Wir empfehlen, diese <strong>Übersicht auszudrucken und als Checkliste</strong> beim Verteilen der Boxen zu verwenden.
       </div>
     </div>
 
