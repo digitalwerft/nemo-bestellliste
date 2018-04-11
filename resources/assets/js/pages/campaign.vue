@@ -15,7 +15,7 @@
           <collector :collector-id="collector.id" :filterkey="search" v-on:delete-collector="onCollectorDelete(collector)" v-on:save-collector="onCollectorSave(collector)" v-on:editing-collector="handleEditing"></collector>
         </div>
         <div class="has-orders alert alert-warning mt-3 text-center" v-if="hasOrders">
-          <small>Hinweis: Dieses Projekt enthält bereits abgeschlossene Bestellungen. Um Alle Bestellungen zu sehen, rufe die <router-link :to="{ name: 'summary'}">Zusammenfassung</router-link> auf.</small>
+          <small>Hinweis: Dieses Projekt enthält bereits abgeschlossene Bestellungen. Um alle Bestellungen zu sehen, rufe die <router-link :to="{ name: 'summary'}">Zusammenfassung</router-link> auf.</small>
         </div>
         <div class="alert alert-no-collectors mt-3 text-muted text-center" v-if="filteredCollector && filteredCollector.length < 1">
           Deine Suche nach <mark>{{ search }}</mark> erzielte leider keine Treffer.
