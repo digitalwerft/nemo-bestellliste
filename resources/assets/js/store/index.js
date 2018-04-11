@@ -147,6 +147,9 @@ const store =  new Vuex.Store({
     wasLoggedOut(state) {
       return state.actionCompleted === 'LOGGED_OUT'
     },
+    hasFailedAuth(state) {
+      return Auth.hasFailedAuth()
+    },
     forceReload(state) {
       return state.reload
     },

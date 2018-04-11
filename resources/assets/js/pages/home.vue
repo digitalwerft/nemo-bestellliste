@@ -53,7 +53,7 @@ export default {
   created() {
     const store = this.$store
     const self  = {self: this}
-    const modules = ['fundraiser', 'campaigns']
+    const modules = ['fundraiser', 'campaigns', 'items']
 
     if (store.getters.hasLoaded(modules)) {
       return

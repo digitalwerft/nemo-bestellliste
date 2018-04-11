@@ -6,14 +6,18 @@
           <div class="alert alert-success" v-if="wasLoggedOut">
             Du wurdest erfolgreich abgemeldet!
           </div>
+          <div class="alert alert-info" v-if="hasFailedAuth">
+            Der eingegeben Login-Code ist ungültig!<br/>
+            Bitte versuche es noch einmal.
+          </div>
           <div class="card" ref="container">
             <div class="card-body">
-              <h4 class="card-title">Login für Kontaktpersonen</h4>
+              <h4 class="card-title">Login für Koordinatoren</h4>
               <p>Melde Dich mit Deinem <strong>Login-Code</strong> an, um eine neue Sitzung zu starten.</p>
-              <form class="form-group" @submit.prevent="login({code})">
+              <form action="/login" method="POST" class="form-group">
                 <button class="btn btn-primary btn-right" type="submit">Einloggen</button>
                 <span class="form-bfc">
-                  <input class="form-control" type="text" v-model="code" placeholder="Dein Login-Code">
+                  <input value="" class="form-control" type="text" name="auth-code" placeholder="Dein Login-Code">
                 </span>
               </form>
             </div>
@@ -33,12 +37,11 @@ export default {
     }
   },
   created() {
+    const $overlay = $('.loading-overlay');
+
     setTimeout(() => {
-      $('.loading-overlay').removeClass('loading')
-      setTimeout(() => {
-        $('.loading-overlay').addClass('hidden')
-      }, 1000)
-    }, 600)
+      $overlay.removeClass('loading')
+    }, 500)
   },
   store,
   methods: {
@@ -56,6 +59,10 @@ export default {
   computed: {
     wasLoggedOut() {
       return this.$store.getters.wasLoggedOut
+    },
+
+    hasFailedAuth() {
+      return this.$store.getters.hasFailedAuth
     }
   }
 }

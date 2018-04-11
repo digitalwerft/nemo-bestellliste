@@ -6,10 +6,7 @@
     <div class="card mb-2 d-print-none">
       <div class="card-body">
         <a href="#" @click.prevent="logout" class="btn btn-outline-danger ml-3 float-right"><i class="mdi mdi-logout">&nbsp;</i>abmelden</a>
-        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Liste</span> bearbeiten</router-link>
-        <a href="#" class="btn btn-outline-primary float-right print-button" @click.prevent="print">
-          <i class="mdi mdi-printer">&nbsp;</i>Drucken
-        </a>
+        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-outline-primary float-right"><i class="mdi mdi-lead-pencil">&nbsp;</i><span class="d-none d-sm-inline">Liste</span> bearbeiten</router-link>
       </div>
     </div>
 
@@ -54,9 +51,6 @@
     <div class="row no-gutters">
       <div class="col">
         <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-lead-pencil">&nbsp;</i>Liste bearbeiten</router-link>
-      </div>
-      <div class="col">
-        <a href="#" @click.prevent="print" class="btn btn-secondary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-printer">&nbsp;</i><span class="d-none d-sm-inline">Zusammenfassung</span> drucken</a>
       </div>
     </div>
     <a href="#" @click.prevent="showModal = true" class="btn btn-success btn-block btn-lg d-print-none mt-2" v-if="!isQuoteEmpty"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>

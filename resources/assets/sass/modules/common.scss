@@ -13,9 +13,23 @@ body {
     padding-bottom: 100px;
 }
 
+header {
+    margin: 0 0 1rem;
+}
+
+.logo {
+    width: 18rem;
+    margin: -1rem auto 0;
+}
+
+.logo img {
+    width: 100%;
+}
+
 a {
   transition: color .25s, background .25s;
 }
+
 .card {
   box-shadow: 0 2px 4px rgba(black, .05);
 }

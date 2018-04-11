@@ -1,31 +1,49 @@
 import axios from 'axios'
+import Auth from './auth'
+
+
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + Auth.apiToken()
+
+function req() {
+  const token = Auth.apiToken()
+
+  if (!token) {
+    return axios
+  }
+
+  return axios.create({
+    headers: {
+      common: {Authorization: 'Bearer ' + token}
+    }
+  })
+}
 
 export default {
   createItem(collector, number, quantity) {
-    return axios.post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item', {
+    return req().post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item', {
         number: number,
         quantity: quantity
       })
   },
   updateItem(collector, item) {
-    return axios.post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item/'+item.id, {
+    return req().post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item/'+item.id, {
       number: item.number,
       quantity: item.quantity
     })
   },
   deleteItem(collector, item) {
-    return axios.delete('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item/'+item.id)
+    return req().delete('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id+'/item/'+item.id)
   },
   createCollector(collector) {
-    return axios.post('/api/campaign/'+collector.campaign_id+'/quote/collector/', {
+    return req().post('/api/campaign/'+collector.campaign_id+'/quote/collector/', {
       name: collector.name
     })
   },
   deleteCollector(collector) {
-    return axios.delete('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id)
+    return req().delete('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id)
   },
   updateCollector(collector) {
-    return axios.post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id, {
+    return req().post('/api/campaign/'+collector.campaign_id+'/quote/collector/'+collector.id, {
       name: collector.name
     })
   },
@@ -33,38 +51,38 @@ export default {
     const form_data = _.pick(address, [
       'city', 'zip_code', 'first_name', 'last_name', 'route', 'street_number', 'organisation'
     ])
-    return axios.post('/api/campaign/'+campaign_id+'/shipping-address', {
+    return req().post('/api/campaign/'+campaign_id+'/shipping-address', {
       address: form_data
     })
   },
   fetchQuote(campaign_id) {
-    return axios.get('/api/campaign/'+campaign_id+'/quote/')
+    return req().get('/api/campaign/'+campaign_id+'/quote/')
   },
   fetchCollectors(campaign_id) {
-    return axios.get('/api/campaign/'+campaign_id+'/quote/collectors/')
+    return req().get('/api/campaign/'+campaign_id+'/quote/collectors/')
   },
   fetchCampaign(campaign_id) {
-    return axios.get('/api/campaign/'+campaign_id)
+    return req().get('/api/campaign/'+campaign_id)
   },
   fetchCampaigns() {
-    return axios.get('/api/campaigns')
+    return req().get('/api/campaigns')
   },
   saveComment(quote, newComment) {
-    return axios.post('/api/campaign/'+quote.campaign_id+'/quote', {
+    return req().post('/api/campaign/'+quote.campaign_id+'/quote', {
       comment: newComment
     })
   },
   fetchOrders(campaign_id) {
-    return axios.get('/api/campaign/'+campaign_id+'/orders')
+    return req().get('/api/campaign/'+campaign_id+'/orders')
   },
   fetchFundraiser() {
-    return axios.get('/api/fundraiser')
+    return req().get('/api/fundraiser')
   },
   fetchProducts() {
-    return axios.get("/api/products")
+    return req().get("/api/products")
   },
   placeOrder(campaign_id) {
-    return axios.post('api/campaign/'+campaign_id+'/order')
+    return req().post('api/campaign/'+campaign_id+'/order')
   },
   login(code) {
     return axios.get('/api/login?auth-code=' + code)

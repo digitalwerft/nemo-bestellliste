@@ -30,7 +30,7 @@
                       </th>
                       <th scope="col">
                         <a href="#" @click.prevent="sort('quantity')">
-                          Anzahl Boxen
+                          Boxen
                           <i class="mdi" :class="{'mdi-chevron-up': reverseSort, 'mdi-chevron-down': !reverseSort}" v-if="sortBy=='quantity'"></i>
                         </a>
                       </th>
@@ -67,7 +67,7 @@
                           Artikel
                       </td>
                       <td scope="col" class="text-muted">
-                          Anzahl Boxen
+                          Boxen
                       </td>
                       <td scope="col" class="text-muted">
                           Rechnungsbetrag
@@ -126,11 +126,9 @@
                       </tr>
                       <tr>
                         <th scope="col" class="print-list-header">Artikel</th>
-                        <th scope="col">Anzahl Boxen</th>
+                        <th scope="col">Boxen</th>
                         <th scope="col">Gesamtbetrag</th>
                         <th scope="col">davon Spende</th>
-                        <th scope="col" class="d-none d-print-table-cell" width="50px"><small>Boxen verteilt?</small></th>
-                        <th scope="col" class="d-none d-print-table-cell" width="50px"><small>Geld erhalten?</small></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -140,8 +138,6 @@
                         <td data-label="Anzahl">{{ item.quantity }}</td>
                         <td data-label="Gesamtbetrag">{{ (parseFloat(item.suggested_donation)+parseFloat(item.gross_price)) * item.quantity }}€</td>
                         <td data-label="davon Spende">{{ item.suggested_donation * item.quantity}}€</td>
-                        <td class="d-none d-print-table-cell"></td>
-                        <td class="d-none d-print-table-cell"></td>
                       </tr>
                       <tr>
                         <td class="font-weight-bold d-none d-md-table-cell d-print-table-cell">Summe:</td>

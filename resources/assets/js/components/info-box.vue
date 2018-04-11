@@ -1,4 +1,4 @@
-<template>
+[21~<template>
 <transition name="info-box">
   <div class="info-box" :style="style">
     <div class="container">
@@ -14,7 +14,7 @@
               1. Teilnehmer hinzufügen und jeweilige Bestellungen (Artikelnummer und Anzahl) eintragen
             </li>
             <li>
-              2. Zusammenfassung kontrollieren und drucken
+              2. Zusammenfassung kontrollieren
             </li>
             <li>
               3. Abschicken
