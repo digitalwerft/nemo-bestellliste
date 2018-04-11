@@ -53,7 +53,7 @@
         <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-lead-pencil">&nbsp;</i>Liste bearbeiten</router-link>
       </div>
     </div>
-    <a href="#" @click.prevent="showModal = true" class="btn btn-success btn-block btn-lg d-print-none mt-2" v-if="!isQuoteEmpty"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
+    <a href="#" @click.prevent="showModal = true" class="btn btn-success btn-block btn-lg d-print-none mt-2" v-if="!isQuoteEmpty && !hasNoItems"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
 
     <modal v-if="showModal" @close="showModal = false" :large="true">
       <h4 slot="header"><strong>Bestellung bestätigen</strong></h4>
@@ -153,6 +153,9 @@
       },
       isQuoteEmpty() {
         return this.$store.getters.isQuoteEmpty
+      },
+      hasNoItems() {
+        return this.$store.getters.getAllItemsQuantity
       }
     },
     methods: {

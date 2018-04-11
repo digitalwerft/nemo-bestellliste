@@ -207,8 +207,8 @@ const store =  new Vuex.Store({
           let completed = getters.getAllCompletedRequests
           modules = _.pullAll(modules, completed)
         } else {
+          // Don't always pull fundraiser and products, as they always stay the same.
           if(state.fundraiser.requestComplete) {
-            console.log(state)
             _.pull(modules, 'fundraiser')
           }
           if(state.items.requestComplete) {
