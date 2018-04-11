@@ -1,8 +1,25 @@
 import axios from 'axios'
 import Auth from './auth'
-
+import Utils from './utils'
 
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + Auth.apiToken()
+
+// Defautl Error handling
+axios.interceptors.response.use(error => {
+  if (error.status === 401) {
+    Utils.note.error({
+      message: 'Sorry, du wurdest auf Grund ines Fehlers ausgeloogt und wirst nun zur Login-Seite weitergeleitet.'
+    })
+    setTimeout(function() {
+      window.location.reload()
+    }, 2000)
+  } else if (error.status > 499 && error.status < 600) {
+    Utils.note.error({
+      message: 'Sorry, es ist leider ein Serverfehler aufgetreten.'
+    })
+  }
+  return Promise.reject(error)
+})
 
 function req() {
   const token = Auth.apiToken()
