@@ -181,6 +181,11 @@ const store =  new Vuex.Store({
         }
       })
       return modules
+    },
+    isModuleLoaded(state) {
+      return (module) => {
+
+      }
     }
   },
   actions: {
@@ -201,6 +206,14 @@ const store =  new Vuex.Store({
         if (!reload) {
           let completed = getters.getAllCompletedRequests
           modules = _.pullAll(modules, completed)
+        } else {
+          if(state.fundraiser.requestComplete) {
+            console.log(state)
+            _.pull(modules, 'fundraiser')
+          }
+          if(state.items.requestComplete) {
+            _.pull(modules, 'items')
+          }
         }
 
         _.forEach(modules, module => {
