@@ -125,7 +125,7 @@
                         <td scope="col" v-html="highlight(collector.name)" colspan="7" class="font-weight-bold"></td>
                       </tr>
                       <tr>
-                        <th scope="col" class="print-list-header">Artikel</th>
+                        <th scope="col" class="print-list-header" style="width:60%;">Artikel</th>
                         <th scope="col">Boxen</th>
                         <th scope="col">Gesamtbetrag</th>
                         <th scope="col">davon Spende</th>
