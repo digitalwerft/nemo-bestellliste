@@ -30,7 +30,25 @@
       </div>
     </div>
 
-    <div class="card mb-2 orders card d-print-no-border" v-if="orders.length > 0">
+    <div class="card bg-danger-light mt-2 mb-2 d-print-none" v-if="!isQuoteEmpty">
+      <div class="card-body">
+        Wenn du eure <strong>Bestellung abschickst</strong>, wird sie von uns gepackt und <strong>kann nicht mehr geändert werden</strong>. Sie kann in diesem Portal jederzeit eingesehen werden und du erhältst eine <strong>Bestell-Übersicht per E-Mail (als PDF Anhang)</strong>. Wir empfehlen, diese <strong>Übersicht auszudrucken und als Checkliste</strong> beim Verteilen der Boxen zu verwenden.
+      </div>
+    </div>
+
+    <div class="row no-gutters">
+      <div class="col">
+        <a href="#" @click.prevent="showModal = true" class="btn btn-success btn-block btn-lg d-print-none mt-2" v-if="!isQuoteEmpty && !hasNoItems"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
+      </div>
+    </div>
+
+    <div class="row no-gutters">
+      <div class="col">
+        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-lead-pencil">&nbsp;</i>Liste bearbeiten</router-link>
+      </div>
+    </div>
+
+    <div class="card mt-4 mb-2 orders d-print-no-border" v-if="orders.length > 0">
       <div class="card-body d-print-no-padding">
         <h4 class="mb-4 mt-print">Bereits abgeschlossene Bestellungen</h4>
         <div class="orders-list" v-for="(order, index) in orders">
@@ -42,18 +60,6 @@
         </div>
       </div>
     </div>
-    <div class="card bg-danger-light mt-2 mb-2 d-print-none" v-if="!isQuoteEmpty">
-      <div class="card-body">
-        Wenn du eure <strong>Bestellung abschickst</strong>, wird sie von uns gepackt und <strong>kann nicht mehr geändert werden</strong>. Sie kann in diesem Portal jederzeit eingesehen werden und du erhältst eine <strong>Bestell-Übersicht per E-Mail (als PDF Anhang)</strong>. Wir empfehlen, diese <strong>Übersicht auszudrucken und als Checkliste</strong> beim Verteilen der Boxen zu verwenden.
-      </div>
-    </div>
-
-    <div class="row no-gutters">
-      <div class="col">
-        <router-link :to="{ name: 'campaign', id: $route.params.id }" class="btn btn-primary btn-block btn-lg d-print-none mt-2"><i class="mdi mdi-lead-pencil">&nbsp;</i>Liste bearbeiten</router-link>
-      </div>
-    </div>
-    <a href="#" @click.prevent="showModal = true" class="btn btn-success btn-block btn-lg d-print-none mt-2" v-if="!isQuoteEmpty && !hasNoItems"><i class="mdi mdi-cart">&nbsp;</i>Bestellung jetzt aufgeben</a>
 
     <modal v-if="showModal" @close="showModal = false" :large="true">
       <h4 slot="header"><strong>Bestellung bestätigen</strong></h4>
@@ -155,7 +161,9 @@
         return this.$store.getters.isQuoteEmpty
       },
       hasNoItems() {
-        return this.$store.getters.getAllItemsQuantity
+        return !this.$store.getters.getAllItemsQuantity(
+          this.$store.getters.getAllCollectors
+        )
       }
     },
     methods: {
