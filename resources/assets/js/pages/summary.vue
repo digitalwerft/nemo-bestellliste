@@ -68,7 +68,7 @@
       </span>
       <div slot="footer" class="modal-footer">
         <a href="#" class="btn btn-danger btn-lg col" @click.prevent="showModal = false">abbrechen</a>
-        <a href="#" class="btn btn-success btn-lg col" @click.prevent="placeOrder">bestellen</a>
+        <a href="#" class="btn btn-success btn-lg col" ref="orderbtn" @click.prevent="placeOrder">bestellen</a>
       </div>
     </modal>
 
@@ -168,13 +168,19 @@
     },
     methods: {
       placeOrder() {
+        $(this.$refs.orderbtn).addClass('disabled')
         this.$store.dispatch('placeOrder', {self: this}).then(response => {
           this.$store.commit('FORCE_RELOAD')
           this.$router.push({name: 'success'})
+          this.showModal = false
         }).catch(error => {
           utils.note.error({
             message: 'Ein Fehler ist aufgetreten. Bitte lade die Seite neu oder kontaktiere unser Team.'
           })
+          this.showModal = false
+          setTomeout(function() {
+            $(this.$refs.orderbtn).removeClass('disabled')
+          }, 500)
         })
       },
       print() {
