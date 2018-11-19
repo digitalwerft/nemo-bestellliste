@@ -99,7 +99,7 @@ export default {
     return req().get("/api/products")
   },
   placeOrder(campaign_id) {
-    return req().post('api/campaign/'+campaign_id+'/order')
+    return req().post('/api/campaign/'+campaign_id+'/order')
   },
   login(code) {
     return axios.get('/api/login?auth-code=' + code)

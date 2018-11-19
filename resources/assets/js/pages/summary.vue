@@ -14,9 +14,11 @@
       <div class="card-body pt-4 pb-4 d-print-no-padding">
         <div class="shipping-address mb-0">
           <h6 class="card-title font-weight-bold">Lieferadresse</h6>
-          {{ fundraiser.address.first_name }} {{ fundraiser.address.last_name }} <br>
-          {{ fundraiser.address.address }} <br>
-          {{ fundraiser.address.postal }}
+          {{ campaign.shipping_address.name }}<br>
+          <span v-if="campaign.shipping_address.organisation">{{ campaign.shipping_address.organisation }}<br></span>
+          {{ campaign.shipping_address.address }}<br>
+          {{ campaign.shipping_address.postal }}<br>
+          {{ campaign.shipping_address.country }}
         </div>
       </div>
     </div>
@@ -156,6 +158,9 @@
       },
       fundraiser() {
         return this.$store.getters.getFundraiser
+      },
+      campaign() {
+        return this.$store.getters.getCampaign
       },
       isQuoteEmpty() {
         return this.$store.getters.isQuoteEmpty

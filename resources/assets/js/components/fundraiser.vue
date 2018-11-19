@@ -83,8 +83,8 @@
           <label for="fundraiser-message" class="text-muted mt-3">Kommentar zu deiner Bestellung</label>
           <textarea v-model="form.comment" class="form-control" id="fundraiser-message" @keyup="saveComment" placeholder="Beispiel: Bitte erst am 10.10. versenden."></textarea>
           <small class="form-text text-muted">
-            Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns gerne jederzeit von Mo-Fr 9-18 Uhr unter <a href="tel:076170788833">0761 / 707 888 33</a> an <br>oder schreibt uns eine E-Mail an <a href="mailto:bestellung@neuemasche.com">bestellung@neuemasche.com</a>.
-              </small>
+            Wenn Ihr Rückfragen zu diesem Formular habt, ruft uns gerne jederzeit von Mo-Fr 9-18 Uhr unter <a href="tel:076176993300">0761 / 76 99 33 00</a> an <br>oder schreibt uns eine E-Mail an <a href="mailto:bestellung@neuemasche.com">bestellung@neuemasche.com</a>.
+          </small>
         </div>
       </div>
     </div>
