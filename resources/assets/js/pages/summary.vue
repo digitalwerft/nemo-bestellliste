@@ -56,6 +56,10 @@
         <div class="orders-list" v-for="(order, index) in orders">
           <div class="order print-border p-print mt-print">
             <h5 class="mt-4 mb-3 font-weight-bold">Bestellnr. #{{ order.identifier }} – {{ formatDate(order.created_at) }}</h5>
+            <p>
+              <i class="mdi mdi-file-pdf">&nbsp;</i>
+              <a :href="'/order/' + order.id + '/order-list'" target="_blank">Download der Bestellliste</a>
+            </p>
             <summary-table :collectors="order.quote.collectors" :comment="order.comment"></summary-table>
             <hr v-if="(index+1 != orders.length)">
           </div>
